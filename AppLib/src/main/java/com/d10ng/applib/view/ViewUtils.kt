@@ -1,8 +1,10 @@
 package com.d10ng.applib.view
 
+import android.content.Context
 import android.content.res.Resources
 import android.os.Build
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -70,4 +72,14 @@ fun View.isInView(x: Int, y: Int): Boolean {
     val bottom = top + this.measuredHeight
 
     return y in top..bottom && x >= left && x <= right
+}
+
+/**
+ * 隐藏软键盘
+ * @param view View
+ * @return [Boolean] true:成功; false:失败;
+ */
+fun Context.hideKeyboard(view: View): Boolean {
+    val im = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    return im.hideSoftInputFromWindow(view.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
 }

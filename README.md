@@ -16,7 +16,7 @@ allprojects {
 ```gradle
 dependencies {
     // APP通用工具
-    implementation 'com.github.D10NGYANG:DLAppUtil:1.3'
+    implementation 'com.github.D10NGYANG:DLAppUtil:1.4'
     // 协程请求权限
     implementation 'com.sagar:coroutinespermission:2.0.2'
 }

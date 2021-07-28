@@ -27,55 +27,30 @@ fun Context.getSubscriptionInfoList(): List<SubscriptionInfo> {
 }
 
 /**
- * 将手机卡信息列表转SimInfo
+ * 将手机卡信息转SimInfo
+ * @receiver SubscriptionInfo
+ * @return SimInfo
+ */
+fun SubscriptionInfo.toSimInfo(): SimInfo {
+    return SimInfo().apply {
+        id = this@toSimInfo.subscriptionId.toString()
+        slotId = this@toSimInfo.simSlotIndex
+        iccId = this@toSimInfo.iccId
+        displayName = this@toSimInfo.displayName.toString()
+        carrierName = this@toSimInfo.carrierName.toString()
+        number = this@toSimInfo.number
+    }
+}
+
+/**
+ * 将手机卡信息列表转SimInfo列表
  * @receiver List<SubscriptionInfo>
  * @return List<SimInfo>
  */
 fun List<SubscriptionInfo>.toSimInfoList(): List<SimInfo> {
-    val str = this.toString().replace("[", "").replace("]", "")
-    val split = str.split("},")
     val list = mutableListOf<SimInfo>()
-    for (item in split) {
-        println(item)
-        val tempList = item.trim()
-            .replace(",", "")
-            .replace("{", "")
-            .replace("}", "")
-            .split(" ")
-        val map = mutableMapOf<String, String>()
-        var i = 0
-        while (i < tempList.size) {
-            val value = tempList[i]
-            if (value.contains("=")) {
-                val kv = value.split("=")
-                map[kv[0]] = kv[1]
-                i ++
-            } else if (i == tempList.size -1){
-                i ++
-            } else {
-                val value1 = tempList[i +1]
-                if (value1.contains("=")) {
-                    val kv = value1.split("=")
-                    map[kv[0]] = kv[1]
-                } else {
-                    map[value] = value1
-                }
-                i += 2
-            }
-        }
-        val json = JSONObject()
-        for (key in map.keys) {
-            json.put(key, map[key])
-        }
-        val info = SimInfo().apply {
-            id = json.optString("id", "")
-            slotId = json.optInt("simSlotIndex", -1)
-            iccId = json.optString("iccId", "")
-            displayName = json.optString("displayName", "")
-            carrierName = json.optString("carrierName", "")
-            number = json.optString("number", "")
-        }
-        list.add(info)
+    for (item in this) {
+        list.add(item.toSimInfo())
     }
     return list
 }

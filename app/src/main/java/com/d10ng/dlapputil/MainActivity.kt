@@ -1,29 +1,32 @@
 package com.d10ng.dlapputil
 
-import android.Manifest
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.d10ng.applib.app.checkPermissionWithBool
-import com.d10ng.applib.system.getSimInfoList
-import com.d10ng.applib.system.getSubscriptionInfoList
-import com.d10ng.applib.system.toSimInfo
-import com.d10ng.applib.system.toSimInfoList
+import androidx.appcompat.app.AppCompatActivity
+import com.d10ng.applib.system.DatastoreUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // 初始化
+        DatastoreUtils.init("new_datastore", SP_CONFIG)
+
+        // 写入 SPF
+        setSpfSaveName("你好，SPF")
+        println("SPF 打印：${getSpfSaveName()}")
+        // 迁移到 DataStore
         CoroutineScope(Dispatchers.IO).launch {
-            if (checkPermissionWithBool(Manifest.permission.READ_PHONE_STATE)) {
-                if (getSubscriptionInfoList().isNotEmpty()) {
-                    println("test-0:${getSubscriptionInfoList()[0].toSimInfo()}")
-                    println("test-1:${getSubscriptionInfoList().toSimInfoList()[0]}")
-                }
-            }
+            // 读取
+            println("dataStore 打印：${readSaveName()}")
+            // 写入 datastore
+            writeSaveName("你好，dataStore")
+            // 再次读取
+            println("dataStore 打印：${readSaveName()}")
         }
     }
 }

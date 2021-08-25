@@ -59,14 +59,31 @@ suspend inline fun <reified T : Any> Context.dataStoreWrite(key: String, value: 
  * 在DataStore读取信息
  * @receiver Context
  * @param key String
+ * @param default T?
  * @return T
  */
-suspend inline fun <reified T : Any> Context.dataStoreRead(key: String) = when (T::class) {
-    String::class -> this.dataStore.data.map { it[stringPreferencesKey(key)] ?: "" }.first()
-    Int::class -> this.dataStore.data.map { it[intPreferencesKey(key)] ?: 0 }.first()
-    Boolean::class -> this.dataStore.data.map { it[booleanPreferencesKey(key)] ?: false }.first()
-    Long::class -> this.dataStore.data.map { it[longPreferencesKey(key)] ?: 0L }.first()
-    Float::class -> this.dataStore.data.map { it[floatPreferencesKey(key)] ?: 0F }.first()
-    Double::class -> this.dataStore.data.map { it[doublePreferencesKey(key)] ?: 0 }.first()
+suspend inline fun <reified T : Any> Context.dataStoreRead(key: String, default: T? = null) = when (T::class) {
+    String::class -> this.dataStore.data.map { it[stringPreferencesKey(key)] ?: default?: "" }.first()
+    Int::class -> this.dataStore.data.map { it[intPreferencesKey(key)] ?: default?: 0 }.first()
+    Boolean::class -> this.dataStore.data.map { it[booleanPreferencesKey(key)] ?: default?: false }.first()
+    Long::class -> this.dataStore.data.map { it[longPreferencesKey(key)] ?: default?: 0L }.first()
+    Float::class -> this.dataStore.data.map { it[floatPreferencesKey(key)] ?: default?: 0F }.first()
+    Double::class -> this.dataStore.data.map { it[doublePreferencesKey(key)] ?: default?: 0 }.first()
     else -> throw IllegalArgumentException("Type not supported: ${T::class.java}")
 } as T
+
+/**
+ * 在DataStore读取信息
+ * @receiver Context
+ * @param key String
+ * @return T?
+ */
+suspend inline fun <reified T : Any> Context.dataStoreReadCanNull(key: String) = when (T::class) {
+    String::class -> this.dataStore.data.map { it[stringPreferencesKey(key)] }.first()
+    Int::class -> this.dataStore.data.map { it[intPreferencesKey(key)]}.first()
+    Boolean::class -> this.dataStore.data.map { it[booleanPreferencesKey(key)] }.first()
+    Long::class -> this.dataStore.data.map { it[longPreferencesKey(key)] }.first()
+    Float::class -> this.dataStore.data.map { it[floatPreferencesKey(key)] }.first()
+    Double::class -> this.dataStore.data.map { it[doublePreferencesKey(key)] }.first()
+    else -> throw IllegalArgumentException("Type not supported: ${T::class.java}")
+} as T?

@@ -16,12 +16,12 @@ allprojects {
 ```gradle
 dependencies {
     // APP通用工具
-    implementation 'com.github.D10NGYANG:DLAppUtil:1.6'
+    implementation 'com.github.D10NGYANG:DLAppUtil:1.7'
     // 协程
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.1'
     // Preference DataStore
-    implementation("androidx.datastore:datastore-preferences:1.0.0-rc02")
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
     // 协程请求权限
     implementation 'com.sagar:coroutinespermission:2.0.3'
 }

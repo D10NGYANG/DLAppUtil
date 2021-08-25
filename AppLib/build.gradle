@@ -11,8 +11,8 @@ android {
     defaultConfig {
         minSdkVersion 22
         targetSdkVersion 30
-        versionCode 7
-        versionName "1.6"
+        versionCode 8
+        versionName "1.7"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -51,7 +51,7 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.1'
 
     // Preference DataStore
-    implementation("androidx.datastore:datastore-preferences:1.0.0-rc02")
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
 
     // 协程请求权限
     implementation 'com.sagar:coroutinespermission:2.0.3'

@@ -69,7 +69,7 @@ fun Context.isHasPhoneCard(): Boolean =
  * @return SimInfo?
  */
 fun Context.getSatelliteSimInfo(): SimInfo? =
-    getSimInfoList().find { it.slotId >= 0 && it.displayName == "电信卫星" }
+    getSimInfoList().find { it.slotId >= 0 && it.displayName.contains("卫星") }
 
 /**
  * 判断是否有卫星信号
@@ -138,14 +138,15 @@ fun Context.getSimSlotIndex(subId: Long): Int =
  * @return SmsManager
  */
 fun Context.getSatelliteSmsManager(): SmsManager {
-    // 拿到手机里面的手机卡列表
-    val list = getSimInfoList()
     // 通过反射修改当前短信管理器使用的卡ID
     var sms = SmsManager.getDefault()
-    val satelliteInfo = list.find { it.displayName == "电信卫星" && it.carrierName == "电信卫星" }
-    val cardId = satelliteInfo?.id?.toIntOrNull()
-    if (satelliteInfo != null && cardId != null) {
-        sms = SmsManager.getSmsManagerForSubscriptionId(cardId)
+    // 获取卫星卡信息
+    val satelliteInfo = getSatelliteSimInfo()
+    if (satelliteInfo != null) {
+        val cardId = satelliteInfo.id.toIntOrNull()
+        if (cardId != null) {
+            sms = SmsManager.getSmsManagerForSubscriptionId(cardId)
+        }
     }
     return sms
 }

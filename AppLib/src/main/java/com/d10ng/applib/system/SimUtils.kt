@@ -78,7 +78,7 @@ fun Context.getSatelliteSimInfo(): SimInfo? =
  */
 fun Context.isHasSatelliteSignal(): Boolean {
     val info = getSatelliteSimInfo()?: return false
-    return info.carrierName == "电信卫星"
+    return info.carrierName != "无服务"
 }
 
 /**

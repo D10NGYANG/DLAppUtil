@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.database.getIntOrNull
 import androidx.core.database.getStringOrNull
 import com.d10ng.applib.bean.SimInfo
-import org.json.JSONObject
 
 /**
  * 获取手机卡信息列表

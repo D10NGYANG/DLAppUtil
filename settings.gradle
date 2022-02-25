@@ -1,3 +1,0 @@
-rootProject.name = "DLAppUtil"
-include ':app'
-include ':AppLib'

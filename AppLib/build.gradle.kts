@@ -60,3 +60,13 @@ dependencies {
     // 协程请求权限
     implementation("com.sagar:coroutinespermission:2.0.3")
 }
+
+afterEvaluate {
+    publishing {
+        publications {
+            create("release", MavenPublication::class) {
+                from(components.getByName("release"))
+            }
+        }
+    }
+}

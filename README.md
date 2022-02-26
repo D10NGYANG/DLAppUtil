@@ -22,19 +22,10 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0'
     // Preference DataStore
     implementation "androidx.datastore:datastore-preferences:1.0.0"
-    // 协程请求权限
-    implementation "com.github.sagar-viradiya.eazypermissions:common:v2.0.3"
-    implementation "com.github.sagar-viradiya.eazypermissions:coroutinespermission:v2.0.3"
 }
 ```
 3 混淆
 ```pro
 -keep class com.d10ng.applib.** {*;}
 -dontwarn com.d10ng.applib.**
-
-# 协程请求权限
--dontwarn com.eazypermissions.common.**
--keep class com.eazypermissions.common.** {*;}
--dontwarn com.eazypermissions.coroutinespermission.**
--keep class com.eazypermissions.coroutinespermission.** {*;}
 ```

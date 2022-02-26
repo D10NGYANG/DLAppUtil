@@ -23,7 +23,8 @@ dependencies {
     // Preference DataStore
     implementation "androidx.datastore:datastore-preferences:1.0.0"
     // 协程请求权限
-    implementation 'com.sagar:coroutinespermission:2.0.3'
+    implementation "com.github.sagar-viradiya.eazypermissions:common:v2.0.3"
+    implementation "com.github.sagar-viradiya.eazypermissions:coroutinespermission:v2.0.3"
 }
 ```
 3 混淆

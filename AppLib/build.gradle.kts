@@ -60,9 +60,9 @@ dependencies {
     implementation(AndroidX.Datastore.datastore_preferences("1.0.0"))
 
     // 协程请求权限
-    //api(files("libs/common-release.aar"))
-    //api(files("libs/coroutinespermission-release.aar"))
-    api("com.sagar:coroutinespermission:2.0.3")
+    //api("com.sagar:coroutinespermission:2.0.3")
+    implementation("com.github.sagar-viradiya.eazypermissions:common:v2.0.3")
+    implementation("com.github.sagar-viradiya.eazypermissions:coroutinespermission:v2.0.3")
 }
 
 afterEvaluate {

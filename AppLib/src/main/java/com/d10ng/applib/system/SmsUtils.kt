@@ -15,7 +15,8 @@ import android.telephony.SmsManager
 import androidx.core.database.getLongOrNull
 import androidx.lifecycle.MutableLiveData
 import com.d10ng.applib.bean.SmsInfo
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -65,7 +66,7 @@ fun Context.sendSmsMessage(
         statusLive?.postValue(SendSmsStatus.FAILED)
     } else {
         // 新建子线程安排发送
-        GlobalScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             // 读取当前时间戳，做一个唯一标记
             val time = System.currentTimeMillis()
             // 发送状态监听标记
@@ -132,11 +133,11 @@ fun Context.readNewSms(): SmsInfo? {
         }
         while (cursor.moveToNext()) {
             val info = SmsInfo()
-            info.id = cursor.getString(cursor.getColumnIndex("_id"))
+            info.id = cursor.getString(cursor.getColumnIndex("_id").coerceAtLeast(0))
             info.subId = cursor.getLongOrNull(cursor.getColumnIndex("sub_id"))?: -1
-            info.content = cursor.getString(cursor.getColumnIndex("body"))
-            info.phone = cursor.getString(cursor.getColumnIndex("address"))
-            info.time = cursor.getString(cursor.getColumnIndex("date")).toLongOrNull()?: 0
+            info.content = cursor.getString(cursor.getColumnIndex("body").coerceAtLeast(0))
+            info.phone = cursor.getString(cursor.getColumnIndex("address").coerceAtLeast(0))
+            info.time = cursor.getString(cursor.getColumnIndex("date").coerceAtLeast(0)).toLongOrNull()?: 0
             return info
         }
     } catch (e: Exception) {
@@ -167,11 +168,11 @@ fun Context.readNewSmsList(time: Long): List<SmsInfo> {
         val list = mutableListOf<SmsInfo>()
         while (cursor.moveToNext()) {
             val info = SmsInfo()
-            info.id = cursor.getString(cursor.getColumnIndex("_id"))
+            info.id = cursor.getString(cursor.getColumnIndex("_id").coerceAtLeast(0))
             info.subId = cursor.getLongOrNull(cursor.getColumnIndex("sub_id"))?: -1
-            info.content = cursor.getString(cursor.getColumnIndex("body"))
-            info.phone = cursor.getString(cursor.getColumnIndex("address"))
-            info.time = cursor.getString(cursor.getColumnIndex("date")).toLongOrNull()?: 0
+            info.content = cursor.getString(cursor.getColumnIndex("body").coerceAtLeast(0))
+            info.phone = cursor.getString(cursor.getColumnIndex("address").coerceAtLeast(0))
+            info.time = cursor.getString(cursor.getColumnIndex("date").coerceAtLeast(0)).toLongOrNull()?: 0
             list.add(info)
         }
         return list

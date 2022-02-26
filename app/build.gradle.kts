@@ -40,7 +40,7 @@ dependencies {
     implementation(AndroidX.appcompat("1.4.1"))
     implementation(Android.Google.material("1.5.0"))
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.0.4")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.2")
 
     // 单元测试（可选）
     testImplementation(Test.junit("4.13.2"))
@@ -53,16 +53,13 @@ dependencies {
 
     // Lifecycle components
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
-    kapt("androidx.lifecycle:lifecycle-common-java8:2.3.1")
+    kapt("androidx.lifecycle:lifecycle-common-java8:2.4.1")
     androidTestImplementation("androidx.arch.core:core-testing:2.1.0")
     // ViewModel Kotlin support
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1")
 
     // Preference DataStore
     implementation(AndroidX.Datastore.datastore_preferences("1.0.0"))
-
-    // 协程请求权限
-    implementation("com.sagar:coroutinespermission:2.0.3")
 
     // 字符串字节数据工具
     implementation(D10NG.DLTextUtil())

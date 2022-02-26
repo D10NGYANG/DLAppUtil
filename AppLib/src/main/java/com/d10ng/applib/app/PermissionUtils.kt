@@ -4,9 +4,10 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
-import com.eazypermissions.common.model.PermissionResult
-import com.eazypermissions.coroutinespermission.PermissionManager
-import kotlinx.coroutines.GlobalScope
+import com.d10ng.applib.app.permission.PermissionManager
+import com.d10ng.applib.app.permission.PermissionResult
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -30,7 +31,7 @@ fun Context.checkPermission(permission: String): Boolean {
  */
 suspend fun AppCompatActivity.checkPermissionWithBool(permission: String): Boolean {
     return suspendCoroutine { cont ->
-        GlobalScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             val permissionResult = PermissionManager.requestPermissions(
                 this@checkPermissionWithBool,
                 1,

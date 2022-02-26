@@ -35,6 +35,8 @@ android {
 
 dependencies {
 
+    //implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar", "*.aar"))))
+
     implementation(Kotlin.stdlib(kotlin_ver))
     // Android
     implementation(AndroidX.core_ktx("1.7.0"))
@@ -58,7 +60,9 @@ dependencies {
     implementation(AndroidX.Datastore.datastore_preferences("1.0.0"))
 
     // 协程请求权限
-    implementation("com.sagar:coroutinespermission:2.0.3")
+    //api(files("libs/common-release.aar"))
+    //api(files("libs/coroutinespermission-release.aar"))
+    api("com.sagar:coroutinespermission:2.0.3")
 }
 
 afterEvaluate {

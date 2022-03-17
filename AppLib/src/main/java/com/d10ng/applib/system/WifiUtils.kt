@@ -1,8 +1,6 @@
 package com.d10ng.applib.system
 
 import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import android.net.wifi.ScanResult
 import android.net.wifi.WifiInfo
 import android.net.wifi.WifiManager
@@ -26,7 +24,7 @@ val localIPAddress: String?
             while (enumIpAddr.hasMoreElements()) {
                 val inetAddress: InetAddress = enumIpAddr.nextElement()
                 if (!inetAddress.isLoopbackAddress && inetAddress is Inet4Address) {
-                    return inetAddress.hostAddress.toString()
+                    return inetAddress.hostAddress?.toString()
                 }
             }
         }
@@ -55,20 +53,6 @@ fun Context.scanWifi() : List<ScanResult> {
     wm.startScan()
     lastScanResult = wm.scanResults
     return lastScanResult ?: listOf()
-}
-
-/**
- * 判断网络是否可用
- * @receiver Context
- * @return Boolean
- */
-fun Context.isNetworkAvailable() : Boolean {
-    val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager? ?: return false
-    val infos = cm.allNetworkInfo
-    for (info in infos) {
-        if (info != null && info.state == NetworkInfo.State.CONNECTED) return true
-    }
-    return false
 }
 
 /**
@@ -116,20 +100,7 @@ fun Context.is5GWifiConnected() : Boolean {
     val wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager?
     val wifiInfo = wifiManager?.connectionInfo?: return false
     // 频段
-    var frequency = 0
-    if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.LOLLIPOP) {
-        frequency = wifiInfo.frequency
-    } else {
-        val ssid = wifiInfo.ssid?: return false
-        if (ssid.length < 2) return false
-        val sid = ssid.substring(1, ssid.length -1)
-        for (scan in wifiManager.scanResults) {
-            if (scan.SSID == sid) {
-                frequency = scan.frequency
-                break
-            }
-        }
-    }
+    val frequency: Int = wifiInfo.frequency
     return frequency in 4900..5900
 }
 

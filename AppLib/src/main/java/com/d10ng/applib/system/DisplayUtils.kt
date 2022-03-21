@@ -1,7 +1,6 @@
 package com.d10ng.applib.system
 
 import android.content.Context
-import android.util.TypedValue
 
 /**
  * 根据手机的分辨率从 dp 的单位 转成为 px(像素)

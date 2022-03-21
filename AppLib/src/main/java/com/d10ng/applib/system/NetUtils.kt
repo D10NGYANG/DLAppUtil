@@ -2,7 +2,6 @@ package com.d10ng.applib.system
 
 import android.content.Context
 import android.net.*
-import android.os.Build
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class NetUtils(context: Context) {
@@ -32,11 +31,9 @@ class NetUtils(context: Context) {
     var networkCapabilitiesFlow = MutableStateFlow<NetworkCapabilities?>(null)
 
     init {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            networkFlow.value = manager.activeNetwork
-            linkPropertiesFlow.value = manager.getLinkProperties(manager.activeNetwork)
-            networkCapabilitiesFlow.value = manager.getNetworkCapabilities(manager.activeNetwork)
-        }
+        networkFlow.value = manager.activeNetwork
+        linkPropertiesFlow.value = manager.getLinkProperties(manager.activeNetwork)
+        networkCapabilitiesFlow.value = manager.getNetworkCapabilities(manager.activeNetwork)
         val request = NetworkRequest.Builder().build()
         manager.registerNetworkCallback(request, object: ConnectivityManager.NetworkCallback(){
             override fun onAvailable(network: Network) {
@@ -74,11 +71,5 @@ class NetUtils(context: Context) {
  * @receiver Context
  * @return Boolean
  */
-fun Context.isNetworkAvailable() : Boolean {
-    val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    val infos = cm.allNetworkInfo
-    for (info in infos) {
-        if (info != null && info.state == NetworkInfo.State.CONNECTED) return true
-    }
-    return false
-}
+fun Context.isNetworkAvailable() =
+    NetUtils.instant(this).networkCapabilitiesFlow.value?.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED) == true

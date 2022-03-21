@@ -1,13 +1,18 @@
 package com.d10ng.applib.system
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.net.wifi.ScanResult
 import android.net.wifi.WifiInfo
 import android.net.wifi.WifiManager
+import android.os.Build
+import android.provider.Settings
 import java.net.Inet4Address
 import java.net.InetAddress
 import java.net.NetworkInterface
 import java.util.*
+
 
 /** 保存上一次扫描结果，仅Module内可见 */
 internal var lastScanResult:List<ScanResult>? = null
@@ -41,6 +46,21 @@ fun Context.getWifiManager() : WifiManager? {
 }
 
 /**
+ * 开启Wi-Fi
+ * @receiver Activity
+ */
+fun Activity.enabledWifi(requestCode: Int = 1) {
+    val wm = getWifiManager()?: return
+    if (wm.isWifiEnabled) return
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        val panelIntent = Intent(Settings.Panel.ACTION_WIFI)
+        startActivityForResult(panelIntent, requestCode)
+    } else {
+        wm.isWifiEnabled = true
+    }
+}
+
+/**
  * 扫描热点并获取扫描结果
  * @receiver Context
  * @return List<ScanResult>
@@ -61,8 +81,11 @@ fun Context.scanWifi() : List<ScanResult> {
  * @return WifiInfo?
  */
 fun Context.getConnectedWifiInfo(): WifiInfo? {
-    val wm = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager?
-    return wm?.connectionInfo
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        NetUtils.instant(this).networkCapabilitiesFlow.value?.transportInfo as? WifiInfo
+    } else {
+        getWifiManager()?.connectionInfo
+    }
 }
 
 /**
@@ -86,8 +109,7 @@ fun WifiInfo.getWifiSSID(): String {
  * @return String
  */
 fun Context.getConnectedWifiSSID() : String {
-    val wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager?
-    val wifiInfo = wifiManager?.connectionInfo?: return ""
+    val wifiInfo = getConnectedWifiInfo()?: return ""
     return wifiInfo.getWifiSSID()
 }
 
@@ -97,8 +119,7 @@ fun Context.getConnectedWifiSSID() : String {
  * @return Boolean
  */
 fun Context.is5GWifiConnected() : Boolean {
-    val wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager?
-    val wifiInfo = wifiManager?.connectionInfo?: return false
+    val wifiInfo = getConnectedWifiInfo()?: return false
     // 频段
     val frequency: Int = wifiInfo.frequency
     return frequency in 4900..5900

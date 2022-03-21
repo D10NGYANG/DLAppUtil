@@ -10,7 +10,6 @@ import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
-import android.os.Build
 import android.telephony.SmsManager
 import androidx.core.database.getLongOrNull
 import androidx.lifecycle.MutableLiveData
@@ -57,8 +56,7 @@ fun Context.sendSmsMessage(
 ): MutableLiveData<SendSmsStatus> {
     // 新建一个发送状态
     var statusLive: MutableLiveData<SendSmsStatus>? = MutableLiveData(SendSmsStatus.SENDING)
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-        && checkSelfPermission(Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+    if (checkSelfPermission(Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
         // 缺少发送短信权限
         statusLive?.postValue(SendSmsStatus.FAILED)
     } else if (!isHasPhoneCard()) {

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.location.LocationManager
 import android.os.Build
 import android.os.Environment
 import android.provider.Settings
@@ -81,18 +82,25 @@ fun Context.systemBattery(): Int {
  * @return Boolean
  */
 fun Context.isLocationServerEnabled(): Boolean {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-        val locationMode =  Settings.Secure.getInt(
-            contentResolver,
-            Settings.Secure.LOCATION_MODE
-        )
-        locationMode != Settings.Secure.LOCATION_MODE_OFF
-    } else {
-        val locationProviders = Settings.Secure.getString(
-            contentResolver,
-            Settings.Secure.LOCATION_PROVIDERS_ALLOWED
-        )
-        !TextUtils.isEmpty(locationProviders)
+    return when {
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT -> {
+            val locationMode =  Settings.Secure.getInt(
+                contentResolver,
+                Settings.Secure.LOCATION_MODE
+            )
+            locationMode != Settings.Secure.LOCATION_MODE_OFF
+        }
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.P -> {
+            val manager = getSystemService(LocationManager::class.java)
+            manager.isLocationEnabled
+        }
+        else -> {
+            val locationProviders = Settings.Secure.getString(
+                contentResolver,
+                Settings.Secure.LOCATION_PROVIDERS_ALLOWED
+            )
+            !TextUtils.isEmpty(locationProviders)
+        }
     }
 }
 

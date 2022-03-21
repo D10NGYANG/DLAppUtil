@@ -1,6 +1,5 @@
 package com.d10ng.dlapputil
 
-import android.net.NetworkCapabilities
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.d10ng.applib.system.DatastoreUtils
@@ -8,7 +7,6 @@ import com.d10ng.applib.system.NetUtils
 import com.d10ng.applib.system.isNetworkAvailable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -36,14 +34,8 @@ class MainActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             val manager = NetUtils.instant(this@MainActivity).manager
             NetUtils.instant(this@MainActivity).networkCapabilitiesFlow.collect {
-                println("isActive = ${isNetworkAvailable()}, ${it?.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)}")
+                println("isNetworkAvailable = ${isNetworkAvailable()}")
             }
-        }
-        CoroutineScope(Dispatchers.IO).launch {
-            /*while (true) {
-                delay(1000)
-                println("net, isActive = ${isNetworkAvailable()}" )
-            }*/
         }
     }
 }

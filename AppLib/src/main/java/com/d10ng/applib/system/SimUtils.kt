@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.database.Cursor
 import android.net.Uri
+import android.os.Build
 import android.telephony.SmsManager
 import android.telephony.SubscriptionInfo
 import android.telephony.SubscriptionManager
@@ -99,7 +100,7 @@ fun Context.getSimInfoList(): List<SimInfo> {
         val list = mutableListOf<SimInfo>()
         while (cursor.moveToNext()) {
             val info = SimInfo().apply {
-                id = cursor.getString(cursor.getColumnIndex("_id"))
+                id = cursor.getString(cursor.getColumnIndex("_id").coerceAtLeast(0))
                 slotId = cursor.getIntOrNull(cursor.getColumnIndex("sim_id"))?: -1
                 iccId = cursor.getStringOrNull(cursor.getColumnIndex("icc_id"))?: ""
                 displayName = cursor.getStringOrNull(cursor.getColumnIndex("display_name"))?: ""
@@ -138,13 +139,17 @@ fun Context.getSimSlotIndex(subId: Long): Int =
  */
 fun Context.getSatelliteSmsManager(): SmsManager {
     // 通过反射修改当前短信管理器使用的卡ID
-    var sms = SmsManager.getDefault()
+    var sms = getSystemService(SmsManager::class.java)
     // 获取卫星卡信息
     val satelliteInfo = getSatelliteSimInfo()
     if (satelliteInfo != null) {
         val cardId = satelliteInfo.id.toIntOrNull()
         if (cardId != null) {
-            sms = SmsManager.getSmsManagerForSubscriptionId(cardId)
+            sms = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                sms.createForSubscriptionId(cardId)
+            } else {
+                SmsManager.getSmsManagerForSubscriptionId(cardId)
+            }
         }
     }
     return sms
@@ -159,12 +164,16 @@ fun Context.getSatelliteSmsManager(): SmsManager {
 fun Context.getSmsManager(slot: Int = -1): SmsManager {
     // 拿到手机里面的手机卡列表
     val list = getSimInfoList()
-    var sms = SmsManager.getDefault()
+    var sms = getSystemService(SmsManager::class.java)
     if (slot < 0) return sms
     val simInfo = list.find { it.slotId == slot }
     val cardId = simInfo?.id?.toIntOrNull()
     if (simInfo != null && cardId != null) {
-        sms = SmsManager.getSmsManagerForSubscriptionId(cardId)
+        sms = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            sms.createForSubscriptionId(cardId)
+        } else {
+            SmsManager.getSmsManagerForSubscriptionId(cardId)
+        }
     }
     return sms
 }

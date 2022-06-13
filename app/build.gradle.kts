@@ -1,8 +1,8 @@
 plugins {
-    id(Android.Plugin.application)
-    id(Kotlin.Plugin.ID.android)
-    id(Kotlin.Plugin.ID.kapt)
-    id(Kotlin.Plugin.ID.parcelize)
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.kapt")
+    id("org.jetbrains.kotlin.plugin.parcelize")
 }
 
 android {
@@ -36,20 +36,22 @@ android {
 dependencies {
 
     // Android
-    implementation(AndroidX.core_ktx("1.7.0"))
-    implementation(AndroidX.appcompat("1.4.1"))
-    implementation(Android.Google.material("1.5.0"))
+    implementation("androidx.core:core-ktx:1.8.0")
+    implementation("androidx.appcompat:appcompat:1.4.2")
+    implementation("com.google.android.material:material:1.6.1")
+
+    // UI
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.3")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
     // 单元测试（可选）
-    testImplementation(Test.junit("4.13.2"))
-    androidTestImplementation(AndroidX.Test.junit("1.1.3"))
-    androidTestImplementation(AndroidX.Test.espresso_core("3.4.0"))
+    testImplementation("junit:junit:4.13.2")
+    androidTestImplementation("androidx.test.ext:junit:1.1.3")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 
     // Coroutines
-    implementation(Kotlin.Coroutines.core(kotlin_coroutines_ver))
-    implementation(Kotlin.Coroutines.android(kotlin_coroutines_ver))
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines_ver")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines_ver")
 
     // Lifecycle components
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
@@ -59,10 +61,10 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1")
 
     // Preference DataStore
-    implementation(AndroidX.Datastore.datastore_preferences("1.0.0"))
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     // 字符串字节数据工具
-    implementation(D10NG.DLTextUtil())
+    implementation("com.github.D10NGYANG:DLTextUtil:1.4.0")
 
     implementation(project(":AppLib"))
 }

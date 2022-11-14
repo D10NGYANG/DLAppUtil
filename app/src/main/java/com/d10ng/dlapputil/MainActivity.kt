@@ -31,8 +31,9 @@ class MainActivity : AppCompatActivity() {
             println("dataStore 打印：${readSaveName()}")
         }
 
+        println("isNetworkAvailable = ${isNetworkAvailable()}")
+
         CoroutineScope(Dispatchers.IO).launch {
-            val manager = NetUtils.instant(this@MainActivity).manager
             NetUtils.instant(this@MainActivity).networkCapabilitiesFlow.collect {
                 println("isNetworkAvailable = ${isNetworkAvailable()}")
             }

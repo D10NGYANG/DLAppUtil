@@ -1,5 +1,6 @@
 package com.d10ng.app.system
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -65,6 +66,7 @@ fun Activity.enabledWifi(requestCode: Int = 1) {
  * @receiver Context
  * @return List<ScanResult>
  */
+@SuppressLint("MissingPermission")
 fun Context.scanWifi() : List<ScanResult> {
     val wm = getWifiManager()?: return emptyList()
     // 打开Wi-Fi

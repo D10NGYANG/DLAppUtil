@@ -12,11 +12,11 @@ import android.database.Cursor
 import android.net.Uri
 import android.telephony.SmsManager
 import androidx.core.database.getLongOrNull
-import androidx.lifecycle.MutableLiveData
 import com.d10ng.app.bean.SmsInfo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 /**
@@ -45,7 +45,7 @@ enum class SendSmsStatus{
  * @param text String 短信内容
  * @param overTime Long 超时时间
  * @param smsManager SmsManager 短信发送器
- * @return MutableLiveData<SendSmsStatus>? 发送状态
+ * @return MutableStateFlow<SendSmsStatus>? 发送状态
  */
 fun Context.sendSmsMessage(
     destinationAddress: String,
@@ -53,15 +53,15 @@ fun Context.sendSmsMessage(
     text: String,
     overTime: Long = 60 * 1000,
     smsManager: SmsManager = SmsManager.getDefault()
-): MutableLiveData<SendSmsStatus> {
+): MutableStateFlow<SendSmsStatus> {
     // 新建一个发送状态
-    var statusLive: MutableLiveData<SendSmsStatus>? = MutableLiveData(SendSmsStatus.SENDING)
+    var statusLive: MutableStateFlow<SendSmsStatus>? = MutableStateFlow(SendSmsStatus.SENDING)
     if (checkSelfPermission(Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
         // 缺少发送短信权限
-        statusLive?.postValue(SendSmsStatus.FAILED)
+        statusLive?.value = SendSmsStatus.FAILED
     } else if (!isHasPhoneCard()) {
         // 缺少手机卡
-        statusLive?.postValue(SendSmsStatus.FAILED)
+        statusLive?.value = SendSmsStatus.FAILED
     } else {
         // 新建子线程安排发送
         CoroutineScope(Dispatchers.IO).launch {
@@ -83,10 +83,10 @@ fun Context.sendSmsMessage(
                     //LogUtils.e("发送短信", "结果码=$resultCode")
                     if (resultCode == Activity.RESULT_OK) {
                         // 发送成功
-                        statusLive?.postValue(SendSmsStatus.SUCCESS)
+                        statusLive?.value = SendSmsStatus.SUCCESS
                     } else {
                         // 发送失败
-                        statusLive?.postValue(SendSmsStatus.FAILED)
+                        statusLive?.value = SendSmsStatus.FAILED
                     }
                     // 取消监听
                     context?.unregisterReceiver(this)
@@ -96,7 +96,7 @@ fun Context.sendSmsMessage(
             registerReceiver(object : BroadcastReceiver(){
                 override fun onReceive(context: Context?, intent: Intent?) {
                     // 接收成功
-                    statusLive?.postValue(SendSmsStatus.RECEIVE)
+                    statusLive?.value = SendSmsStatus.RECEIVE
                     statusLive = null
                     // 取消监听
                     context?.unregisterReceiver(this)
@@ -105,7 +105,7 @@ fun Context.sendSmsMessage(
             // 超时
             delay(overTime)
             if (statusLive?.value == SendSmsStatus.SENDING) {
-                statusLive?.postValue(SendSmsStatus.OVERTIME)
+                statusLive?.value = SendSmsStatus.OVERTIME
             }
             statusLive = null
         }

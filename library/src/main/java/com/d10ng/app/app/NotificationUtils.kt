@@ -1,5 +1,6 @@
 package com.d10ng.app.app
 
+import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -12,6 +13,7 @@ import androidx.core.app.NotificationManagerCompat
 
 /**
  * 创建通知
+ * - 需要权限：Manifest.permission.POST_NOTIFICATIONS
  * @receiver Context
  * @param notifyId Int 通知ID
  * @param importance Int 重要程度
@@ -26,6 +28,7 @@ import androidx.core.app.NotificationManagerCompat
  * @param isAutoCancel Boolean 是否允许点击取消显示
  * @return NotificationCompat.Builder
  */
+@SuppressLint("MissingPermission")
 fun Context.createNotification(
     id: String,
     name: String,

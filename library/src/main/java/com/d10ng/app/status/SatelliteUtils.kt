@@ -8,7 +8,7 @@ import android.location.LocationManager
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
-import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.flow.MutableStateFlow
 
 /**
  * 卫星状态监听器
@@ -18,7 +18,7 @@ import androidx.lifecycle.MutableLiveData
 @RequiresApi(Build.VERSION_CODES.N)
 class AGnssStatusCallback: GnssStatus.Callback() {
 
-    val statusLive: MutableLiveData<GnssStatus?> = MutableLiveData(null)
+    val statusFlow: MutableStateFlow<GnssStatus?> = MutableStateFlow(null)
 
     companion object {
 
@@ -41,17 +41,17 @@ class AGnssStatusCallback: GnssStatus.Callback() {
 
     override fun onSatelliteStatusChanged(status: GnssStatus) {
         super.onSatelliteStatusChanged(status)
-        statusLive.postValue(status)
+        statusFlow.value = status
     }
 }
 
 /**
  * 启动卫星状态请求
  * @receiver Context
- * @return MutableLiveData<GnssStatus?>?
+ * @return MutableStateFlow<GnssStatus?>?
  */
 @RequiresApi(Build.VERSION_CODES.N)
-fun Context.startRequestGnssStatusCallback(): MutableLiveData<GnssStatus?>? {
+fun Context.startRequestGnssStatusCallback(): MutableStateFlow<GnssStatus?>? {
     val manager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
     if (ActivityCompat.checkSelfPermission(
             this,
@@ -61,7 +61,7 @@ fun Context.startRequestGnssStatusCallback(): MutableLiveData<GnssStatus?>? {
         return null
     }
     manager.registerGnssStatusCallback(AGnssStatusCallback.instant(), null)
-    return AGnssStatusCallback.instant().statusLive
+    return AGnssStatusCallback.instant().statusFlow
 }
 
 /**

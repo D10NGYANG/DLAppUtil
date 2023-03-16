@@ -61,7 +61,7 @@ fun List<SubscriptionInfo>.toSimInfoList(): List<SimInfo> {
  * @return Boolean
  */
 fun Context.isHasPhoneCard(): Boolean =
-    !getSubscriptionInfoList().isNullOrEmpty()
+    getSubscriptionInfoList().isNotEmpty()
 
 /**
  * 获取卫星卡信息

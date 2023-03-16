@@ -5,7 +5,7 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.flow.MutableStateFlow
 
 /**
  * 传感器数据监听器
@@ -27,7 +27,8 @@ import androidx.lifecycle.MutableLiveData
  */
 class ASensorEventListener(val type: Int): SensorEventListener {
 
-    val valueLive: MutableLiveData<Float?> = MutableLiveData(null)
+    val valueFlow: MutableStateFlow<Float?> = MutableStateFlow(null)
+    val accuracyFlow: MutableStateFlow<Int> = MutableStateFlow(0)
 
     companion object {
 
@@ -44,11 +45,12 @@ class ASensorEventListener(val type: Int): SensorEventListener {
     }
 
     override fun onSensorChanged(event: SensorEvent?) {
-        valueLive.postValue(event?.values?.get(0))
+        event?: return
+        valueFlow.value = event.values?.get(0)
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-
+        accuracyFlow.value = accuracy
     }
 }
 
@@ -56,13 +58,13 @@ class ASensorEventListener(val type: Int): SensorEventListener {
  * 开始监听传感器数据
  * @receiver Context
  * @param type Int
- * @return MutableLiveData<Float?>
+ * @return MutableStateFlow<Float?>
  */
-fun Context.startRequestSensorValue(type: Int): MutableLiveData<Float?> {
+fun Context.startRequestSensorValue(type: Int): MutableStateFlow<Float?> {
     val mSensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
     val sensor = mSensorManager.getDefaultSensor(type)
     mSensorManager.registerListener(ASensorEventListener.instant(type), sensor, SensorManager.SENSOR_DELAY_NORMAL)
-    return ASensorEventListener.instant(type).valueLive
+    return ASensorEventListener.instant(type).valueFlow
 }
 
 /**

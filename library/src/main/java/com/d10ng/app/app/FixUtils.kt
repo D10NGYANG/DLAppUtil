@@ -8,7 +8,7 @@ import android.os.Build
  * 弹框提示 Detected problems with API compatibility(visit g.co/dev/appcompat for more info)
  * 隐藏警告弹框
  */
-@SuppressLint("DiscouragedPrivateApi")
+@SuppressLint("DiscouragedPrivateApi", "SoonBlockedPrivateApi")
 fun closeDetectedProblemApiDialog() {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
         return

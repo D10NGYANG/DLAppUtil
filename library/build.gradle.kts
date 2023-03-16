@@ -39,7 +39,9 @@ dependencies {
 
     // Android
     implementation("androidx.core:core-ktx:1.9.0")
-    //implementation("androidx.legacy:legacy-support-v4:1.0.0")
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("com.google.android.material:material:1.8.0")
+    implementation("androidx.legacy:legacy-support-v4:1.0.0")
 
     // 单元测试（可选）
     testImplementation("junit:junit:4.13.2")
@@ -49,9 +51,6 @@ dependencies {
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines_ver")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines_ver")
-
-    // Lifecycle components
-    //implementation("androidx.lifecycle:lifecycle-extensions:2.5.1")
 
     // Preference DataStore
     implementation("androidx.datastore:datastore-preferences:1.0.0")

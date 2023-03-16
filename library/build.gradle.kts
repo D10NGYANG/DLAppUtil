@@ -6,7 +6,7 @@ plugins {
     id("maven-publish")
 }
 
-group = "com.github.D10NG"
+group = "com.github.D10NGYANG"
 version = "2.2.0"
 
 android {
@@ -60,6 +60,7 @@ afterEvaluate {
     publishing {
         publications {
             create("release", MavenPublication::class) {
+                artifactId = "DLAppUtil"
                 from(components.getByName("release"))
             }
         }

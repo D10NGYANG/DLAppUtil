@@ -1,20 +1,21 @@
 plugins {
-    id("com.android.application")
+    id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.kapt")
     id("org.jetbrains.kotlin.plugin.parcelize")
+    id("maven-publish")
 }
 
+group = "com.github.D10NG"
+version = "2.2.0"
+
 android {
-    namespace = "com.d10ng.dlapputil"
+    namespace = "com.d10ng.applib"
     compileSdk = Project.compile_sdk
 
     defaultConfig {
-        applicationId = "com.d10ng.dlapputil"
         minSdk = Project.min_sdk
         targetSdk = Project.target_sdk
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -38,12 +39,7 @@ dependencies {
 
     // Android
     implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.8.0")
-
-    // UI
-    implementation("androidx.legacy:legacy-support-v4:1.0.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    //implementation("androidx.legacy:legacy-support-v4:1.0.0")
 
     // 单元测试（可选）
     testImplementation("junit:junit:4.13.2")
@@ -55,16 +51,18 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines_ver")
 
     // Lifecycle components
-    implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
-    kapt("androidx.lifecycle:lifecycle-common-java8:2.6.0")
-    androidTestImplementation("androidx.arch.core:core-testing:2.2.0")
-    // ViewModel Kotlin support
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0")
+    //implementation("androidx.lifecycle:lifecycle-extensions:2.5.1")
 
     // Preference DataStore
     implementation("androidx.datastore:datastore-preferences:1.0.0")
+}
 
-    // 字符串字节数据工具
-    implementation("com.github.D10NGYANG:DLTextUtil:1.4.0")
-    implementation(project(":library"))
+afterEvaluate {
+    publishing {
+        publications {
+            create("release", MavenPublication::class) {
+                from(components.getByName("release"))
+            }
+        }
+    }
 }

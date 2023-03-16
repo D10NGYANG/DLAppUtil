@@ -2,9 +2,9 @@ package com.d10ng.dlapputil
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.d10ng.applib.system.DatastoreUtils
-import com.d10ng.applib.system.NetUtils
-import com.d10ng.applib.system.isNetworkAvailable
+import com.d10ng.app.system.DatastoreUtils
+import com.d10ng.app.system.NetUtils
+import com.d10ng.app.system.isNetworkAvailable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

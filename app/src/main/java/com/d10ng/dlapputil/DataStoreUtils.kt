@@ -1,8 +1,8 @@
 package com.d10ng.dlapputil
 
 import android.content.Context
-import com.d10ng.applib.system.dataStoreRead
-import com.d10ng.applib.system.dataStoreWrite
+import com.d10ng.app.system.dataStoreRead
+import com.d10ng.app.system.dataStoreWrite
 import com.d10ng.text.string.decrypt
 import com.d10ng.text.string.encrypt
 

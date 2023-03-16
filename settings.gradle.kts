@@ -1,8 +1,8 @@
 pluginManagement {
     repositories {
-        gradlePluginPortal()
         google()
         mavenCentral()
+        gradlePluginPortal()
     }
 }
 dependencyResolutionManagement {
@@ -15,5 +15,5 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "DLAppUtil"
-include(":app")
-include(":AppLib")
+include("app")
+include("library")

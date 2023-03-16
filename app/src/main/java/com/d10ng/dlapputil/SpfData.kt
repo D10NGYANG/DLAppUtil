@@ -1,7 +1,7 @@
 package com.d10ng.dlapputil
 
 import android.content.Context
-import com.d10ng.applib.system.SpfUtils
+import com.d10ng.app.system.SpfUtils
 
 /** 默认表单 */
 const val SP_CONFIG = "config_data"

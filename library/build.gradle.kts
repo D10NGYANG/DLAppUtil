@@ -63,5 +63,10 @@ afterEvaluate {
                 from(components.getByName("release"))
             }
         }
+        repositories {
+            maven {
+                url = uri("/Users/d10ng/project/kotlin/maven-repo/repository")
+            }
+        }
     }
 }

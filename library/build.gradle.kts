@@ -7,10 +7,10 @@ plugins {
 }
 
 group = "com.github.D10NGYANG"
-version = "2.2.0"
+version = "2.2.1"
 
 android {
-    namespace = "com.d10ng.applib"
+    namespace = "com.d10ng.app"
     compileSdk = Project.compile_sdk
 
     defaultConfig {

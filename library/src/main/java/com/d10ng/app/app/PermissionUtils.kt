@@ -10,6 +10,8 @@ import com.d10ng.app.app.permission.PermissionManager
 import com.d10ng.app.app.permission.PermissionResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -40,11 +42,11 @@ fun Context.hasPermissions(permissions: Array<out String>) = permissions.all {
  * @param permissions Array<out String>
  * @return Boolean
  */
-suspend fun AppCompatActivity.requestPermissions(vararg permissions: String): Boolean {
+suspend fun AppCompatActivity.reqPermissions(vararg permissions: String): Boolean {
     return suspendCoroutine { cont ->
         CoroutineScope(Dispatchers.IO).launch {
             val permissionResult = PermissionManager.requestPermissions(
-                this@requestPermissions,
+                this@reqPermissions,
                 1,
                 *permissions.toList().toTypedArray()
             )
@@ -59,14 +61,14 @@ suspend fun AppCompatActivity.requestPermissions(vararg permissions: String): Bo
  * @param permissions Array<out String>
  * @return Boolean
  */
-suspend fun ComponentActivity.requestPermissions(vararg permissions: String): Boolean {
-    return suspendCoroutine { cont ->
+fun ComponentActivity.reqPermissions(vararg permissions: String): SharedFlow<Boolean> {
+    val resultFlow = MutableSharedFlow<Boolean>()
+    val launcher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissionResult ->
         CoroutineScope(Dispatchers.IO).launch {
-            val launcher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissionResult ->
-                cont.resume(!permissionResult.containsValue(false))
-            }
-            launcher.launch(permissions.toList().toTypedArray())
+            resultFlow.emit(!permissionResult.containsValue(false))
         }
     }
+    launcher.launch(permissions.toList().toTypedArray())
+    return resultFlow
 }
 

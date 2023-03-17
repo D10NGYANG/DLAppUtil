@@ -1,7 +1,9 @@
 package com.d10ng.dlapputil
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
+import androidx.lifecycle.lifecycleScope
+import com.d10ng.app.app.reqPermissions
 import com.d10ng.app.system.DatastoreUtils
 import com.d10ng.app.system.NetUtils
 import com.d10ng.app.system.isNetworkAvailable
@@ -9,7 +11,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +38,16 @@ class MainActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             NetUtils.instant(this@MainActivity).networkCapabilitiesFlow.collect {
                 println("isNetworkAvailable = ${isNetworkAvailable()}")
+            }
+        }
+
+        // 请求权限
+        val result = reqPermissions(
+            android.Manifest.permission.ACCESS_FINE_LOCATION,
+            android.Manifest.permission.ACCESS_COARSE_LOCATION)
+        lifecycleScope.launch {
+            result.collect {
+                println("权限请求结果：$it")
             }
         }
     }

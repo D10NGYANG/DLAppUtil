@@ -26,18 +26,21 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "1.8"
+    }
+    kotlin {
+        jvmToolchain(8)
     }
 }
 
 dependencies {
 
     // Android
-    implementation("androidx.core:core-ktx:1.9.0")
+    implementation("androidx.core:core-ktx:1.10.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.8.0")
 
@@ -56,15 +59,15 @@ dependencies {
 
     // Lifecycle components
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
-    kapt("androidx.lifecycle:lifecycle-common-java8:2.6.0")
+    kapt("androidx.lifecycle:lifecycle-common-java8:2.6.1")
     androidTestImplementation("androidx.arch.core:core-testing:2.2.0")
     // ViewModel Kotlin support
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
 
     // Preference DataStore
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     // 字符串字节数据工具
-    implementation("com.github.D10NGYANG:DLTextUtil:1.4.0")
+    implementation("com.github.D10NGYANG:DLTextUtil:1.4.1")
     implementation(project(":library"))
 }

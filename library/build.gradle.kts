@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "com.github.D10NGYANG"
-version = "2.2.3"
+version = "2.3.0"
 
 android {
     namespace = "com.d10ng.app"
@@ -15,7 +15,6 @@ android {
 
     defaultConfig {
         minSdk = Project.min_sdk
-        targetSdk = Project.target_sdk
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -27,18 +26,21 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "1.8"
+    }
+    kotlin {
+        jvmToolchain(8)
     }
 }
 
 dependencies {
 
     // Android
-    implementation("androidx.core:core-ktx:1.9.0")
+    implementation("androidx.core:core-ktx:1.10.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.8.0")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")

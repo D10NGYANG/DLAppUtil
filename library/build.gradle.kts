@@ -58,6 +58,9 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 }
 
+val bds100MavenUsername: String by project
+val bds100MavenPassword: String by project
+
 afterEvaluate {
     publishing {
         publications {
@@ -69,6 +72,13 @@ afterEvaluate {
         repositories {
             maven {
                 url = uri("/Users/d10ng/project/kotlin/maven-repo/repository")
+            }
+            maven {
+                credentials {
+                    username = bds100MavenUsername
+                    password = bds100MavenPassword
+                }
+                setUrl("https://nexus.bds100.com/repository/maven-releases/")
             }
         }
     }

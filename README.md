@@ -18,14 +18,14 @@ allprojects {
 ```gradle
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     
     // APP通用工具
-    implementation 'com.github.D10NGYANG:DLAppUtil:2.2.3'
+    implementation 'com.github.D10NGYANG:DLAppUtil:2.3.1'
     // 协程
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1'
     // Preference DataStore
     implementation "androidx.datastore:datastore-preferences:1.0.0"
 }

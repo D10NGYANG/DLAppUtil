@@ -29,9 +29,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
     kotlin {
         jvmToolchain(8)
     }
@@ -40,9 +37,9 @@ android {
 dependencies {
 
     // Android
-    implementation("androidx.core:core-ktx:1.10.0")
+    implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.8.0")
+    implementation("com.google.android.material:material:1.9.0")
 
     // UI
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
@@ -68,6 +65,6 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     // 字符串字节数据工具
-    implementation("com.github.D10NGYANG:DLTextUtil:1.4.1")
+    implementation("com.github.D10NGYANG:DLTextUtil:1.4.2")
     implementation(project(":library"))
 }

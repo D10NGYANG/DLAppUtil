@@ -15,5 +15,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "DLAppUtil"
-include("app")
-include("library")
+include("app", "library")

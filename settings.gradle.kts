@@ -10,7 +10,6 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven("https://jitpack.io")
         maven("https://raw.githubusercontent.com/D10NGYANG/maven-repo/main/repository")
     }
 }

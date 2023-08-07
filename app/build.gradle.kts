@@ -65,6 +65,6 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     // 字符串字节数据工具
-    implementation("com.github.D10NGYANG:DLTextUtil:1.4.2")
+    implementation("com.github.D10NGYANG:DLTextUtil:1.4.3")
     implementation(project(":library"))
 }

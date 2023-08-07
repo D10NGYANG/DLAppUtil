@@ -3,10 +3,10 @@ package com.d10ng.app.status
 import android.graphics.Rect
 import android.view.View
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
-import java.util.*
+import java.util.LinkedList
 
 /**
- * 键盘弹出和收回的监听⌚️
+ * 键盘弹出和收回的监听
  * @Author: D10NG
  * @Time: 2021/1/6 9:51 上午
  */

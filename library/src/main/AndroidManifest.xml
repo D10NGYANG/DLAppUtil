@@ -15,7 +15,7 @@
             android:exported="false"
             tools:node="merge">
             <meta-data
-                android:name="com.d10ng.app.permission.PermissionInitializer"
+                android:name="com.d10ng.app.startup.StartupInitializer"
                 android:value="androidx.startup" />
         </provider>
     </application>

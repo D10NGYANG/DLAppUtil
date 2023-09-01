@@ -1,4 +1,4 @@
-package com.d10ng.app.permission
+package com.d10ng.app.base
 
 import android.app.Activity
 import android.app.Application

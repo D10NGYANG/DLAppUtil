@@ -1,4 +1,4 @@
-package com.d10ng.app.app
+package com.d10ng.app.base
 
 import android.annotation.SuppressLint
 import android.os.Build

@@ -3,7 +3,7 @@ package com.d10ng.dlapputil
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.lifecycleScope
-import com.d10ng.app.permission.PermissionManager
+import com.d10ng.app.base.PermissionManager
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {

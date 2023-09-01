@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "com.github.D10NGYANG"
-version = "2.4.0"
+version = "2.4.1"
 
 android {
     namespace = "com.d10ng.app"

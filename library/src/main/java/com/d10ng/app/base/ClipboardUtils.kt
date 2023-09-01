@@ -1,4 +1,4 @@
-package com.d10ng.app.app
+package com.d10ng.app.base
 
 import android.content.ClipData
 import android.content.ClipboardManager

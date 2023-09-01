@@ -1,4 +1,4 @@
-package com.d10ng.app.app
+package com.d10ng.app.base
 
 import android.content.Context
 import android.content.Intent

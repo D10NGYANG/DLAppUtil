@@ -51,10 +51,11 @@ fun View.showSnackBar(msg: String, duration: Int = Snackbar.LENGTH_LONG) {
  * @param time 震动时间长度 毫秒
  */
 fun Context.vibrate(time: Long) {
-    val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+    val vibrator = getSystemService(Vibrator::class.java)
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         vibrator.vibrate(VibrationEffect.createOneShot(time, VibrationEffect.DEFAULT_AMPLITUDE))
     } else {
+        @Suppress("DEPRECATION")
         vibrator.vibrate(time)
     }
 }

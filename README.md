@@ -21,7 +21,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     
     // APP通用工具
-    implementation 'com.github.D10NGYANG:DLAppUtil:2.4.0'
+    implementation 'com.github.D10NGYANG:DLAppUtil:2.4.1'
     // 协程
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'

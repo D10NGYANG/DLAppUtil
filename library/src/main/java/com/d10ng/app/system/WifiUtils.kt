@@ -9,6 +9,7 @@ import android.net.wifi.WifiInfo
 import android.net.wifi.WifiManager
 import android.os.Build
 import android.provider.Settings
+import com.d10ng.app.status.NetworkStatusManager
 import java.net.Inet4Address
 import java.net.InetAddress
 import java.net.NetworkInterface
@@ -84,7 +85,7 @@ fun Context.scanWifi() : List<ScanResult> {
  */
 fun Context.getConnectedWifiInfo(): WifiInfo? {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-        NetUtils.instant(this).networkCapabilitiesFlow.value?.transportInfo as? WifiInfo
+        NetworkStatusManager.getNetworkCapabilitiesFlow().value?.transportInfo as? WifiInfo
     } else {
         getWifiManager()?.connectionInfo
     }

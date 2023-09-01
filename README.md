@@ -21,12 +21,12 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     
     // APP通用工具
-    implementation 'com.github.D10NGYANG:DLAppUtil:2.3.4'
+    implementation 'com.github.D10NGYANG:DLAppUtil:2.4.0'
     // 协程
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
-    // Preference DataStore
-    implementation "androidx.datastore:datastore-preferences:1.0.0"
+    // startup
+    implementation "androidx.startup:startup-runtime:1.1.1"
 }
 ```
 3 混淆

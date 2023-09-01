@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "com.github.D10NGYANG"
-version = "2.3.4"
+version = "2.4.0"
 
 android {
     namespace = "com.d10ng.app"
@@ -55,9 +55,6 @@ dependencies {
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines_ver")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines_ver")
-
-    // Preference DataStore
-    implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     // startup
     implementation("androidx.startup:startup-runtime:1.1.1")

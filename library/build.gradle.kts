@@ -58,6 +58,9 @@ dependencies {
 
     // Preference DataStore
     implementation("androidx.datastore:datastore-preferences:1.0.0")
+
+    // startup
+    implementation("androidx.startup:startup-runtime:1.1.1")
 }
 
 val bds100MavenUsername: String by project

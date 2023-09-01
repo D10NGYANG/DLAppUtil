@@ -2,31 +2,7 @@ package com.d10ng.app.view
 
 import android.app.Activity
 import android.content.pm.ActivityInfo
-import android.graphics.Color
-import android.os.Build
-import android.view.View
-import android.view.Window
-import android.view.WindowManager
-
-/**
- * 设置透明状态栏
- * @receiver Activity
- */
-fun Activity.makeStatusBarTransparent() {
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-        return
-    }
-    val window: Window = this.window
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-        val option: Int = window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        window.decorView.systemUiVisibility = option
-        window.statusBarColor = Color.TRANSPARENT
-    } else {
-        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-    }
-}
+import androidx.core.view.WindowCompat
 
 /**
  * 锁定屏幕方向
@@ -52,20 +28,18 @@ fun Activity.lockScreenOrientation(isVertical: Boolean = true) {
 }
 
 /**
- * 设置状态栏字体颜色
+ * 状态栏设置
  * @receiver Activity
- * @param isBlack Boolean true:黑色，false:白色
+ * @param fullScreen Boolean 是否全屏，沉浸式状态栏
+ * @param color Int 状态栏颜色
+ * @param darkText Boolean 状态栏字体颜色是否为黑色
  */
-fun Activity.setStatusBarFontColor(isBlack: Boolean = true) {
-    /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-        window.insetsController?.setSystemBarsAppearance(
-            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
-            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
-        )
-    }*/
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        window.decorView.systemUiVisibility = if (isBlack)
-            View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-        else View.SYSTEM_UI_FLAG_VISIBLE
-    }
+fun Activity.setStatusBar(fullScreen: Boolean = true, color: Int = 0, darkText: Boolean = true) {
+    // 沉浸式状态栏
+    WindowCompat.setDecorFitsSystemWindows(window, !fullScreen)
+    // 设置状态栏颜色
+    window.statusBarColor = color
+    // 设置状态栏字体颜色
+    WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars =
+        !darkText
 }

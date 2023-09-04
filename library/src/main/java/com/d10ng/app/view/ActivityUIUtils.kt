@@ -41,5 +41,5 @@ fun Activity.setStatusBar(fullScreen: Boolean = true, color: Int = 0, darkText: 
     window.statusBarColor = color
     // 设置状态栏字体颜色
     WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars =
-        !darkText
+        darkText
 }

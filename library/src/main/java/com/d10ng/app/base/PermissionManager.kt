@@ -80,7 +80,7 @@ object PermissionManager {
      * @param permissions Array<String>
      * @return Boolean
      */
-    suspend fun reqPermissions(permissions: Array<String>): Boolean = withContext(Dispatchers.IO) {
+    suspend fun request(permissions: Array<String>): Boolean = withContext(Dispatchers.IO) {
         val launcher = launcherMap[topActivity] ?: return@withContext false
         launcher.launch(permissions)
         val waitJob = async {
@@ -95,8 +95,8 @@ object PermissionManager {
      * @param permission String
      * @return Boolean
      */
-    fun hasPermission(permission: String): Boolean {
-        return hasPermissions(arrayOf(permission))
+    fun has(permission: String): Boolean {
+        return has(arrayOf(permission))
     }
 
     /**
@@ -104,7 +104,7 @@ object PermissionManager {
      * @param permissions Array<out String>
      * @return Boolean
      */
-    fun hasPermissions(permissions: Array<out String>) = permissions.all {
+    fun has(permissions: Array<out String>) = permissions.all {
         ContextCompat.checkSelfPermission(application, it) == PackageManager.PERMISSION_GRANTED
     }
 }

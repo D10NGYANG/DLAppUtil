@@ -14,7 +14,7 @@ class MainActivity : ComponentActivity() {
 
         // 请求权限
         lifecycleScope.launch {
-            val result = PermissionManager.reqPermissions(
+            val result = PermissionManager.request(
                 arrayOf(
                     android.Manifest.permission.ACCESS_FINE_LOCATION,
                     android.Manifest.permission.ACCESS_COARSE_LOCATION

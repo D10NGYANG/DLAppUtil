@@ -37,7 +37,7 @@ android {
 dependencies {
 
     // Android
-    implementation("androidx.core:core-ktx:1.10.1")
+    implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.9.0")
 
@@ -56,10 +56,10 @@ dependencies {
 
     // Lifecycle components
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
-    kapt("androidx.lifecycle:lifecycle-common-java8:2.6.1")
+    kapt("androidx.lifecycle:lifecycle-common-java8:2.6.2")
     androidTestImplementation("androidx.arch.core:core-testing:2.2.0")
     // ViewModel Kotlin support
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
 
     // Preference DataStore
     implementation("androidx.datastore:datastore-preferences:1.0.0")

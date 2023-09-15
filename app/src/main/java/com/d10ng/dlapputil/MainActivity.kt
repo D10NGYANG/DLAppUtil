@@ -21,6 +21,7 @@ class MainActivity : ComponentActivity() {
                 )
             )
             println("权限请求结果：$result")
+
         }
     }
 }

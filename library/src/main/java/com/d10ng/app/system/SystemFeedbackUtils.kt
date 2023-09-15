@@ -7,6 +7,7 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresPermission
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 
@@ -50,6 +51,7 @@ fun View.showSnackBar(msg: String, duration: Int = Snackbar.LENGTH_LONG) {
  * 控制手机震动
  * @param time 震动时间长度 毫秒
  */
+@RequiresPermission(android.Manifest.permission.VIBRATE)
 fun Context.vibrate(time: Long) {
     val vibrator = getSystemService(Vibrator::class.java)
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

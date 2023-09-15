@@ -6,6 +6,7 @@ import androidx.startup.Initializer
 import com.d10ng.app.base.ActivityManager
 import com.d10ng.app.base.PermissionManager
 import com.d10ng.app.status.GnssStatusManager
+import com.d10ng.app.status.LocationStatusManager
 import com.d10ng.app.status.NetworkStatusManager
 import com.d10ng.app.status.SensorStatusManager
 
@@ -20,6 +21,7 @@ class StartupInitializer : Initializer<Unit> {
         context as Application
         PermissionManager.init(context)
         ActivityManager.init(context)
+        LocationStatusManager.init(context)
         GnssStatusManager.init(context)
         SensorStatusManager.init(context)
         NetworkStatusManager.init(context)

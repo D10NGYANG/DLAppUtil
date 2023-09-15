@@ -21,7 +21,7 @@ object GnssStatusManager {
     // 状态Flow
     private val statusFlow: MutableStateFlow<GnssStatus?> = MutableStateFlow(null)
 
-    fun init(app: Application) {
+    internal fun init(app: Application) {
         application = app
         manager = app.getSystemService(LocationManager::class.java)
     }

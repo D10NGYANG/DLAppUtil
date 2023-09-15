@@ -118,7 +118,7 @@ fun Context.isLocationServerEnabled(): Boolean {
 
 /**
  * 获取根目录路径
- * @receiver Activity
+ * @receiver Context
  * @return String
  */
 fun Context.getExternalRootPath(): String {

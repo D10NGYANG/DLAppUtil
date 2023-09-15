@@ -1,8 +1,8 @@
 package com.d10ng.app.view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
-import android.os.Build
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +13,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
  * 获取状态栏高度
  * @return Int
  */
+@SuppressLint("InternalInsetResource", "DiscouragedApi")
+@Deprecated("jetpack compose已经存在更合适的方法，当前方法已弃用")
 fun getStatusBarHeight(): Int {
     val resources = Resources.getSystem()
     val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
@@ -41,10 +43,8 @@ fun RecyclerView.fixSwipeRefreshClash(srLayout: SwipeRefreshLayout) {
  * 将顶部view增加高度为状态栏高度的paddingTop
  * @receiver View
  */
+@Deprecated("jetpack compose已经存在更合适的方法，当前方法已弃用")
 fun View.fitStatusBar() {
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-        return
-    }
     this.post {
         this.layoutParams.height = this.height + getStatusBarHeight()
         this.setPadding(
@@ -79,6 +79,7 @@ fun View.isInView(x: Int, y: Int): Boolean {
  * @param view View
  * @return [Boolean] true:成功; false:失败;
  */
+@Deprecated("jetpack compose已经存在更合适的方法，当前方法已弃用")
 fun Context.hideKeyboard(view: View): Boolean {
     val im = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     return im.hideSoftInputFromWindow(view.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)

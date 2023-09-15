@@ -61,10 +61,6 @@ dependencies {
     // ViewModel Kotlin support
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
 
-    // Preference DataStore
-    implementation("androidx.datastore:datastore-preferences:1.0.0")
-
     // 字符串字节数据工具
-    implementation("com.github.D10NGYANG:DLTextUtil:1.4.3")
     implementation(project(":library"))
 }

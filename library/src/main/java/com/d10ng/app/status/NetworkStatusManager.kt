@@ -24,7 +24,7 @@ object NetworkStatusManager {
     private val linkPropertiesFlow = MutableStateFlow<LinkProperties?>(null)
     private val networkCapabilitiesFlow = MutableStateFlow<NetworkCapabilities?>(null)
 
-    fun init(app: Application) {
+    internal fun init(app: Application) {
         application = app
         manager = app.getSystemService(ConnectivityManager::class.java)
 

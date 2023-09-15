@@ -25,7 +25,7 @@ object SensorStatusManager {
     private val eventFlow = MutableSharedFlow<SensorEvent>(extraBufferCapacity = 100)
     private val accuracyFlow = MutableSharedFlow<Pair<Sensor, Int>>(extraBufferCapacity = 100)
 
-    fun init(app: Application) {
+    internal fun init(app: Application) {
         application = app
         manager = app.getSystemService(SensorManager::class.java)
     }

@@ -22,7 +22,7 @@ object ActivityManager {
     /** 栈顶页面 */
     private val topActivityFlow: MutableStateFlow<Activity?> = MutableStateFlow(null)
 
-    fun init(app: Application) {
+    internal fun init(app: Application) {
         application = app.apply {
             registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
                 override fun onActivityCreated(p0: Activity, p1: Bundle?) {

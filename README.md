@@ -1,27 +1,23 @@
 # DLAppUtil
-APP相关的通用工具
-[![](https://jitpack.io/v/D10NGYANG/DLAppUtil.svg)](https://jitpack.io/#D10NGYANG/DLAppUtil)
+Android APP 通用工具
 
 ## 使用
-1 Add it in your root build.gradle at the end of repositories:
+
+1 添加仓库
 ```gradle
 allprojects {
   repositories {
     ...
-    // 或者使用我的镜像仓库
     maven { url 'https://raw.githubusercontent.com/D10NGYANG/maven-repo/main/repository' }
   }
 }
 ```
-2 Add the dependency
+
+2 添加依赖
 ```gradle
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.9.0'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    
     // APP通用工具
-    implementation 'com.github.D10NGYANG:DLAppUtil:2.4.3'
+    implementation 'com.github.D10NGYANG:DLAppUtil:2.4.4'
     // 协程
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
@@ -29,7 +25,31 @@ dependencies {
     implementation "androidx.startup:startup-runtime:1.1.1"
 }
 ```
-3 混淆
+
+3 权限声明，按需添加
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 定位状态、GNSS状态 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- WIFI状态 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- 发送通知 -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- 读取手机状态 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- 振动 -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- 写入外部存储 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+</manifest>
+```
+
+4 混淆
+
 ```pro
 -keep class com.d10ng.app.** {*;}
 -dontwarn com.d10ng.app.**

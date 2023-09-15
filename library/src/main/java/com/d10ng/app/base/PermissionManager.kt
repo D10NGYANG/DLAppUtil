@@ -38,7 +38,7 @@ object PermissionManager {
     // 权限申请结果Flow
     private val resultFlow = MutableSharedFlow<Map<String, Boolean>>()
 
-    fun init(app: Application) {
+    internal fun init(app: Application) {
         application = app.apply {
             registerActivityLifecycleCallbacks(object : Application.ActivityLifecycleCallbacks {
                 override fun onActivityCreated(p0: Activity, p1: Bundle?) {

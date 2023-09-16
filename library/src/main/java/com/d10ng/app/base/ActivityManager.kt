@@ -73,4 +73,11 @@ object ActivityManager {
     inline fun <reified T : Activity> getActivity(): T? {
         return list().value.find { it::class == T::class } as? T
     }
+
+    /**
+     * 注销最顶部的Activity
+     */
+    fun finishTop() {
+        top().value?.finish()
+    }
 }

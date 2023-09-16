@@ -17,12 +17,10 @@ allprojects {
 ```gradle
 dependencies {
     // APP通用工具
-    implementation 'com.github.D10NGYANG:DLAppUtil:2.4.4'
+    implementation 'com.github.D10NGYANG:DLAppUtil:2.4.5'
     // 协程
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
-    // startup
-    implementation "androidx.startup:startup-runtime:1.1.1"
 }
 ```
 

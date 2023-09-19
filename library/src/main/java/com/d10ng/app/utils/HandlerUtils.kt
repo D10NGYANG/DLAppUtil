@@ -1,21 +1,20 @@
-package com.d10ng.app.base
+package com.d10ng.app.utils
 
 import android.app.Application
 import android.os.Handler
 import android.os.Message
-
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-
 import java.lang.ref.WeakReference
 
 /**
  * 封装Handler子类
- * $ 解决handler内存泄漏问题
+ * > 解决handler内存泄漏问题
  *
  * @author D10NG
  * @date on 2019-09-28 11:11
  */
+
 interface BaseHandlerCallBack {
     fun callBack(msg: Message)
 }
@@ -61,4 +60,3 @@ class BaseFragmentHandler(f: Fragment, b: BaseHandlerCallBack) : Handler() {
         }
     }
 }
-

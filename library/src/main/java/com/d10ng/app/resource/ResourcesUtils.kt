@@ -1,12 +1,14 @@
 package com.d10ng.app.resource
 
 import android.annotation.SuppressLint
-import android.content.Context
+import android.content.res.Resources.Theme
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
+import com.d10ng.app.startup.ctx
 
 /**
  * 获取资源文件拓展工具
@@ -14,127 +16,71 @@ import androidx.fragment.app.Fragment
  * @author D10NG
  * @date on 2020/8/5 3:19 PM
  */
+private val resources by lazy { ctx.resources }
 
-/**
- * 获取字符串
- * @param id R.string.sure
- * @return [String] 字符串
- */
-fun Context.makeStr(id: Int): String {
-    return this.resources.getString(id)
-}
-fun Fragment.makeStr(id: Int): String {
-    return this.resources.getString(id)
-}
+fun getResText(id: Int) = resources.getText(id)
 
-/**
- * 获取数值
- * @receiver Context
- * @param id Int R.integer.time
- * @return [Int] 整型
- */
-fun Context.makeDimension(id: Int): Float {
-    return this.resources.getDimension(id)
-}
-fun Fragment.makeDimension(id: Int): Float {
-    return this.resources.getDimension(id)
-}
+@RequiresApi(Build.VERSION_CODES.O)
+fun getResFont(id: Int) = resources.getFont(id)
+fun getResQuantityText(id: Int, quantity: Int) = resources.getQuantityText(id, quantity)
+fun getResString(id: Int) = resources.getString(id)
+fun getResString(id: Int, vararg formatArgs: Any) = resources.getString(id, *formatArgs)
+fun getResQuantityString(id: Int, quantity: Int, vararg formatArgs: Any) =
+    resources.getQuantityString(id, quantity, *formatArgs)
 
-/**
- * 获取整型
- * @receiver Context
- * @param id Int R.integer.time
- * @return [Int] 整型
- */
-fun Context.makeInt(id: Int): Int {
-    return this.resources.getInteger(id)
-}
-fun Fragment.makeInt(id: Int): Int {
-    return this.resources.getInteger(id)
-}
+fun getResQuantityString(id: Int, quantity: Int) = resources.getQuantityString(id, quantity)
+fun getResText(id: Int, def: CharSequence) = resources.getText(id, def)
+fun getResTextArray(id: Int) = resources.getTextArray(id)
+fun getResStringArray(id: Int) = resources.getStringArray(id)
+fun getResIntArray(id: Int) = resources.getIntArray(id)
+fun resObtainTypedArray(id: Int) = resources.obtainTypedArray(id)
+fun getResDimension(id: Int) = resources.getDimension(id)
+fun getResDimensionPixelOffset(id: Int) = resources.getDimensionPixelOffset(id)
+fun getResDimensionPixelSize(id: Int) = resources.getDimensionPixelSize(id)
+fun getResFraction(id: Int, base: Int, pbase: Int) = resources.getFraction(id, base, pbase)
 
+@SuppressLint("UseCompatLoadingForDrawables")
+fun getResDrawable(id: Int, theme: Theme? = null) = resources.getDrawable(id, theme)
+fun getResDrawableForDensity(id: Int, density: Int, theme: Theme? = null) =
+    resources.getDrawableForDensity(id, density, theme)
 
-/**
- * 获取字符串数组
- * @param id R.array.permissions
- * @return [String] 字符串数组
- */
-fun Context.makeStrArray(id: Int): Array<String> {
-    return this.resources.getStringArray(id)
-}
-fun Fragment.makeStrArray(id: Int): Array<String> {
-    return this.resources.getStringArray(id)
-}
+fun getResColor(id: Int) = ContextCompat.getColor(ctx, id)
+fun getResColorStateList(id: Int) = ContextCompat.getColorStateList(ctx, id)
+fun getResBoolean(id: Int) = resources.getBoolean(id)
+fun getResInteger(id: Int) = resources.getInteger(id)
 
-/**
- * 获取颜色资源
- * @receiver Context
- * @param id Int
- * @return Int
- */
-fun Context.makeColor(id: Int): Int {
-    return ContextCompat.getColor(this, id)
-}
+@RequiresApi(Build.VERSION_CODES.Q)
+fun getResFloat(id: Int) = resources.getFloat(id)
+fun getResLayout(id: Int) = resources.getLayout(id)
+fun getResAnimation(id: Int) = resources.getAnimation(id)
+fun getResXml(id: Int) = resources.getXml(id)
 
-fun Fragment.makeColor(id: Int): Int {
-    return ContextCompat.getColor(this.requireContext(), id)
-}
 
 /**
  * 获取图片ID
  * @param name mipmap里的图片文件名 icon_logo
  * @return [Int] 图片ID
  */
-fun Context.makeMipmapId(name: String): Int {
-    return this.resources.getIdentifier(name, "mipmap", this.packageName)
-}
-fun Fragment.makeMipmapId(name: String): Int {
-    return this.resources.getIdentifier(name, "mipmap", this.context?.packageName)
-}
+@SuppressLint("DiscouragedApi")
+fun getResMipmapId(name: String) = resources.getIdentifier(name, "mipmap", ctx.packageName)
 
 /**
  * 获取图片ID
  * @param name drawable里的图片文件名 icon_logo
  * @return [Int] 图片ID
  */
-fun Context.makeDrawableId(name: String): Int {
-    return this.resources.getIdentifier(name, "drawable", this.packageName)
-}
-fun Fragment.makeDrawableId(name: String): Int {
-    return this.resources.getIdentifier(name, "drawable", this.context?.packageName)
-}
+@SuppressLint("DiscouragedApi")
+fun getResDrawableId(name: String) = resources.getIdentifier(name, "drawable", ctx.packageName)
 
 /**
- * 获取图片ID的图像
- * @receiver Context
- * @param id Int
- * @return Drawable
+ * 将 Drawable 转换成 Bitmap
+ * @receiver Drawable
+ * @return Bitmap
  */
-@SuppressLint("UseCompatLoadingForDrawables")
-fun Context.makeDrawable(id: Int): Drawable {
-    return this.resources.getDrawable(id, null)
-}
-
-@SuppressLint("UseCompatLoadingForDrawables")
-fun Fragment.makeDrawable(id: Int): Drawable {
-    return this.resources.getDrawable(id, null)
-}
-
-/**
- * 将Drawable资源转换成bitmap
- * @receiver Context
- * @param id Int
- * @return Bitmap?
- */
-fun Context.makeBitmapFromDrawable(id: Int): Bitmap? {
-    val drawable = ContextCompat.getDrawable(this, id)?: return null
-    val bitmap = Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
+fun Drawable.toBitmap(): Bitmap {
+    val bitmap = Bitmap.createBitmap(intrinsicWidth, intrinsicHeight, Bitmap.Config.ARGB_8888)
     val canvas = Canvas(bitmap)
-    drawable.setBounds(0, 0, canvas.width, canvas.height)
-    drawable.draw(canvas)
+    setBounds(0, 0, canvas.width, canvas.height)
+    draw(canvas)
     return bitmap
-}
-
-fun Fragment.makeBitmapFromDrawable(id: Int): Bitmap? {
-    return this.requireContext().makeBitmapFromDrawable(id)
 }

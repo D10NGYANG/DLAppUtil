@@ -33,14 +33,6 @@ dependencies {
     <!-- 定位状态、GNSS状态 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!-- WIFI状态 -->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <!-- 发送通知 -->
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <!-- 读取手机状态 -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <!-- 振动 -->
-    <uses-permission android:name="android.permission.VIBRATE" />
     <!-- 写入外部存储 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 </manifest>

@@ -9,6 +9,7 @@ import android.net.wifi.WifiInfo
 import android.net.wifi.WifiManager
 import android.os.Build
 import android.provider.Settings
+import com.d10ng.app.startup.ctx
 import com.d10ng.app.status.NetworkStatusManager
 import java.net.Inet4Address
 import java.net.InetAddress
@@ -40,12 +41,9 @@ val localIPAddress: String?
 
 /**
  * 获取WI-FI系统管理器
- * @receiver Context
- * @return WifiManager?
+ * @return (WifiManager..WifiManager?)
  */
-fun Context.getWifiManager() : WifiManager? {
-    return applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager?
-}
+fun getWifiManager() = ctx.getSystemService(WifiManager::class.java)
 
 /**
  * 开启Wi-Fi

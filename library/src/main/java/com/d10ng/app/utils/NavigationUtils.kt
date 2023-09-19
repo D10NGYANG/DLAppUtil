@@ -1,38 +1,40 @@
-package com.d10ng.app.base
+package com.d10ng.app.utils
 
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
+import com.d10ng.app.managers.ActivityManager
+import com.d10ng.app.startup.ctx
 
 /**
  * 回到手机首页
  */
-fun Activity.goToSystemHome() {
+fun goToSystemHome() {
     val intent = Intent(Intent.ACTION_MAIN)
     intent.addCategory(Intent.CATEGORY_HOME)
-    startActivity(intent)
+    ActivityManager.top().value?.startActivity(intent)
 }
 
 /**
  * 打开浏览器访问网站
  * @param url 网站地址
  */
-fun Activity.goToBrowser(url: String) {
+fun goToBrowser(url: String) {
     val uri = Uri.parse(url)
     val intent = Intent(Intent.ACTION_VIEW, uri)
-    startActivity(intent)
+    ActivityManager.top().value?.startActivity(intent)
 }
 
 /**
  * 打开系统拨打电话页面
  * @param phone 电话号码
  */
-fun Activity.goToSystemCall(phone: String) {
+fun goToSystemCall(phone: String) {
     val intent = Intent(Intent.ACTION_DIAL)
     val data = Uri.parse("tel:$phone")
     intent.data = data
-    startActivity(intent)
+    ActivityManager.top().value?.startActivity(intent)
 }
 
 /**
@@ -41,22 +43,22 @@ fun Activity.goToSystemCall(phone: String) {
  * @param phone String 电话号码
  * @param content String 消息内容
  */
-fun Activity.goToSystemSms(phone: String, content: String) {
+fun goToSystemSms(phone: String, content: String) {
     val intent = Intent(Intent.ACTION_SENDTO)
     val data = Uri.parse("smsto:$phone")
     intent.data = data
     intent.putExtra("sms_body", content)
-    startActivity(intent)
+    ActivityManager.top().value?.startActivity(intent)
 }
 
 /**
  * 打开Wi-Fi设置页面
  * @receiver Activity
  */
-fun Activity.goToSystemWifiSetting() {
+fun goToSystemWifiSetting() {
     val intent = Intent(Settings.ACTION_WIFI_SETTINGS)
     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-    startActivity(intent)
+    ActivityManager.top().value?.startActivity(intent)
 }
 
 /**
@@ -64,10 +66,10 @@ fun Activity.goToSystemWifiSetting() {
  * @receiver Activity
  * @return Intent
  */
-fun Activity.goToSystemLocationSetting() {
+fun goToSystemLocationSetting() {
     val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-    startActivity(intent)
+    ActivityManager.top().value?.startActivity(intent)
 }
 
 /**
@@ -75,11 +77,11 @@ fun Activity.goToSystemLocationSetting() {
  * @receiver Activity
  * @return Intent
  */
-fun Activity.goToAppSetting() {
+fun goToAppSetting() {
     val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-    val uri = Uri.fromParts("package", packageName, null)
+    val uri = Uri.fromParts("package", ctx.packageName, null)
     intent.data = uri
-    startActivity(intent)
+    ActivityManager.top().value?.startActivity(intent)
 }
 
 /**
@@ -144,7 +146,7 @@ fun Activity.goToForResult(clz: Class<*>, requestCode: Int) {
  * @param content String
  * @param coordinate String bd09ll（百度经纬度坐标）bd09mc（百度墨卡托坐标）gcj02（经国测局加密的坐标)wgs84（gps获取的原始坐标）
  */
-fun Activity.startBaiDuMapMaker(
+fun startBaiDuMapMaker(
     lat: Double,
     lng: Double,
     title: String = "位置",
@@ -173,7 +175,7 @@ fun Activity.startBaiDuMapMaker(
  * @param endName String
  * @param coordinate String bd09ll（百度经纬度坐标）bd09mc（百度墨卡托坐标）gcj02（经国测局加密的坐标)wgs84（gps获取的原始坐标）
  */
-fun Activity.startBaiduMapNavigation(
+fun startBaiduMapNavigation(
     startLat: Double,
     startLng: Double,
     startName: String = "起点",
@@ -200,7 +202,7 @@ fun Activity.startBaiduMapNavigation(
  * @param name String
  * @param coordinate String 坐标系参数coordinate=gaode,表示高德坐标（gcj02坐标），coordinate=wgs84,表示wgs84坐标（GPS原始坐标）
  */
-fun Activity.startGaoDeMapMaker(
+fun startGaoDeMapMaker(
     lat: Double,
     lng: Double,
     name: String = "位置",
@@ -228,7 +230,7 @@ fun Activity.startGaoDeMapMaker(
  * @param endName String
  * @param coordinate String 坐标系参数coordinate=gaode,表示高德坐标（gcj02坐标），coordinate=wgs84,表示wgs84坐标（GPS原始坐标）
  */
-fun Activity.startGaoDeMapNavigation(
+fun startGaoDeMapNavigation(
     startLat: Double,
     startLng: Double,
     startName: String = "起点",

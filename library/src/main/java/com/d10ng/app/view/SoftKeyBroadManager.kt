@@ -1,4 +1,4 @@
-package com.d10ng.app.status
+package com.d10ng.app.view
 
 import android.graphics.Rect
 import android.view.View

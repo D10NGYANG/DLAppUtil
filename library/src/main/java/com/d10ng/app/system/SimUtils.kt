@@ -8,22 +8,21 @@ import android.os.Build
 import android.telephony.SmsManager
 import android.telephony.SubscriptionInfo
 import android.telephony.SubscriptionManager
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.database.getIntOrNull
 import androidx.core.database.getStringOrNull
 import com.d10ng.app.bean.SimInfo
+import com.d10ng.app.startup.ctx
 
 /**
  * 获取手机卡信息列表
- * @receiver Context
  * @return List<SubscriptionInfo>?
  */
 @SuppressLint("MissingPermission")
-fun Context.getSubscriptionInfoList(): List<SubscriptionInfo> {
+fun getSubscriptionInfoList(): List<SubscriptionInfo> {
     // 手机卡管理器
-    val subscriptionManager = getSystemService(AppCompatActivity.TELEPHONY_SUBSCRIPTION_SERVICE) as SubscriptionManager
+    val subscriptionManager = ctx.getSystemService(SubscriptionManager::class.java)
     // 拿到手机里面的手机卡列表
-    return subscriptionManager.activeSubscriptionInfoList?: listOf()
+    return subscriptionManager.activeSubscriptionInfoList ?: listOf()
 }
 
 /**

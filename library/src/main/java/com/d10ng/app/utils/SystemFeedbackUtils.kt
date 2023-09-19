@@ -1,6 +1,5 @@
-package com.d10ng.app.system
+package com.d10ng.app.utils
 
-import android.content.Context
 import android.media.RingtoneManager
 import android.os.Build
 import android.os.VibrationEffect
@@ -8,7 +7,7 @@ import android.os.Vibrator
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresPermission
-import androidx.fragment.app.Fragment
+import com.d10ng.app.startup.ctx
 import com.google.android.material.snackbar.Snackbar
 
 /**
@@ -17,22 +16,8 @@ import com.google.android.material.snackbar.Snackbar
  * @param msg String
  * @param duration Int
  */
-fun Context.showToast(msg: String, duration: Int = Toast.LENGTH_SHORT) {
-    Toast.makeText(this, null, duration).apply {
-        setText(msg)
-        show()
-    }
-}
-
-/**
- * 显示Toast消息
- * @receiver Fragment
- * @param msg String
- * @param duration Int
- */
-fun Fragment.showToast(msg: String, duration: Int = Toast.LENGTH_SHORT) {
-    val context = this.context?: return
-    Toast.makeText(context, null, duration).apply {
+fun showToast(msg: String, duration: Int = Toast.LENGTH_SHORT) {
+    Toast.makeText(ctx, null, duration).apply {
         setText(msg)
         show()
     }
@@ -52,8 +37,8 @@ fun View.showSnackBar(msg: String, duration: Int = Snackbar.LENGTH_LONG) {
  * @param time 震动时间长度 毫秒
  */
 @RequiresPermission(android.Manifest.permission.VIBRATE)
-fun Context.vibrate(time: Long) {
-    val vibrator = getSystemService(Vibrator::class.java)
+fun vibrate(time: Long) {
+    val vibrator = ctx.getSystemService(Vibrator::class.java)
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         vibrator.vibrate(VibrationEffect.createOneShot(time, VibrationEffect.DEFAULT_AMPLITUDE))
     } else {
@@ -66,8 +51,8 @@ fun Context.vibrate(time: Long) {
  * 播放系统提示音
  * @receiver Context
  */
-fun Context.playSystemRingtone() {
+fun playSystemRingtone() {
     val soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-    val ringtone = RingtoneManager.getRingtone(this, soundUri)
+    val ringtone = RingtoneManager.getRingtone(ctx, soundUri)
     ringtone.play()
 }

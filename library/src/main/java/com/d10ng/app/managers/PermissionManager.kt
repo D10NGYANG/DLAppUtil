@@ -1,4 +1,4 @@
-package com.d10ng.app.base
+package com.d10ng.app.managers
 
 import android.app.Activity
 import android.app.Application

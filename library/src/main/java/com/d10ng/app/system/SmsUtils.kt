@@ -7,16 +7,18 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
 import android.telephony.SmsManager
 import androidx.core.database.getLongOrNull
 import com.d10ng.app.bean.SmsInfo
+import com.d10ng.app.managers.PermissionManager
+import com.d10ng.app.startup.ctx
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 /**
@@ -39,7 +41,6 @@ enum class SendSmsStatus{
 
 /**
  * 发送短信
- * @receiver Context
  * @param destinationAddress String 目标电话号码
  * @param scAddress String 短信中心号码
  * @param text String 短信内容
@@ -47,24 +48,26 @@ enum class SendSmsStatus{
  * @param smsManager SmsManager 短信发送器
  * @return MutableStateFlow<SendSmsStatus>? 发送状态
  */
-fun Context.sendSmsMessage(
+@OptIn(DelicateCoroutinesApi::class)
+fun sendSmsMessage(
     destinationAddress: String,
     scAddress: String?,
     text: String,
     overTime: Long = 60 * 1000,
     smsManager: SmsManager = SmsManager.getDefault()
-): MutableStateFlow<SendSmsStatus> {
+): Channel<SendSmsStatus> {
     // 新建一个发送状态
-    var statusLive: MutableStateFlow<SendSmsStatus>? = MutableStateFlow(SendSmsStatus.SENDING)
-    if (checkSelfPermission(Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
-        // 缺少发送短信权限
-        statusLive?.value = SendSmsStatus.FAILED
-    } else if (!isHasPhoneCard()) {
-        // 缺少手机卡
-        statusLive?.value = SendSmsStatus.FAILED
+    val channel = Channel<SendSmsStatus>()
+    if (!PermissionManager.has(Manifest.permission.SEND_SMS) || !isHasPhoneCard()) {
+        // 缺少发送短信权限、缺少手机卡
+        CoroutineScope(Dispatchers.IO).launch {
+            channel.send(SendSmsStatus.FAILED)
+            channel.close()
+        }
     } else {
         // 新建子线程安排发送
         CoroutineScope(Dispatchers.IO).launch {
+            channel.send(SendSmsStatus.SENDING)
             // 读取当前时间戳，做一个唯一标记
             val time = System.currentTimeMillis()
             // 发送状态监听标记
@@ -74,43 +77,40 @@ fun Context.sendSmsMessage(
             // 选择手机卡进行发送
             smsManager.sendTextMessage(
                 destinationAddress, scAddress, text,
-                PendingIntent.getBroadcast(this@sendSmsMessage, 0, Intent(sentSmsAction), 0),
-                PendingIntent.getBroadcast(this@sendSmsMessage, 1, Intent(deliveredSmsAction), 0)
+                PendingIntent.getBroadcast(ctx, 0, Intent(sentSmsAction), 0),
+                PendingIntent.getBroadcast(ctx, 1, Intent(deliveredSmsAction), 0)
             )
             // 发送监听
-            registerReceiver(object : BroadcastReceiver(){
+            ctx.registerReceiver(object : BroadcastReceiver() {
                 override fun onReceive(context: Context?, intent: Intent?) {
                     //LogUtils.e("发送短信", "结果码=$resultCode")
-                    if (resultCode == Activity.RESULT_OK) {
-                        // 发送成功
-                        statusLive?.value = SendSmsStatus.SUCCESS
-                    } else {
-                        // 发送失败
-                        statusLive?.value = SendSmsStatus.FAILED
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val status = if (resultCode == Activity.RESULT_OK)
+                            SendSmsStatus.SUCCESS else SendSmsStatus.FAILED
+                        channel.send(status)
                     }
                     // 取消监听
                     context?.unregisterReceiver(this)
                 }
             }, IntentFilter(sentSmsAction))
             // 目标用户接收监听
-            registerReceiver(object : BroadcastReceiver(){
+            ctx.registerReceiver(object : BroadcastReceiver() {
                 override fun onReceive(context: Context?, intent: Intent?) {
-                    // 接收成功
-                    statusLive?.value = SendSmsStatus.RECEIVE
-                    statusLive = null
+                    CoroutineScope(Dispatchers.IO).launch {
+                        channel.send(SendSmsStatus.RECEIVE)
+                        channel.close()
+                    }
                     // 取消监听
                     context?.unregisterReceiver(this)
                 }
-            }, IntentFilter(sentSmsAction))
+            }, IntentFilter(deliveredSmsAction))
             // 超时
             delay(overTime)
-            if (statusLive?.value == SendSmsStatus.SENDING) {
-                statusLive?.value = SendSmsStatus.OVERTIME
-            }
-            statusLive = null
+            if (!channel.isClosedForSend) channel.send(SendSmsStatus.OVERTIME)
+            channel.close()
         }
     }
-    return statusLive!!
+    return channel
 }
 
 /**
@@ -118,10 +118,10 @@ fun Context.sendSmsMessage(
  * @receiver Context
  * @return SmsInfo?
  */
-fun Context.readNewSms(): SmsInfo? {
+fun readNewSms(): SmsInfo? {
     var cursor: Cursor? = null
     try {
-        cursor = contentResolver.query(
+        cursor = ctx.contentResolver.query(
             Uri.parse("content://sms/inbox"),
             arrayOf("_id", "sub_id", "address", "read", "body", "date"),
             null, null, "date desc limit 1"
@@ -152,10 +152,10 @@ fun Context.readNewSms(): SmsInfo? {
  * @param time Long
  * @return List<SmsInfo>
  */
-fun Context.readNewSmsList(time: Long): List<SmsInfo> {
+fun readNewSmsList(time: Long): List<SmsInfo> {
     var cursor: Cursor? = null
     try {
-        cursor = contentResolver.query(
+        cursor = ctx.contentResolver.query(
             Uri.parse("content://sms/inbox"),
             arrayOf("_id", "sub_id", "address", "read", "body", "date"),
             "( date > $time )", null, "date asc"

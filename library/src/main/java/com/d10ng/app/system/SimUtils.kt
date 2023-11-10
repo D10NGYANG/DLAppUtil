@@ -1,7 +1,6 @@
 package com.d10ng.app.system
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.database.Cursor
 import android.net.Uri
 import android.os.Build
@@ -63,31 +62,28 @@ fun isHasPhoneCard(): Boolean =
 
 /**
  * 获取卫星卡信息
- * @receiver Context
  * @return SimInfo?
  */
-fun Context.getSatelliteSimInfo(): SimInfo? =
+fun getSatelliteSimInfo(): SimInfo? =
     getSimInfoList().find { it.slotId >= 0 && it.displayName.contains("卫星") }
 
 /**
  * 判断是否有卫星信号
- * @receiver Context
  * @return Boolean
  */
-fun Context.isHasSatelliteSignal(): Boolean {
-    val info = getSatelliteSimInfo()?: return false
+fun isHasSatelliteSignal(): Boolean {
+    val info = getSatelliteSimInfo() ?: return false
     return info.carrierName != "无服务"
 }
 
 /**
  * 读取手机卡信息包含每张插入过的卡
- * @receiver Context
  * @return List<SimInfo>
  */
-fun Context.getSimInfoList(): List<SimInfo> {
+fun getSimInfoList(): List<SimInfo> {
     var cursor: Cursor? = null
     try {
-        cursor = contentResolver.query(
+        cursor = ctx.contentResolver.query(
             Uri.parse("content://telephony/siminfo"),
             arrayOf("_id", "sim_id", "icc_id", "display_name", "carrier_name", "number"),
             null, null, null
@@ -122,22 +118,20 @@ fun Context.getSimInfoList(): List<SimInfo> {
  * -1 - 未知
  * 0 - 卡1
  * 1 - 卡2
- * @receiver Context
  * @param subId Long
  * @return Int
  */
-fun Context.getSimSlotIndex(subId: Long): Int =
-    getSimInfoList().find { it.id == subId.toString() }?.slotId?: -1
+fun getSimSlotIndex(subId: Long): Int =
+    getSimInfoList().find { it.id == subId.toString() }?.slotId ?: -1
 
 /**
  * 获取卫星卡的短信发送器
  * - 优先卫星卡，没有就用默认的
- * @receiver Context
  * @return SmsManager
  */
-fun Context.getSatelliteSmsManager(): SmsManager {
+fun getSatelliteSmsManager(): SmsManager {
     // 通过反射修改当前短信管理器使用的卡ID
-    var sms = getSystemService(SmsManager::class.java)
+    var sms = ctx.getSystemService(SmsManager::class.java)
     // 获取卫星卡信息
     val satelliteInfo = getSatelliteSimInfo()
     if (satelliteInfo != null) {
@@ -155,14 +149,13 @@ fun Context.getSatelliteSmsManager(): SmsManager {
 
 /**
  * 获取短信发送器
- * @receiver Context
  * @param slot Int 卡槽
  * @return SmsManager
  */
-fun Context.getSmsManager(slot: Int = -1): SmsManager {
+fun getSmsManager(slot: Int = -1): SmsManager {
     // 拿到手机里面的手机卡列表
     val list = getSimInfoList()
-    var sms = getSystemService(SmsManager::class.java)
+    var sms = ctx.getSystemService(SmsManager::class.java)
     if (slot < 0) return sms
     val simInfo = list.find { it.slotId == slot }
     val cardId = simInfo?.id?.toIntOrNull()

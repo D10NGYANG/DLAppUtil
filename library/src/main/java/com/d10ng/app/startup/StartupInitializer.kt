@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import androidx.startup.Initializer
 import com.d10ng.app.managers.ActivityManager
+import com.d10ng.app.managers.ContactManager
 import com.d10ng.app.managers.NotificationController
 import com.d10ng.app.managers.PermissionManager
 import com.d10ng.app.status.GnssStatusManager
@@ -31,6 +32,7 @@ internal class StartupInitializer : Initializer<Unit> {
         SensorStatusManager.init(context)
         NetworkStatusManager.init(context)
         NotificationController.init(context)
+        ContactManager.init(context)
     }
 
     override fun dependencies(): MutableList<Class<out Initializer<*>>> {

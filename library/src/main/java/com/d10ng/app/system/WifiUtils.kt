@@ -2,7 +2,6 @@ package com.d10ng.app.system
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.net.wifi.ScanResult
 import android.net.wifi.WifiInfo
@@ -62,12 +61,11 @@ fun Activity.enabledWifi(requestCode: Int = 1) {
 
 /**
  * 扫描热点并获取扫描结果
- * @receiver Context
  * @return List<ScanResult>
  */
 @SuppressLint("MissingPermission")
-fun Context.scanWifi() : List<ScanResult> {
-    val wm = getWifiManager()?: return emptyList()
+fun scanWifi(): List<ScanResult> {
+    val wm = getWifiManager() ?: return emptyList()
     // 打开Wi-Fi
     if (!wm.isWifiEnabled) wm.isWifiEnabled = true
     // 扫描
@@ -78,10 +76,9 @@ fun Context.scanWifi() : List<ScanResult> {
 
 /**
  * 获取连接Wi-Fi信息
- * @receiver Context
  * @return WifiInfo?
  */
-fun Context.getConnectedWifiInfo(): WifiInfo? {
+fun getConnectedWifiInfo(): WifiInfo? {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
         NetworkStatusManager.getNetworkCapabilitiesFlow().value?.transportInfo as? WifiInfo
     } else {
@@ -106,21 +103,19 @@ fun WifiInfo.getWifiSSID(): String {
 /**
  * 获取当前连接Wi-Fi名
  * # 如果没有定位权限，获取到的名字将为  unknown ssid
- * @receiver Context
  * @return String
  */
-fun Context.getConnectedWifiSSID() : String {
-    val wifiInfo = getConnectedWifiInfo()?: return ""
+fun getConnectedWifiSSID(): String {
+    val wifiInfo = getConnectedWifiInfo() ?: return ""
     return wifiInfo.getWifiSSID()
 }
 
 /**
  * 检查当前连接的网络是否为5G WI-FI
- * @receiver Context
  * @return Boolean
  */
-fun Context.is5GWifiConnected() : Boolean {
-    val wifiInfo = getConnectedWifiInfo()?: return false
+fun is5GWifiConnected(): Boolean {
+    val wifiInfo = getConnectedWifiInfo() ?: return false
     // 频段
     val frequency: Int = wifiInfo.frequency
     return frequency in 4900..5900
@@ -128,15 +123,14 @@ fun Context.is5GWifiConnected() : Boolean {
 
 /**
  * 判断连接Wi-Fi是否需要密码
- * @receiver Context
  * @return Boolean
  */
-fun Context.isConnectWifiNeedPassword() : Boolean {
+fun isConnectWifiNeedPassword(): Boolean {
     val list = scanWifi()
-    val connectInfo = getConnectedWifiInfo()?: return false
+    val connectInfo = getConnectedWifiInfo() ?: return false
     for (wifi in list) {
         if (wifi.SSID == connectInfo.getWifiSSID() && wifi.BSSID == connectInfo.bssid) {
-            val capabilities = wifi.capabilities?: return false
+            val capabilities = wifi.capabilities ?: return false
             return capabilities.contains("WPA", true)
                     || capabilities.contains("WEP", true)
         }

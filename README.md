@@ -17,7 +17,7 @@ allprojects {
 ```gradle
 dependencies {
     // APP通用工具
-    implementation 'com.github.D10NGYANG:DLAppUtil:2.4.6'
+    implementation 'com.github.D10NGYANG:DLAppUtil:2.4.7'
     // 协程
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'

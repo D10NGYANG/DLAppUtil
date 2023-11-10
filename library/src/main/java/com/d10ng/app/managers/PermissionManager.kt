@@ -10,7 +10,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
@@ -70,7 +69,6 @@ object PermissionManager {
                     launcherMap.remove(p0)
                     if (topActivity == p0) topActivity = null
                 }
-
             })
         }
     }
@@ -83,11 +81,7 @@ object PermissionManager {
     suspend fun request(permissions: Array<String>): Boolean = withContext(Dispatchers.IO) {
         val launcher = launcherMap[topActivity] ?: return@withContext false
         launcher.launch(permissions)
-        val waitJob = async {
-            resultFlow.filter { it.keys.containsAll(permissions.toList()) }
-                .first()
-        }
-        waitJob.await().values.all { it }
+        resultFlow.filter { it.keys.containsAll(permissions.toList()) }.first().values.all { it }
     }
 
     /**

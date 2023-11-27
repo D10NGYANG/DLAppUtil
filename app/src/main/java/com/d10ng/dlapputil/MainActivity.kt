@@ -5,8 +5,9 @@ import android.widget.Button
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.lifecycleScope
 import com.d10ng.app.infos.phoneModel
-import com.d10ng.app.managers.ContactManager
 import com.d10ng.app.managers.PermissionManager
+import com.d10ng.app.managers.PhotoManager
+import com.d10ng.app.resource.getFilesPath
 import com.d10ng.app.service.PhysicalButtonAccessibilityService
 import kotlinx.coroutines.launch
 
@@ -21,8 +22,16 @@ class MainActivity : ComponentActivity() {
         val button = findViewById<Button>(R.id.button)
         button.setOnClickListener {
             lifecycleScope.launch {
-                val res = ContactManager.pick()
-                println("选择的联系人：$res")
+                /*val res = ContactManager.pick()
+                println("选择的联系人：$res")*/
+                PhotoManager.pick()?.let {
+                    PhotoManager.createAndSaveThumbnail(
+                        it,
+                        64,
+                        64,
+                        getFilesPath() + "/image/test.jpg"
+                    )
+                }
             }
         }
 

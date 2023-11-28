@@ -5,14 +5,12 @@ import android.app.Application
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.ImageDecoder
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import com.d10ng.app.resource.getCachePath
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -43,6 +41,13 @@ object PhotoManager {
     // 结果Flow
     private val resultFlow = MutableSharedFlow<String?>()
 
+    // 权限列表
+    private val permissionList = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        arrayOf(android.Manifest.permission.READ_MEDIA_IMAGES)
+    } else {
+        arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+    }
+
     internal fun init(app: Application) {
         application = app.apply {
             registerActivityLifecycleCallbacks(object : Application.ActivityLifecycleCallbacks {
@@ -54,20 +59,17 @@ object PhotoManager {
                                 val data = result.data!!
                                 // 选择到图片的uri
                                 val uri = data.data!!
-                                runCatching {
-                                    val bitmap =
-                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                                            val source =
-                                                ImageDecoder.createSource(contentResolver, uri)
-                                            ImageDecoder.decodeBitmap(source)
-                                        } else {
-                                            @Suppress("DEPRECATION")
-                                            MediaStore.Images.Media.getBitmap(contentResolver, uri)
-                                        }
-                                    val outputPath = getCachePath() + "/select.jpg"
-                                    saveBitmap(bitmap, outputPath, 100)
-                                    scope.launch { resultFlow.emit(outputPath) }
-                                }.onFailure { scope.launch { resultFlow.emit(null) } }
+                                val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
+                                // 获取图片的游标
+                                val cursor =
+                                    contentResolver.query(uri, filePathColumn, null, null, null)!!
+                                cursor.moveToFirst()
+                                // 获取列的指针
+                                val columnIndex = cursor.getColumnIndex(filePathColumn[0])
+                                // 根据指针获取图片路径
+                                val picturePath = cursor.getString(columnIndex)
+                                cursor.close()
+                                scope.launch { resultFlow.emit(picturePath) }
                             } else {
                                 scope.launch { resultFlow.emit(null) }
                             }
@@ -102,6 +104,8 @@ object PhotoManager {
      * @return String? 图片路径
      */
     suspend fun pick(): String? = withContext(Dispatchers.IO) {
+        // 检查权限
+        if (PermissionManager.request(permissionList).not()) return@withContext null
         val launcher = launcherMap[topActivity] ?: return@withContext null
         launcher.launch(Intent().apply {
             action = Intent.ACTION_PICK

@@ -1,5 +1,6 @@
 package com.d10ng.dlapputil
 
+import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import androidx.activity.ComponentActivity
@@ -37,12 +38,24 @@ class MainActivity : ComponentActivity() {
 
         // 请求权限
         lifecycleScope.launch {
-            val result = PermissionManager.request(
-                arrayOf(
-                    android.Manifest.permission.ACCESS_FINE_LOCATION,
-                    android.Manifest.permission.ACCESS_COARSE_LOCATION
+            val result = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                println("Build.VERSION.SDK_INT = ${Build.VERSION.SDK_INT}")
+                PermissionManager.request(
+                    arrayOf(
+                        android.Manifest.permission.ACCESS_FINE_LOCATION,
+                        android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                        android.Manifest.permission.READ_MEDIA_IMAGES,
+                    )
                 )
-            )
+            } else {
+                PermissionManager.request(
+                    arrayOf(
+                        android.Manifest.permission.ACCESS_FINE_LOCATION,
+                        android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                        android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                    )
+                )
+            }
             println("权限请求结果：$result")
 
         }

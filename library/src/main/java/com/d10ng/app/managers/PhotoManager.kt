@@ -5,7 +5,6 @@ import android.app.Application
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import androidx.activity.ComponentActivity
@@ -41,13 +40,6 @@ object PhotoManager {
     // 结果Flow
     private val resultFlow = MutableSharedFlow<String?>()
 
-    // 权限列表
-    private val permissionList = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        arrayOf(android.Manifest.permission.READ_MEDIA_IMAGES)
-    } else {
-        arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
-    }
-
     internal fun init(app: Application) {
         application = app.apply {
             registerActivityLifecycleCallbacks(object : Application.ActivityLifecycleCallbacks {
@@ -59,17 +51,25 @@ object PhotoManager {
                                 val data = result.data!!
                                 // 选择到图片的uri
                                 val uri = data.data!!
-                                val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
-                                // 获取图片的游标
-                                val cursor =
-                                    contentResolver.query(uri, filePathColumn, null, null, null)!!
-                                cursor.moveToFirst()
-                                // 获取列的指针
-                                val columnIndex = cursor.getColumnIndex(filePathColumn[0])
-                                // 根据指针获取图片路径
-                                val picturePath = cursor.getString(columnIndex)
-                                cursor.close()
-                                scope.launch { resultFlow.emit(picturePath) }
+                                // 选择到图片的文件名
+                                var fileName: String? = null
+                                val cursor = contentResolver.query(uri, null, null, null, null)
+                                if (cursor != null && cursor.moveToFirst()) {
+                                    fileName = cursor.getString(
+                                        cursor.getColumnIndexOrThrow(
+                                            MediaStore.Images.Media.DISPLAY_NAME
+                                        )
+                                    )
+                                    cursor.close()
+                                }
+                                val file =
+                                    File(cacheDir, fileName?.split("/")?.last() ?: "select.jpg")
+                                contentResolver.openInputStream(uri)?.use { inputStream ->
+                                    FileOutputStream(file).use { outputStream ->
+                                        inputStream.copyTo(outputStream)
+                                    }
+                                }
+                                scope.launch { resultFlow.emit(file.path) }
                             } else {
                                 scope.launch { resultFlow.emit(null) }
                             }
@@ -104,8 +104,6 @@ object PhotoManager {
      * @return String? 图片路径
      */
     suspend fun pick(): String? = withContext(Dispatchers.IO) {
-        // 检查权限
-        if (PermissionManager.request(permissionList).not()) return@withContext null
         val launcher = launcherMap[topActivity] ?: return@withContext null
         launcher.launch(Intent().apply {
             action = Intent.ACTION_PICK

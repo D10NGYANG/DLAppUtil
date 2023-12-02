@@ -1,12 +1,12 @@
 package com.d10ng.dlapputil
 
-import android.os.Build
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageView
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.lifecycleScope
 import com.d10ng.app.infos.phoneModel
-import com.d10ng.app.managers.PermissionManager
 import com.d10ng.app.managers.PhotoManager
 import com.d10ng.app.resource.getFilesPath
 import com.d10ng.app.service.PhysicalButtonAccessibilityService
@@ -21,11 +21,14 @@ class MainActivity : ComponentActivity() {
 
         // 初始化
         val button = findViewById<Button>(R.id.button)
+        val image = findViewById<ImageView>(R.id.imageView)
         button.setOnClickListener {
             lifecycleScope.launch {
                 /*val res = ContactManager.pick()
                 println("选择的联系人：$res")*/
                 PhotoManager.pick()?.let {
+                    val bitmap = BitmapFactory.decodeFile(it)
+                    image.setImageBitmap(bitmap)
                     PhotoManager.createAndSaveThumbnail(
                         it,
                         64,
@@ -37,28 +40,27 @@ class MainActivity : ComponentActivity() {
         }
 
         // 请求权限
-        lifecycleScope.launch {
-            val result = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                println("Build.VERSION.SDK_INT = ${Build.VERSION.SDK_INT}")
-                PermissionManager.request(
-                    arrayOf(
-                        android.Manifest.permission.ACCESS_FINE_LOCATION,
-                        android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                        android.Manifest.permission.READ_MEDIA_IMAGES,
-                    )
-                )
-            } else {
-                PermissionManager.request(
-                    arrayOf(
-                        android.Manifest.permission.ACCESS_FINE_LOCATION,
-                        android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                        android.Manifest.permission.READ_EXTERNAL_STORAGE,
-                    )
-                )
-            }
-            println("权限请求结果：$result")
-
-        }
+//        lifecycleScope.launch {
+//            val result = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+//                println("Build.VERSION.SDK_INT = ${Build.VERSION.SDK_INT}")
+//                PermissionManager.request(
+//                    arrayOf(
+//                        android.Manifest.permission.ACCESS_FINE_LOCATION,
+//                        android.Manifest.permission.ACCESS_COARSE_LOCATION,
+//                        android.Manifest.permission.READ_MEDIA_IMAGES,
+//                    )
+//                )
+//            } else {
+//                PermissionManager.request(
+//                    arrayOf(
+//                        android.Manifest.permission.ACCESS_FINE_LOCATION,
+//                        android.Manifest.permission.ACCESS_COARSE_LOCATION,
+//                        android.Manifest.permission.READ_EXTERNAL_STORAGE,
+//                    )
+//                )
+//            }
+//            println("权限请求结果：$result")
+//        }
 
         lifecycleScope.launch {
             launch {

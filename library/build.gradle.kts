@@ -1,13 +1,11 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.kapt")
-    id("org.jetbrains.kotlin.plugin.parcelize")
     id("maven-publish")
 }
 
 group = "com.github.D10NGYANG"
-version = "2.4.13"
+version = "2.4.14"
 
 android {
     namespace = "com.d10ng.app"

@@ -9,10 +9,10 @@ version = "2.4.14"
 
 android {
     namespace = "com.d10ng.app"
-    compileSdk = Project.compile_sdk
+    compileSdk = android_compile_sdk
 
     defaultConfig {
-        minSdk = Project.min_sdk
+        minSdk = android_min_sdk
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -20,15 +20,18 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    kotlin {
-        jvmToolchain(8)
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
     publishing {
         singleVariant("release") {
@@ -40,9 +43,9 @@ android {
 dependencies {
 
     // Android
-    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.core:core-ktx:$androidx_core_ver")
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.10.0")
+    implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
 
     // 单元测试（可选）

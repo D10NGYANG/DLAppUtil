@@ -1,18 +1,17 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.kapt")
-    id("org.jetbrains.kotlin.plugin.parcelize")
+    id("com.google.devtools.ksp")
 }
 
 android {
-    namespace = "com.d10ng.dlapputil"
-    compileSdk = Project.compile_sdk
+    namespace = "com.d10ng.app.demo"
+    compileSdk = android_compile_sdk
 
     defaultConfig {
         applicationId = "com.d10ng.dlapputil"
-        minSdk = Project.min_sdk
-        targetSdk = Project.target_sdk
+        minSdk = android_min_sdk
+        targetSdk = android_target_sdk
         versionCode = 1
         versionName = "1.0"
 
@@ -22,28 +21,31 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    kotlin {
-        jvmToolchain(8)
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = compose_compiler_ver
     }
 }
 
 dependencies {
 
     // Android
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.10.0")
-
-    // UI
-    implementation("androidx.legacy:legacy-support-v4:1.0.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.core:core-ktx:$androidx_core_ver")
 
     // 单元测试（可选）
     testImplementation("junit:junit:4.13.2")
@@ -54,13 +56,21 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines_ver")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines_ver")
 
-    // Lifecycle components
-    implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
-    kapt("androidx.lifecycle:lifecycle-common-java8:2.6.2")
-    androidTestImplementation("androidx.arch.core:core-testing:2.2.0")
-    // ViewModel Kotlin support
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
+    // 导航路由
+    implementation("io.github.raamcosta.compose-destinations:animations-core:$compose_destinations_ver")
+    ksp("io.github.raamcosta.compose-destinations:ksp:$compose_destinations_ver")
 
-    // 字符串字节数据工具
+    // jetpack compose 框架
+    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:$dl_compose_ver")
+
+    // 日期时间
+    implementation("com.github.D10NGYANG:DLDateUtil:$dl_date_ver")
+    // 通用计算工具
+    implementation("com.github.D10NGYANG:DLCommonUtil:$dl_common_ver")
+
+    // 工具
     implementation(project(":library"))
+
+    // 内存泄漏检查
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.13")
 }

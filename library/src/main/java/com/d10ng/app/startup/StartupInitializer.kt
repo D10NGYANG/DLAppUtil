@@ -8,6 +8,7 @@ import com.d10ng.app.managers.ContactManager
 import com.d10ng.app.managers.NotificationController
 import com.d10ng.app.managers.PermissionManager
 import com.d10ng.app.managers.PhotoManager
+import com.d10ng.app.status.BatteryStatusManager
 import com.d10ng.app.status.GnssStatusManager
 import com.d10ng.app.status.LocationStatusManager
 import com.d10ng.app.status.NetworkStatusManager
@@ -35,6 +36,7 @@ internal class StartupInitializer : Initializer<Unit> {
         NotificationController.init(context)
         ContactManager.init(context)
         PhotoManager.init(context)
+        BatteryStatusManager.init()
     }
 
     override fun dependencies(): MutableList<Class<out Initializer<*>>> {

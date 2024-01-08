@@ -49,14 +49,20 @@ private fun BatteryStatusManagerScreenView() {
                 .verticalScroll(rememberScrollState())
         ) {
             CellGroup(title = "电池信息", inset = true) {
-                val battery by BatteryStatusManager.stateFlow.collectAsState()
+                val battery by BatteryStatusManager.batteryFlow.collectAsState()
                 Cell(title = "电量", value = "${battery}%")
                 val isCharging by BatteryStatusManager.isChargingFlow.collectAsState(false)
                 Cell(title = "是否充电", value = if (isCharging) "是" else "否")
                 val chargeType by BatteryStatusManager.chargeTypeFlow.collectAsState(null)
                 Cell(title = "充电类型", value = chargeType?.text ?: "未知")
                 val health by BatteryStatusManager.healthFlow.collectAsState(BatteryStatusManager.HealthType.UNKNOWN)
-                Cell(title = "电池健康", value = health.text)
+                Cell(title = "健康", value = health.text)
+                val temperature by BatteryStatusManager.temperatureFlow.collectAsState(0)
+                Cell(title = "温度", value = "${temperature}℃")
+                val voltage by BatteryStatusManager.voltageFlow.collectAsState(0)
+                Cell(title = "电压", value = "${voltage}V")
+                val technology by BatteryStatusManager.technologyFlow.collectAsState(null)
+                Cell(title = "技术", value = technology ?: "未知")
             }
         }
     }

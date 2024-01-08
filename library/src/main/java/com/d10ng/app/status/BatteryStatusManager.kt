@@ -69,8 +69,8 @@ object BatteryStatusManager {
     }
 
     // 电量状态
-    private val _stateFlow = MutableStateFlow<Float?>(null)
-    val stateFlow = _stateFlow.asStateFlow()
+    private val _batteryFlow = MutableStateFlow<Float?>(null)
+    val batteryFlow = _batteryFlow.asStateFlow()
 
     // 充电状态
     private val _chargeTypeFlow = MutableStateFlow<ChargeType?>(null)
@@ -82,6 +82,18 @@ object BatteryStatusManager {
     // 健康度
     private val _healthFlow = MutableStateFlow(HealthType.UNKNOWN)
     val healthFlow = _healthFlow.asStateFlow()
+
+    // 温度
+    private val _temperatureFlow = MutableStateFlow(0.0)
+    val temperatureFlow = _temperatureFlow.asStateFlow()
+
+    // 电压
+    private val _voltageFlow = MutableStateFlow(0.0)
+    val voltageFlow = _voltageFlow.asStateFlow()
+
+    // 技术
+    private val _technologyFlow = MutableStateFlow("")
+    val technologyFlow = _technologyFlow.asStateFlow()
 
     // 电量变化广播接收器
     private val batteryChangeReceiver = object : BroadcastReceiver() {
@@ -108,11 +120,17 @@ object BatteryStatusManager {
         intent?.let {
             val level = it.getIntExtra(BatteryManager.EXTRA_LEVEL, 0)
             val scale = it.getIntExtra(BatteryManager.EXTRA_SCALE, 100)
-            _stateFlow.value = level.toFloat() / scale.toFloat() * 100
+            _batteryFlow.value = level.toFloat() / scale.toFloat() * 100
             val batteryPlugged = it.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1)
             _chargeTypeFlow.value = ChargeType.parse(batteryPlugged)
             val health = it.getIntExtra(BatteryManager.EXTRA_HEALTH, HealthType.UNKNOWN.value)
             _healthFlow.value = HealthType.parse(health)
+            val temperature = it.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 0)
+            _temperatureFlow.value = temperature / 10.0
+            val voltage = it.getIntExtra(BatteryManager.EXTRA_VOLTAGE, 0)
+            _voltageFlow.value = voltage / 1000.0
+            val technology = it.getStringExtra(BatteryManager.EXTRA_TECHNOLOGY) ?: ""
+            _technologyFlow.value = technology
         }
     }
 
@@ -120,11 +138,11 @@ object BatteryStatusManager {
      * 获取当前电量
      * @return Float?
      */
-    fun status(): Float? = _stateFlow.value
+    fun battery(): Float? = _batteryFlow.value
 }
 
 /**
  * 获取当前系统电量
  * @return Float?
  */
-fun systemBattery() = BatteryStatusManager.status()
+fun systemBattery() = BatteryStatusManager.battery()

@@ -8,6 +8,7 @@ import android.os.BatteryManager
 import com.d10ng.app.startup.ctx
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
 
 /**
  * 电池状态管理器
@@ -16,9 +17,71 @@ import kotlinx.coroutines.flow.asStateFlow
  */
 object BatteryStatusManager {
 
+    // 充电类型
+    enum class ChargeType(val value: Int, val text: String) {
+        // AC充电
+        AC(BatteryManager.BATTERY_PLUGGED_AC, "交流电"),
+
+        // USB充电
+        USB(BatteryManager.BATTERY_PLUGGED_USB, "USB充电"),
+
+        // 无线充电
+        WIRELESS(BatteryManager.BATTERY_PLUGGED_WIRELESS, "无线充电"),
+
+        ;
+
+        companion object {
+            fun parse(value: Int) = entries.firstOrNull { it.value == value }
+        }
+    }
+
+    // 健康状态
+    enum class HealthType(val value: Int, val text: String) {
+        // 未知
+        UNKNOWN(BatteryManager.BATTERY_HEALTH_UNKNOWN, "未知"),
+
+        // 良好
+        GOOD(BatteryManager.BATTERY_HEALTH_GOOD, "良好"),
+
+        // 过热
+        OVERHEAT(BatteryManager.BATTERY_HEALTH_OVERHEAT, "过热"),
+
+        // 欠压
+        DEAD(BatteryManager.BATTERY_HEALTH_DEAD, "欠压"),
+
+        // 电量过低
+        OVER_VOLTAGE(BatteryManager.BATTERY_HEALTH_OVER_VOLTAGE, "电量过低"),
+
+        // 电池不正常
+        UNSPECIFIED_FAILURE(BatteryManager.BATTERY_HEALTH_UNSPECIFIED_FAILURE, "电池不正常"),
+
+        // 冷却
+        COLD(BatteryManager.BATTERY_HEALTH_COLD, "冷却"),
+
+        // 未知错误
+        FAILURE(BatteryManager.BATTERY_HEALTH_UNSPECIFIED_FAILURE, "未知错误"),
+
+        ;
+
+        companion object {
+            fun parse(value: Int) = entries.firstOrNull { it.value == value } ?: UNKNOWN
+        }
+    }
+
     // 电量状态
     private val _stateFlow = MutableStateFlow<Float?>(null)
     val stateFlow = _stateFlow.asStateFlow()
+
+    // 充电状态
+    private val _chargeTypeFlow = MutableStateFlow<ChargeType?>(null)
+    val chargeTypeFlow = _chargeTypeFlow.asStateFlow()
+
+    // 是否正在充电
+    val isChargingFlow = chargeTypeFlow.map { it != null }
+
+    // 健康度
+    private val _healthFlow = MutableStateFlow(HealthType.UNKNOWN)
+    val healthFlow = _healthFlow.asStateFlow()
 
     // 电量变化广播接收器
     private val batteryChangeReceiver = object : BroadcastReceiver() {
@@ -46,6 +109,10 @@ object BatteryStatusManager {
             val level = it.getIntExtra(BatteryManager.EXTRA_LEVEL, 0)
             val scale = it.getIntExtra(BatteryManager.EXTRA_SCALE, 100)
             _stateFlow.value = level.toFloat() / scale.toFloat() * 100
+            val batteryPlugged = it.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1)
+            _chargeTypeFlow.value = ChargeType.parse(batteryPlugged)
+            val health = it.getIntExtra(BatteryManager.EXTRA_HEALTH, HealthType.UNKNOWN.value)
+            _healthFlow.value = HealthType.parse(health)
         }
     }
 

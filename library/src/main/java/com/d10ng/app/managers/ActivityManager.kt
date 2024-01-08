@@ -75,6 +75,12 @@ object ActivityManager {
     }
 
     /**
+     * 获取当前Activity实例
+     * @return Activity?
+     */
+    fun current() = top().value
+
+    /**
      * 注销最顶部的Activity
      */
     fun finishTop() {

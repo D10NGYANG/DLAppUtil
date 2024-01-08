@@ -9,7 +9,7 @@ android {
     compileSdk = android_compile_sdk
 
     defaultConfig {
-        applicationId = "com.d10ng.dlapputil"
+        applicationId = "com.d10ng.app.demo"
         minSdk = android_min_sdk
         targetSdk = android_target_sdk
         versionCode = 1

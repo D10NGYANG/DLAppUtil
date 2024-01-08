@@ -14,7 +14,10 @@ import com.d10ng.app.demo.utils.back
 import com.d10ng.app.managers.androidID
 import com.d10ng.app.managers.phoneManufacturer
 import com.d10ng.app.managers.phoneModel
+import com.d10ng.app.managers.playRingtone
+import com.d10ng.app.managers.showToast
 import com.d10ng.app.managers.systemVersion
+import com.d10ng.app.managers.vibrate
 import com.d10ng.compose.ui.AppColor
 import com.d10ng.compose.ui.PageTransitions
 import com.d10ng.compose.ui.base.Cell
@@ -56,6 +59,20 @@ private fun SystemManagerScreenView() {
                 Cell(title = "手机品牌", value = phoneManufacturer)
                 Cell(title = "系统版本号", value = systemVersion)
                 Cell(title = "系统API版本", value = Build.VERSION.SDK_INT.toString())
+            }
+            CellGroup(title = "系统交互", inset = true) {
+                Cell(title = "显示Toast", link = true, onClick = {
+                    showToast("测试Toast显示")
+                })
+                Cell(title = "震动", link = true, onClick = {
+                    vibrate()
+                })
+                Cell(title = "震动特定时长，2秒", link = true, onClick = {
+                    vibrate(2000)
+                })
+                Cell(title = "播放提示音", link = true, onClick = {
+                    playRingtone()
+                })
             }
         }
     }

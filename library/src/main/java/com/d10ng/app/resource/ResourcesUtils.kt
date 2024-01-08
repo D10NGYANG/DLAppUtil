@@ -20,7 +20,6 @@ private val resources by lazy { ctx.resources }
 
 fun getResText(id: Int) = resources.getText(id)
 
-@RequiresApi(Build.VERSION_CODES.O)
 fun getResFont(id: Int) = resources.getFont(id)
 fun getResQuantityText(id: Int, quantity: Int) = resources.getQuantityText(id, quantity)
 fun getResString(id: Int) = resources.getString(id)

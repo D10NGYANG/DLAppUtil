@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.d10ng.app.demo.pages.destinations.AppManagerScreenDestination
+import com.d10ng.app.demo.pages.destinations.BatteryStatusManagerScreenDestination
 import com.d10ng.app.demo.pages.destinations.SystemManagerScreenDestination
 import com.d10ng.app.demo.utils.go
 import com.d10ng.app.utils.goToSystemHome
@@ -60,6 +61,38 @@ private fun HomeScreenView(
                 })
                 Cell(title = "APP管理器", link = true, onClick = {
                     go(AppManagerScreenDestination.route)
+                })
+                Cell(title = "权限管理器", link = true, onClick = {
+                    //go(AppManagerScreenDestination.route)
+                })
+                Cell(title = "通知管理器", link = true, onClick = {
+                    //go(AppManagerScreenDestination.route)
+                })
+                Cell(title = "联系人管理器", link = true, onClick = {
+                    //go(AppManagerScreenDestination.route)
+                })
+                Cell(title = "短信管理器", link = true, onClick = {
+                    //go(AppManagerScreenDestination.route)
+                })
+                Cell(title = "图片媒体管理器", link = true, onClick = {
+                    //go(AppManagerScreenDestination.route)
+                })
+            }
+            CellGroup(title = "状态", inset = true) {
+                Cell(title = "电池电量状态", link = true, onClick = {
+                    go(BatteryStatusManagerScreenDestination.route)
+                })
+                Cell(title = "定位状态", link = true, onClick = {
+                    //go(AppManagerScreenDestination.route)
+                })
+                Cell(title = "GNSS状态", link = true, onClick = {
+                    //go(AppManagerScreenDestination.route)
+                })
+                Cell(title = "网络状态", link = true, onClick = {
+                    //go(AppManagerScreenDestination.route)
+                })
+                Cell(title = "传感器状态", link = true, onClick = {
+                    //go(AppManagerScreenDestination.route)
                 })
             }
         }

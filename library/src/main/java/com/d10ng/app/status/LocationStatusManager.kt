@@ -1,10 +1,10 @@
 package com.d10ng.app.status
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
-import androidx.annotation.RequiresPermission
 import androidx.core.location.LocationManagerCompat
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,35 +16,35 @@ import kotlinx.coroutines.flow.asStateFlow
  */
 object LocationStatusManager {
 
-    private lateinit var application: Application
     private lateinit var manager: LocationManager
 
-    private val statusFlow: MutableStateFlow<Location?> = MutableStateFlow(null)
+    private val _statusFlow: MutableStateFlow<Location?> = MutableStateFlow(null)
+    val statusFlow = _statusFlow.asStateFlow()
 
     internal fun init(app: Application) {
-        application = app
         manager = app.getSystemService(LocationManager::class.java)
     }
 
     private val locationListener = LocationListener { location ->
-        statusFlow.value = location
+        _statusFlow.value = location
     }
 
     /**
-     * 检查定位是否可用
+     * 检查定位信息是否开启
      * @return Boolean
      */
-    fun enable() = LocationManagerCompat.isLocationEnabled(manager)
+    fun isEnable() = LocationManagerCompat.isLocationEnabled(manager)
 
     /**
      * 启动定位请求
+     * > 注意：需要在AndroidManifest.xml中添加定位权限，并在APP中动态申请权限，否则无法获取定位信息
+     * > <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+     * > <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+     * @param providers List<String> 定位提供者
+     * @param minTimeMs Long 最小时间间隔，单位毫秒
+     * @param minDistanceM Float 最小距离间隔，单位米
      */
-    @RequiresPermission(
-        anyOf = [
-            "android.permission.ACCESS_FINE_LOCATION",
-            "android.permission.ACCESS_COARSE_LOCATION"
-        ]
-    )
+    @SuppressLint("MissingPermission")
     fun start(
         providers: List<String> = manager.getProviders(true),
         minTimeMs: Long = 0,
@@ -52,7 +52,7 @@ object LocationStatusManager {
     ) {
         providers.map { provider ->
             if (manager.isProviderEnabled(provider)) {
-                statusFlow.value = manager.getLastKnownLocation(provider)
+                _statusFlow.value = manager.getLastKnownLocation(provider)
                 manager.requestLocationUpdates(
                     provider,
                     minTimeMs,
@@ -69,16 +69,10 @@ object LocationStatusManager {
     fun stop() {
         manager.removeUpdates(locationListener)
     }
-
-    /**
-     * 获取状态Flow
-     * @return StateFlow<Location?>
-     */
-    fun getStatusFlow() = statusFlow.asStateFlow()
 }
 
 /**
- * 检查定位是否可用
+ * 检查定位信息是否开启
  * @return Boolean
  */
-fun isLocationEnabled() = LocationStatusManager.enable()
+fun isLocationEnabled() = LocationStatusManager.isEnable()

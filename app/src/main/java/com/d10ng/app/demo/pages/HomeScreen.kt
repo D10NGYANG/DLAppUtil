@@ -12,6 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.d10ng.app.demo.pages.destinations.AppManagerScreenDestination
 import com.d10ng.app.demo.pages.destinations.BatteryStatusManagerScreenDestination
+import com.d10ng.app.demo.pages.destinations.GnssStatusManagerScreenDestination
+import com.d10ng.app.demo.pages.destinations.LocationStatusManagerScreenDestination
 import com.d10ng.app.demo.pages.destinations.SystemManagerScreenDestination
 import com.d10ng.app.demo.utils.go
 import com.d10ng.app.utils.goToSystemHome
@@ -83,10 +85,10 @@ private fun HomeScreenView(
                     go(BatteryStatusManagerScreenDestination.route)
                 })
                 Cell(title = "定位状态", link = true, onClick = {
-                    //go(AppManagerScreenDestination.route)
+                    go(LocationStatusManagerScreenDestination.route)
                 })
                 Cell(title = "GNSS状态", link = true, onClick = {
-                    //go(AppManagerScreenDestination.route)
+                    go(GnssStatusManagerScreenDestination.route)
                 })
                 Cell(title = "网络状态", link = true, onClick = {
                     //go(AppManagerScreenDestination.route)

@@ -36,7 +36,7 @@ internal class StartupInitializer : Initializer<Unit> {
         NotificationController.init(context)
         ContactManager.init(context)
         PhotoManager.init(context)
-        BatteryStatusManager.init()
+        BatteryStatusManager.init(context)
     }
 
     override fun dependencies(): MutableList<Class<out Initializer<*>>> {

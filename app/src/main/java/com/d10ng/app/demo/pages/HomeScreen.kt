@@ -14,6 +14,7 @@ import com.d10ng.app.demo.pages.destinations.AppManagerScreenDestination
 import com.d10ng.app.demo.pages.destinations.BatteryStatusManagerScreenDestination
 import com.d10ng.app.demo.pages.destinations.GnssStatusManagerScreenDestination
 import com.d10ng.app.demo.pages.destinations.LocationStatusManagerScreenDestination
+import com.d10ng.app.demo.pages.destinations.NetworkStatusManagerScreenDestination
 import com.d10ng.app.demo.pages.destinations.SystemManagerScreenDestination
 import com.d10ng.app.demo.utils.go
 import com.d10ng.app.utils.goToSystemHome
@@ -91,7 +92,7 @@ private fun HomeScreenView(
                     go(GnssStatusManagerScreenDestination.route)
                 })
                 Cell(title = "网络状态", link = true, onClick = {
-                    //go(AppManagerScreenDestination.route)
+                    go(NetworkStatusManagerScreenDestination.route)
                 })
                 Cell(title = "传感器状态", link = true, onClick = {
                     //go(AppManagerScreenDestination.route)

@@ -1,11 +1,11 @@
 package com.d10ng.app.status
 
+import android.app.Application
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.BatteryManager
-import com.d10ng.app.startup.ctx
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
@@ -105,11 +105,11 @@ object BatteryStatusManager {
     /**
      * 初始化
      */
-    fun init() {
+    internal fun init(app: Application) {
         val batteryIntentFilter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
         // 初始化电量状态
-        updateState(ctx.registerReceiver(null, batteryIntentFilter))
-        ctx.registerReceiver(batteryChangeReceiver, batteryIntentFilter)
+        updateState(app.registerReceiver(null, batteryIntentFilter))
+        app.registerReceiver(batteryChangeReceiver, batteryIntentFilter)
     }
 
     /**

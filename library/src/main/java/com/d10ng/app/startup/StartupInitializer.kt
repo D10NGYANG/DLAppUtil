@@ -12,7 +12,6 @@ import com.d10ng.app.status.BatteryStatusManager
 import com.d10ng.app.status.GnssStatusManager
 import com.d10ng.app.status.LocationStatusManager
 import com.d10ng.app.status.NetworkStatusManager
-import com.d10ng.app.status.SensorStatusManager
 
 /**
  * 启动初始化
@@ -31,7 +30,6 @@ internal class StartupInitializer : Initializer<Unit> {
         ActivityManager.init(context)
         LocationStatusManager.init(context)
         GnssStatusManager.init(context)
-        SensorStatusManager.init(context)
         NetworkStatusManager.init(context)
         NotificationController.init(context)
         ContactManager.init(context)

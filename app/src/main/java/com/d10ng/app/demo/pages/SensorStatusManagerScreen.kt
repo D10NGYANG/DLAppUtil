@@ -42,7 +42,6 @@ fun SensorStatusManagerScreen() {
     SensorStatusManagerScreenView()
 }
 
-@OptIn(FlowPreview::class)
 @Composable
 private fun SensorStatusManagerScreenView() {
 

@@ -47,6 +47,7 @@ class BaseApplicationHandler(c: Application, b: BaseHandlerCallBack) : Handler(c
     }
 }
 
+@Suppress("DEPRECATION")
 class BaseFragmentHandler(f: Fragment, b: BaseHandlerCallBack) : Handler() {
 
     private val fragment: WeakReference<Fragment> = WeakReference(f)

@@ -12,16 +12,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.d10ng.app.demo.utils.back
 import com.d10ng.app.managers.androidID
+import com.d10ng.app.managers.copyToClipboard
 import com.d10ng.app.managers.phoneManufacturer
 import com.d10ng.app.managers.phoneModel
 import com.d10ng.app.managers.playRingtone
+import com.d10ng.app.managers.readClipboard
 import com.d10ng.app.managers.showToast
 import com.d10ng.app.managers.systemVersion
 import com.d10ng.app.managers.vibrate
+import com.d10ng.compose.model.UiViewModelManager
 import com.d10ng.compose.ui.AppColor
 import com.d10ng.compose.ui.PageTransitions
 import com.d10ng.compose.ui.base.Cell
 import com.d10ng.compose.ui.base.CellGroup
+import com.d10ng.compose.ui.feedback.NotifyType
 import com.d10ng.compose.ui.navigation.NavBar
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
@@ -72,6 +76,16 @@ private fun SystemManagerScreenView() {
                 })
                 Cell(title = "播放提示音", link = true, onClick = {
                     playRingtone()
+                })
+            }
+            CellGroup(title = "粘贴板", inset = true) {
+                Cell(title = "复制内容到粘贴版", link = true, onClick = {
+                    copyToClipboard("", "测试复制内容")
+                    UiViewModelManager.showSuccessToast("复制成功")
+                })
+                Cell(title = "获取粘贴板内容", link = true, onClick = {
+                    val contents = readClipboard()
+                    UiViewModelManager.showNotify(NotifyType.Success, "获取成功：$contents", 3000)
                 })
             }
         }

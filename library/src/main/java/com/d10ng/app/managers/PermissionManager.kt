@@ -8,6 +8,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import com.d10ng.app.startup.ctx
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -23,8 +24,6 @@ import kotlinx.coroutines.withContext
  */
 object PermissionManager {
 
-    private lateinit var application: Application
-
     private val scope = CoroutineScope(Dispatchers.IO)
 
     // 最顶部展示的Activity
@@ -38,7 +37,7 @@ object PermissionManager {
     private val resultFlow = MutableSharedFlow<Map<String, Boolean>>()
 
     internal fun init(app: Application) {
-        application = app.apply {
+        app.apply {
             registerActivityLifecycleCallbacks(object : Application.ActivityLifecycleCallbacks {
                 override fun onActivityCreated(p0: Activity, p1: Bundle?) {
                     if (p0 !is ComponentActivity) return
@@ -75,6 +74,15 @@ object PermissionManager {
 
     /**
      * 请求权限
+     * @param permission String
+     * @return Boolean
+     */
+    suspend fun request(permission: String): Boolean {
+        return request(arrayOf(permission))
+    }
+
+    /**
+     * 请求权限
      * @param permissions Array<String>
      * @return Boolean
      */
@@ -99,6 +107,6 @@ object PermissionManager {
      * @return Boolean
      */
     fun has(permissions: Array<out String>) = permissions.all {
-        ContextCompat.checkSelfPermission(application, it) == PackageManager.PERMISSION_GRANTED
+        ContextCompat.checkSelfPermission(ctx, it) == PackageManager.PERMISSION_GRANTED
     }
 }

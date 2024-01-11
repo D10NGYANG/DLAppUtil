@@ -15,6 +15,7 @@ import com.d10ng.app.demo.pages.destinations.BatteryStatusManagerScreenDestinati
 import com.d10ng.app.demo.pages.destinations.GnssStatusManagerScreenDestination
 import com.d10ng.app.demo.pages.destinations.LocationStatusManagerScreenDestination
 import com.d10ng.app.demo.pages.destinations.NetworkStatusManagerScreenDestination
+import com.d10ng.app.demo.pages.destinations.PermissionManagerScreenDestination
 import com.d10ng.app.demo.pages.destinations.SensorStatusManagerScreenDestination
 import com.d10ng.app.demo.pages.destinations.SystemManagerScreenDestination
 import com.d10ng.app.demo.utils.go
@@ -67,7 +68,7 @@ private fun HomeScreenView(
                     go(AppManagerScreenDestination.route)
                 })
                 Cell(title = "权限管理器", link = true, onClick = {
-                    //go(AppManagerScreenDestination.route)
+                    go(PermissionManagerScreenDestination.route)
                 })
                 Cell(title = "通知管理器", link = true, onClick = {
                     //go(AppManagerScreenDestination.route)

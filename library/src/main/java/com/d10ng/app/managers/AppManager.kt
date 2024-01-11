@@ -58,18 +58,23 @@ fun restartApp() {
 
 /**
  * 检查APP是否存在
+ * > 需要权限：android.permission.QUERY_ALL_PACKAGES
  * @param packageName String
  * @return Boolean
  */
 fun existApp(packageName: String): Boolean {
     if (packageName.isEmpty()) return false
+    return getAllInstalledApp().contains(packageName)
+}
+
+/**
+ * 获取所有已安装APP包名
+ * > 需要权限：android.permission.QUERY_ALL_PACKAGES
+ * @return List<String>
+ */
+fun getAllInstalledApp(): List<String> {
     return with(ctx) {
-        try {
-            packageManager.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES)
-            true
-        } catch (e: PackageManager.NameNotFoundException) {
-            false
-        }
+        packageManager.getInstalledPackages(0).map { it.packageName }
     }
 }
 

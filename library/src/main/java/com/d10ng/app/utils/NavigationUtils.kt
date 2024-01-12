@@ -39,7 +39,6 @@ fun goToSystemCall(phone: String) {
 
 /**
  * 前往系统短信页面，填充联系人和消息内容
- * @receiver Activity
  * @param phone String 电话号码
  * @param content String 消息内容
  */
@@ -52,8 +51,7 @@ fun goToSystemSms(phone: String, content: String) {
 }
 
 /**
- * 打开Wi-Fi设置页面
- * @receiver Activity
+ * 打开系统Wi-Fi设置页面
  */
 fun goToSystemWifiSetting() {
     val intent = Intent(Settings.ACTION_WIFI_SETTINGS)
@@ -63,8 +61,6 @@ fun goToSystemWifiSetting() {
 
 /**
  * 打开位置信息设置页面
- * @receiver Activity
- * @return Intent
  */
 fun goToSystemLocationSetting() {
     val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
@@ -74,8 +70,6 @@ fun goToSystemLocationSetting() {
 
 /**
  * 打开App设置页面
- * @receiver Activity
- * @return Intent
  */
 fun goToAppSetting() {
     val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
@@ -85,12 +79,34 @@ fun goToAppSetting() {
 }
 
 /**
+ * 打开App通知设置页面
+ */
+fun goToAppNotificationSetting() {
+    val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
+        putExtra(Settings.EXTRA_APP_PACKAGE, ctx.packageName)
+    }
+    ActivityManager.current()?.startActivity(intent)
+}
+
+/**
+ * 打开App通知渠道设置页面
+ * @param channelId String
+ */
+fun goToAppNotificationChannelSetting(channelId: String) {
+    val intent = Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS).apply {
+        putExtra(Settings.EXTRA_APP_PACKAGE, ctx.packageName)
+        putExtra(Settings.EXTRA_CHANNEL_ID, channelId)
+    }
+    ActivityManager.current()?.startActivity(intent)
+}
+
+/**
  * 获取跳转页面Intent
  * @receiver Activity
  * @param clz Class<*>
  * @return Intent
  */
-fun Activity.getClearTopIntent(clz: Class<*>) : Intent {
+fun Activity.getClearTopIntent(clz: Class<*>): Intent {
     val intent = Intent(this, clz)
     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
     return intent

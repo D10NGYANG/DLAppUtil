@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.d10ng.app.demo.pages.destinations.AppManagerScreenDestination
 import com.d10ng.app.demo.pages.destinations.BatteryStatusManagerScreenDestination
+import com.d10ng.app.demo.pages.destinations.ContactManagerScreenDestination
 import com.d10ng.app.demo.pages.destinations.GnssStatusManagerScreenDestination
 import com.d10ng.app.demo.pages.destinations.LocationStatusManagerScreenDestination
 import com.d10ng.app.demo.pages.destinations.NetworkStatusManagerScreenDestination
@@ -75,7 +76,7 @@ private fun HomeScreenView(
                     go(NotificationControllerScreenDestination.route)
                 })
                 Cell(title = "联系人管理器", link = true, onClick = {
-                    //go(AppManagerScreenDestination.route)
+                    go(ContactManagerScreenDestination.route)
                 })
                 Cell(title = "短信管理器", link = true, onClick = {
                     //go(AppManagerScreenDestination.route)

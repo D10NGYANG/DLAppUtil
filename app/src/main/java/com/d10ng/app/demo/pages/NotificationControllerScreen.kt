@@ -20,6 +20,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.app.Person
 import com.d10ng.app.demo.MainActivity
 import com.d10ng.app.demo.R
 import com.d10ng.app.demo.app
@@ -81,6 +82,13 @@ private fun NotificationControllerScreenView() {
             channelName = "进度条",
             channelImportance = NotificationManager.IMPORTANCE_DEFAULT,
             channelDescription = "进度条通知渠道，通知后台任务进度之类的内容",
+        )
+        // 创建对话消息通知渠道
+        NotificationController.createChannel(
+            channelId = "dialog",
+            channelName = "对话消息",
+            channelImportance = NotificationManager.IMPORTANCE_HIGH,
+            channelDescription = "对话消息通知渠道，通知即时通讯、对话消息之类的内容",
         )
     }
     Column(
@@ -174,6 +182,7 @@ private fun NotificationControllerScreenView() {
                             builder.setProgress(100, p, false)
                             NotificationController.update(id, builder)
                         }
+                        NotificationController.cancel(id)
                     }
                 })
                 Cell(title = "创建不明确进度条通知", link = true, onClick = {
@@ -188,6 +197,86 @@ private fun NotificationControllerScreenView() {
                         indeterminate = true,
                         smallIcon = R.drawable.ic_launcher_foreground,
                         tapIntent = getIntent()
+                    )
+                    scope.launch {
+                        delay(5000)
+                        NotificationController.cancel(id)
+                    }
+                })
+            }
+            CellGroup(title = "对话消息", inset = true) {
+                var isEnable by remember {
+                    mutableStateOf(NotificationController.isBannerNotificationsEnabled("dialog"))
+                }
+                Cell(
+                    title = "渠道是否允许横幅通知",
+                    value = if (isEnable) "允许" else "不允许",
+                    link = true,
+                    label = "点击进行更新（⚠️MIUI无效）",
+                    onClick = {
+                        isEnable = NotificationController.isBannerNotificationsEnabled("dialog")
+                    })
+                Cell(title = "打开通知渠道设置", link = true, onClick = {
+                    goToAppNotificationChannelSetting("dialog")
+                })
+                Cell(title = "创建对话消息通知", link = true, onClick = {
+                    val person = Person.Builder().setName("张三").build()
+                    NotificationController.createMessaging(
+                        channelId = "dialog",
+                        notifyId = (curTime / 1000).toInt(),
+                        title = "两条新消息",
+                        content = "--",
+                        smallIcon = R.drawable.ic_launcher_foreground,
+                        person = person,
+                        tapIntent = getIntent(),
+                        bindMessages = {
+                            it.addMessage(
+                                "你好，我是张三",
+                                curTime - 2000,
+                                person
+                            )
+                            it.addMessage(
+                                "周四晚上你有空参加校园活动吗？",
+                                curTime,
+                                person
+                            )
+                        }
+                    )
+                })
+                Cell(title = "创建群聊天消息通知", link = true, onClick = {
+                    val person = Person.Builder().setName("张三").build()
+                    val person2 = Person.Builder().setName("李四").build()
+                    NotificationController.createMessaging(
+                        channelId = "dialog",
+                        notifyId = (curTime / 1000).toInt(),
+                        title = "两条新消息",
+                        content = "--",
+                        smallIcon = R.drawable.ic_launcher_foreground,
+                        person = person,
+                        tapIntent = getIntent(),
+                        bindMessages = {
+                            it.conversationTitle = "群聊名称"
+                            it.addMessage(
+                                "你好，我是张三",
+                                curTime - 2000,
+                                person
+                            )
+                            it.addMessage(
+                                "周四晚上你有空参加校园活动吗？",
+                                curTime - 1000,
+                                person
+                            )
+                            it.addMessage(
+                                "你好，我是李四",
+                                curTime - 500,
+                                person2
+                            )
+                            it.addMessage(
+                                "我有空，你呢？",
+                                curTime,
+                                person2
+                            )
+                        }
                     )
                 })
             }

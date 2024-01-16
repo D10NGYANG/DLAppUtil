@@ -19,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.app.Person
 import com.d10ng.app.demo.MainActivity
@@ -29,10 +30,13 @@ import com.d10ng.app.managers.NotificationController
 import com.d10ng.app.managers.PermissionManager
 import com.d10ng.app.utils.goToAppNotificationChannelSetting
 import com.d10ng.app.utils.goToAppNotificationSetting
+import com.d10ng.common.calculate.isOnlyNumber
+import com.d10ng.compose.model.UiViewModelManager
 import com.d10ng.compose.ui.AppColor
 import com.d10ng.compose.ui.PageTransitions
 import com.d10ng.compose.ui.base.Cell
 import com.d10ng.compose.ui.base.CellGroup
+import com.d10ng.compose.ui.dialog.builder.InputDialogBuilder
 import com.d10ng.compose.ui.navigation.NavBar
 import com.d10ng.datelib.curTime
 import com.ramcosta.composedestinations.annotation.Destination
@@ -278,6 +282,35 @@ private fun NotificationControllerScreenView() {
                             )
                         }
                     )
+                })
+            }
+            CellGroup(title = "角标", inset = true) {
+                val scope = rememberCoroutineScope()
+                Cell(title = "设置华为应用角标", link = true, onClick = {
+                    scope.launch {
+                        UiViewModelManager.showDialog(InputDialogBuilder(
+                            title = "设置华为应用角标",
+                            inputs = listOf(
+                                InputDialogBuilder.Input(
+                                    label = "角标数",
+                                    initValue = "10",
+                                    keyboardType = KeyboardType.Number,
+                                    verify = {
+                                        (it.isOnlyNumber() && it.isNotEmpty()).let { res ->
+                                            InputDialogBuilder.Verify(
+                                                res,
+                                                if (res) "" else "请输入数字"
+                                            )
+                                        }
+                                    }
+                                )
+                            ),
+                            onConfirmClick = {
+                                NotificationController.showHuaweiBadge(it[0].toInt())
+                                true
+                            }
+                        ))
+                    }
                 })
             }
         }

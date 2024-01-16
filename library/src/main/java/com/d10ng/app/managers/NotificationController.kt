@@ -6,6 +6,8 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.net.Uri
+import android.os.Bundle
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.Person
@@ -395,5 +397,31 @@ object NotificationController {
      */
     fun cancelAll() {
         manager.cancelAll()
+    }
+
+    /**
+     * 显示华为手机的应用角标
+     * > 需要权限：com.huawei.android.launcher.permission.CHANGE_BADGE、android.permission.INTERNET
+     * > 官方文档：https://developer.huawei.com/consumer/cn/doc/Corner-Guides/30802
+     * @param number Int 角标数量
+     */
+    fun showHuaweiBadge(number: Int) {
+        runCatching {
+            with(ctx) {
+                val launcherClassName = packageManager.getLaunchIntentForPackage(packageName)
+                    ?.component?.className ?: return
+                val bundle = Bundle().apply {
+                    putString("package", packageName)
+                    putString("class", launcherClassName)
+                    putInt("badgenumber", number)
+                }
+                contentResolver.call(
+                    Uri.parse("content://com.huawei.android.launcher.settings/badge/"),
+                    "change_badge",
+                    null,
+                    bundle
+                )
+            }
+        }.onFailure { it.printStackTrace() }
     }
 }

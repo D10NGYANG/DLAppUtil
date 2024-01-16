@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- 网络权限，华为角标也需要声明网络权限才可使用 -->
+    <uses-permission android:name="android.permission.INTERNET" />
     <!-- 网络状态 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- WIFI状态 -->
@@ -10,6 +12,8 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!-- 振动 -->
     <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- 华为角标 -->
+    <uses-permission android:name="com.huawei.android.launcher.permission.CHANGE_BADGE" />
 
     <application>
         <provider

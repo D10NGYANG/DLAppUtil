@@ -19,6 +19,7 @@ import com.d10ng.app.demo.pages.destinations.NetworkStatusManagerScreenDestinati
 import com.d10ng.app.demo.pages.destinations.NotificationControllerScreenDestination
 import com.d10ng.app.demo.pages.destinations.PermissionManagerScreenDestination
 import com.d10ng.app.demo.pages.destinations.SensorStatusManagerScreenDestination
+import com.d10ng.app.demo.pages.destinations.SmsControllerScreenDestination
 import com.d10ng.app.demo.pages.destinations.SystemManagerScreenDestination
 import com.d10ng.app.demo.utils.go
 import com.d10ng.app.utils.goToSystemHome
@@ -79,7 +80,7 @@ private fun HomeScreenView(
                     go(ContactManagerScreenDestination.route)
                 })
                 Cell(title = "短信管理器", link = true, onClick = {
-                    //go(AppManagerScreenDestination.route)
+                    go(SmsControllerScreenDestination.route)
                 })
                 Cell(title = "图片媒体管理器", link = true, onClick = {
                     //go(AppManagerScreenDestination.route)

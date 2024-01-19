@@ -19,12 +19,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.d10ng.app.demo.utils.back
 import com.d10ng.app.managers.PermissionManager
 import com.d10ng.app.managers.SmsController
+import com.d10ng.common.calculate.isOnlyNumber
 import com.d10ng.compose.model.UiViewModelManager
 import com.d10ng.compose.ui.AppColor
 import com.d10ng.compose.ui.AppText
@@ -32,6 +34,7 @@ import com.d10ng.compose.ui.PageTransitions
 import com.d10ng.compose.ui.base.Cell
 import com.d10ng.compose.ui.base.CellGroup
 import com.d10ng.compose.ui.base.CellRow
+import com.d10ng.compose.ui.dialog.builder.InputDialogBuilder
 import com.d10ng.compose.ui.navigation.NavBar
 import com.d10ng.compose.ui.sheet.SheetColumn
 import com.d10ng.compose.ui.sheet.builder.SheetBuilder
@@ -148,19 +151,57 @@ private fun SmsControllerScreenView() {
                             )
                         )
                     ) {
-                        scope.launch {
-                            runCatching {
-                                SmsController.sendText(
-                                    desAddress = "10010",
-                                    content = "cxll"
+                        UiViewModelManager.showDialog(InputDialogBuilder(
+                            title = "发送短信",
+                            inputs = listOf(
+                                InputDialogBuilder.Input(
+                                    initValue = "10010",
+                                    label = "目标号码",
+                                    keyboardType = KeyboardType.Number,
+                                    verify = { s ->
+                                        (s.isOnlyNumber() && s.isNotEmpty()).let {
+                                            InputDialogBuilder.Verify(
+                                                it,
+                                                if (it) "" else "请输入正确的号码"
+                                            )
+                                        }
+                                    }
+                                ),
+                                InputDialogBuilder.Input(
+                                    initValue = "101",
+                                    label = "短信内容",
+                                    keyboardType = KeyboardType.Text,
+                                    verify = { s ->
+                                        (s.isNotEmpty()).let {
+                                            InputDialogBuilder.Verify(
+                                                it,
+                                                if (it) "" else "请输入短信内容"
+                                            )
+                                        }
+                                    }
                                 )
-                            }.onFailure {
-                                it.printStackTrace()
-                                it.message?.let { m -> UiViewModelManager.showErrorNotify(m) }
-                            }.onSuccess {
-                                UiViewModelManager.showSuccessToast("发送成功")
+                            ),
+                            onConfirmClick = { list ->
+                                scope.launch {
+                                    runCatching {
+                                        SmsController.sendText(
+                                            desAddress = list[0],
+                                            content = list[1]
+                                        )
+                                    }.onFailure {
+                                        it.printStackTrace()
+                                        it.message?.let { m ->
+                                            UiViewModelManager.showErrorNotify(
+                                                m
+                                            )
+                                        }
+                                    }.onSuccess {
+                                        UiViewModelManager.showSuccessToast("发送成功")
+                                    }
+                                }
+                                true
                             }
-                        }
+                        ))
                     } else {
                         UiViewModelManager.showFailToast("权限不足")
                     }

@@ -18,6 +18,7 @@ import com.d10ng.app.demo.pages.destinations.LocationStatusManagerScreenDestinat
 import com.d10ng.app.demo.pages.destinations.NetworkStatusManagerScreenDestination
 import com.d10ng.app.demo.pages.destinations.NotificationControllerScreenDestination
 import com.d10ng.app.demo.pages.destinations.PermissionManagerScreenDestination
+import com.d10ng.app.demo.pages.destinations.PhotoManagerScreenDestination
 import com.d10ng.app.demo.pages.destinations.SensorStatusManagerScreenDestination
 import com.d10ng.app.demo.pages.destinations.SmsControllerScreenDestination
 import com.d10ng.app.demo.pages.destinations.SystemManagerScreenDestination
@@ -83,7 +84,7 @@ private fun HomeScreenView(
                     go(SmsControllerScreenDestination.route)
                 })
                 Cell(title = "图片媒体管理器", link = true, onClick = {
-                    //go(AppManagerScreenDestination.route)
+                    go(PhotoManagerScreenDestination.route)
                 })
             }
             CellGroup(title = "状态", inset = true) {

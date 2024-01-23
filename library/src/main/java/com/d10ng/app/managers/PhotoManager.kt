@@ -2,14 +2,20 @@ package com.d10ng.app.managers
 
 import android.app.Activity
 import android.app.Application
+import android.content.ContentValues
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.media.MediaScannerConnection
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import androidx.activity.ComponentActivity
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import com.d10ng.app.startup.ctx
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -17,6 +23,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.io.FileInputStream
 import java.io.FileOutputStream
 
 /**
@@ -25,8 +32,6 @@ import java.io.FileOutputStream
  * @Date 2023/11/27 09:41
  */
 object PhotoManager {
-
-    private lateinit var application: Application
 
     private val scope = CoroutineScope(Dispatchers.IO)
 
@@ -41,38 +46,13 @@ object PhotoManager {
     private val resultFlow = MutableSharedFlow<String?>()
 
     internal fun init(app: Application) {
-        application = app.apply {
+        app.apply {
             registerActivityLifecycleCallbacks(object : Application.ActivityLifecycleCallbacks {
                 override fun onActivityCreated(p0: Activity, p1: Bundle?) {
                     if (p0 !is ComponentActivity) return
                     launcherMap[p0] =
                         p0.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                            if (result.resultCode == Activity.RESULT_OK) {
-                                val data = result.data!!
-                                // 选择到图片的uri
-                                val uri = data.data!!
-                                // 选择到图片的文件名
-                                var fileName: String? = null
-                                val cursor = contentResolver.query(uri, null, null, null, null)
-                                if (cursor != null && cursor.moveToFirst()) {
-                                    fileName = cursor.getString(
-                                        cursor.getColumnIndexOrThrow(
-                                            MediaStore.Images.Media.DISPLAY_NAME
-                                        )
-                                    )
-                                    cursor.close()
-                                }
-                                val file =
-                                    File(cacheDir, fileName?.split("/")?.last() ?: "select.jpg")
-                                contentResolver.openInputStream(uri)?.use { inputStream ->
-                                    FileOutputStream(file).use { outputStream ->
-                                        inputStream.copyTo(outputStream)
-                                    }
-                                }
-                                scope.launch { resultFlow.emit(file.path) }
-                            } else {
-                                scope.launch { resultFlow.emit(null) }
-                            }
+                            handlePickPhotoResult(result)
                         }
                     topActivity = p0
                 }
@@ -96,6 +76,37 @@ object PhotoManager {
                     if (topActivity == p0) topActivity = null
                 }
             })
+        }
+    }
+
+    /**
+     * 处理选择图片结果
+     * @param result ActivityResult
+     */
+    private fun handlePickPhotoResult(result: ActivityResult) {
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data = result.data!!
+            // 选择到图片的uri
+            val uri = data.data!!
+            // 选择到图片的文件名
+            var fileName: String? = null
+            ctx.contentResolver.query(
+                uri, null, null, null, null
+            )?.use {
+                if (it.moveToFirst()) {
+                    fileName =
+                        it.getString(it.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME))
+                }
+            }
+            val file = File(ctx.cacheDir, fileName?.split("/")?.last() ?: "select.jpg")
+            ctx.contentResolver.openInputStream(uri)?.use { inputStream ->
+                FileOutputStream(file).use { outputStream ->
+                    inputStream.copyTo(outputStream)
+                }
+            }
+            scope.launch { resultFlow.emit(file.path) }
+        } else {
+            scope.launch { resultFlow.emit(null) }
         }
     }
 
@@ -190,5 +201,49 @@ object PhotoManager {
         }
 
         return inSampleSize
+    }
+
+    /**
+     * 保存图片到相册
+     * > 需要权限：android.permission.WRITE_EXTERNAL_STORAGE
+     * @param file File 图片文件
+     * @param albumName String 相册名称
+     */
+    fun saveImageToGallery(file: File, albumName: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val values = ContentValues().apply {
+                put(MediaStore.MediaColumns.DISPLAY_NAME, file.name)
+                put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg") // or "image/png"
+                put(
+                    MediaStore.MediaColumns.RELATIVE_PATH,
+                    "${Environment.DIRECTORY_PICTURES}/$albumName"
+                )
+            }
+
+            val uri =
+                ctx.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+            ctx.contentResolver.openOutputStream(uri ?: return).use { outputStream ->
+                FileInputStream(file).use { inputStream ->
+                    inputStream.copyTo(outputStream ?: return)
+                }
+            }
+
+        } else {
+            // 旧版本的处理方式
+            val destination =
+                File(ctx.getExternalFilesDir(Environment.DIRECTORY_PICTURES), albumName)
+            if (!destination.exists()) {
+                destination.mkdirs()
+            }
+            val newFile = File(destination, file.name)
+            FileInputStream(file).use { input ->
+                FileOutputStream(newFile).use { output ->
+                    input.copyTo(output)
+                }
+            }
+
+            // 最后通知图库更新
+            MediaScannerConnection.scanFile(ctx, arrayOf(newFile.toString()), null, null)
+        }
     }
 }

@@ -37,7 +37,7 @@ class PhysicalButtonAccessibilityService : AccessibilityService() {
          */
         fun start() {
             val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
-            ActivityManager.top().value?.startActivity(intent)
+            ActivityManager.top()?.startActivity(intent)
         }
 
         // 长按时间

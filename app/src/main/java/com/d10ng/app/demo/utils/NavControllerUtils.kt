@@ -18,7 +18,7 @@ object NavControllerUtils {
         map[activity] = navController
     }
 
-    fun getTop() = ActivityManager.top().value?.let { map[it] }
+    fun getTop() = ActivityManager.top()?.let { map[it] }
 }
 
 /**

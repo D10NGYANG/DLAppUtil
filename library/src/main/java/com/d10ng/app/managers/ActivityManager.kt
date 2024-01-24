@@ -18,9 +18,11 @@ object ActivityManager {
 
     /** 页面列表 */
     private val activityListFlow: MutableStateFlow<List<Activity>> = MutableStateFlow(listOf())
+    val listFlow = activityListFlow.asStateFlow()
 
     /** 栈顶页面 */
     private val topActivityFlow: MutableStateFlow<Activity?> = MutableStateFlow(null)
+    val topFlow = topActivityFlow.asStateFlow()
 
     internal fun init(app: Application) {
         application = app.apply {
@@ -55,35 +57,23 @@ object ActivityManager {
     }
 
     /**
-     * 获取Activity列表
-     * @return StateFlow<List<Activity>>
-     */
-    fun list() = activityListFlow.asStateFlow()
-
-    /**
-     * 获取最顶部的Activity
-     * @return StateFlow<Activity?>
-     */
-    fun top() = topActivityFlow.asStateFlow()
-
-    /**
      * 获取Activity实例
      * @return T?
      */
-    inline fun <reified T : Activity> getActivity(): T? {
-        return list().value.find { it::class == T::class } as? T
+    inline fun <reified T : Activity> get(): T? {
+        return listFlow.value.find { it::class == T::class } as? T
     }
 
     /**
      * 获取当前Activity实例
      * @return Activity?
      */
-    fun current() = top().value
+    fun top() = topFlow.value
 
     /**
      * 注销最顶部的Activity
      */
     fun finishTop() {
-        top().value?.finish()
+        top()?.finish()
     }
 }

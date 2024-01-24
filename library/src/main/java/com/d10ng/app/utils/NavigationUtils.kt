@@ -13,7 +13,7 @@ import com.d10ng.app.startup.ctx
 fun goToSystemHome() {
     val intent = Intent(Intent.ACTION_MAIN)
     intent.addCategory(Intent.CATEGORY_HOME)
-    ActivityManager.current()?.startActivity(intent)
+    ActivityManager.top()?.startActivity(intent)
 }
 
 /**
@@ -22,7 +22,7 @@ fun goToSystemHome() {
 fun goToSystemWifiSetting() {
     val intent = Intent(Settings.ACTION_WIFI_SETTINGS)
     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-    ActivityManager.current()?.startActivity(intent)
+    ActivityManager.top()?.startActivity(intent)
 }
 
 /**
@@ -31,7 +31,7 @@ fun goToSystemWifiSetting() {
 fun goToSystemLocationSetting() {
     val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-    ActivityManager.current()?.startActivity(intent)
+    ActivityManager.top()?.startActivity(intent)
 }
 
 /**
@@ -41,7 +41,7 @@ fun goToSystemLocationSetting() {
 fun goToBrowser(url: String) {
     val uri = Uri.parse(url)
     val intent = Intent(Intent.ACTION_VIEW, uri)
-    ActivityManager.current()?.startActivity(intent)
+    ActivityManager.top()?.startActivity(intent)
 }
 
 /**
@@ -52,7 +52,7 @@ fun goToSystemCall(phone: String) {
     val intent = Intent(Intent.ACTION_DIAL)
     val data = Uri.parse("tel:$phone")
     intent.data = data
-    ActivityManager.current()?.startActivity(intent)
+    ActivityManager.top()?.startActivity(intent)
 }
 
 /**
@@ -65,7 +65,7 @@ fun goToSystemSms(phone: String, content: String) {
     val data = Uri.parse("smsto:$phone")
     intent.data = data
     intent.putExtra("sms_body", content)
-    ActivityManager.current()?.startActivity(intent)
+    ActivityManager.top()?.startActivity(intent)
 }
 
 /**
@@ -75,7 +75,7 @@ fun goToAppSetting() {
     val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
     val uri = Uri.fromParts("package", ctx.packageName, null)
     intent.data = uri
-    ActivityManager.current()?.startActivity(intent)
+    ActivityManager.top()?.startActivity(intent)
 }
 
 /**
@@ -85,7 +85,7 @@ fun goToAppNotificationSetting() {
     val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
         putExtra(Settings.EXTRA_APP_PACKAGE, ctx.packageName)
     }
-    ActivityManager.current()?.startActivity(intent)
+    ActivityManager.top()?.startActivity(intent)
 }
 
 /**
@@ -97,7 +97,7 @@ fun goToAppNotificationChannelSetting(channelId: String) {
         putExtra(Settings.EXTRA_APP_PACKAGE, ctx.packageName)
         putExtra(Settings.EXTRA_CHANNEL_ID, channelId)
     }
-    ActivityManager.current()?.startActivity(intent)
+    ActivityManager.top()?.startActivity(intent)
 }
 
 /**

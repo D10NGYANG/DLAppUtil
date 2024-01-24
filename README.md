@@ -12,8 +12,6 @@ Android APP 通用工具
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
-        google()
-        mavenCentral()
         maven("https://raw.githubusercontent.com/D10NGYANG/maven-repo/main/repository")
     }
 }
@@ -46,6 +44,7 @@ dependencies {
 - `AppManager` [App管理器](docs/manager/AppManager.md)
 - `SystemManager` [系统管理器](docs/manager/SystemManager.md)
 - `PermissionManager` [权限管理器](docs/manager/PermissionManager.md)
+- `NotificationController` [通知管理器](docs/manager/NotificationController.md)
 
 ### 状态
 

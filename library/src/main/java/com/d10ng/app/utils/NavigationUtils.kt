@@ -17,6 +17,24 @@ fun goToSystemHome() {
 }
 
 /**
+ * 打开系统Wi-Fi设置页面
+ */
+fun goToSystemWifiSetting() {
+    val intent = Intent(Settings.ACTION_WIFI_SETTINGS)
+    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+    ActivityManager.current()?.startActivity(intent)
+}
+
+/**
+ * 打开位置信息设置页面
+ */
+fun goToSystemLocationSetting() {
+    val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+    ActivityManager.current()?.startActivity(intent)
+}
+
+/**
  * 打开浏览器访问网站
  * @param url 网站地址
  */
@@ -47,24 +65,6 @@ fun goToSystemSms(phone: String, content: String) {
     val data = Uri.parse("smsto:$phone")
     intent.data = data
     intent.putExtra("sms_body", content)
-    ActivityManager.current()?.startActivity(intent)
-}
-
-/**
- * 打开系统Wi-Fi设置页面
- */
-fun goToSystemWifiSetting() {
-    val intent = Intent(Settings.ACTION_WIFI_SETTINGS)
-    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-    ActivityManager.current()?.startActivity(intent)
-}
-
-/**
- * 打开位置信息设置页面
- */
-fun goToSystemLocationSetting() {
-    val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
     ActivityManager.current()?.startActivity(intent)
 }
 

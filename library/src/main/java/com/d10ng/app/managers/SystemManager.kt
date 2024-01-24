@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.media.RingtoneManager
+import android.net.Uri
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
@@ -67,10 +68,10 @@ fun vibrate(time: Long = 500) {
 
 /**
  * 播放系统提示音
+ * @param uri Uri 不填则是默认提示音
  */
-fun playRingtone() {
-    val soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-    val ringtone = RingtoneManager.getRingtone(ctx, soundUri)
+fun playRingtone(uri: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)) {
+    val ringtone = RingtoneManager.getRingtone(ctx, uri)
     ringtone.play()
 }
 

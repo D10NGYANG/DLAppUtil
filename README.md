@@ -44,6 +44,7 @@ dependencies {
 
 - `ActivityManager` [Activity管理器](docs/manager/ActivityManager.md)
 - `AppManager` [App管理器](docs/manager/AppManager.md)
+- `SystemManager` [系统管理器](docs/manager/SystemManager.md)
 
 ### 状态
 

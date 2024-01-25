@@ -1,3 +1,5 @@
+[TOC]
+
 # ContactManager
 
 联系人管理器

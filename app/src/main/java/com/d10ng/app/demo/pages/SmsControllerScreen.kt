@@ -113,7 +113,7 @@ private fun SmsControllerScreenView() {
                     onClick = {
                         if (PermissionManager.has(Manifest.permission.READ_SMS)) {
                             scope.launch {
-                                showSmsList(SmsController.readLatestByTime(curTime - 7 * 24 * 60 * 60 * 1000))
+                                showSmsList(SmsController.readAfter(curTime - 7 * 24 * 60 * 60 * 1000))
                             }
                         } else {
                             UiViewModelManager.showFailToast("权限不足")

@@ -46,6 +46,7 @@ dependencies {
 - `PermissionManager` [权限管理器](docs/manager/PermissionManager.md)
 - `NotificationController` [通知管理器](docs/manager/NotificationController.md)
 - `ContactManager` [联系人管理器](docs/manager/ContactManager.md)
+- `SmsController` [短信管理器](docs/manager/SmsController.md)
 
 ### 状态
 

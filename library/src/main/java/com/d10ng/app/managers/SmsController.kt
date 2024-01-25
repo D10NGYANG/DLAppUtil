@@ -93,7 +93,7 @@ object SmsController {
                     time = m.timestampMillis
                 }
                 while (data.id == 0.toString()) {
-                    readLatestByTime(data.time).find {
+                    readAfter(data.time).find {
                         it.phone == data.phone && it.content.contains(
                             data.content
                         )
@@ -163,7 +163,7 @@ object SmsController {
      * @param timestamp Long 时间戳，单位毫秒，获取的是大于等于这个时间的短信
      * @return List<Data>
      */
-    fun readLatestByTime(timestamp: Long): List<Data> {
+    fun readAfter(timestamp: Long): List<Data> {
         try {
             ctx.contentResolver.query(
                 inboxUri, projection,

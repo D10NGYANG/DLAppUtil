@@ -209,7 +209,7 @@ object PhotoManager {
      * @param file File 图片文件
      * @param albumName String 相册名称
      */
-    fun saveImageToGallery(file: File, albumName: String) {
+    fun saveToAlbum(file: File, albumName: String) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             val values = ContentValues().apply {
                 put(MediaStore.MediaColumns.DISPLAY_NAME, file.name)

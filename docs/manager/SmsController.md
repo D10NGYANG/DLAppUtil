@@ -51,7 +51,10 @@ var time: Long = 0
 
 <manifest>
     <!-- 读取短信 -->
+    <uses-feature android:name="android.hardware.telephony" android:required="false" />
+
     <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
 </manifest>
 ```
 
@@ -59,7 +62,13 @@ var time: Long = 0
 
 ```kotlin
 CoroutineScope(Dispatchers.IO).launch {
-    if (PermissionManager.request(Manifest.permission.READ_SMS)) {
+    if (PermissionManager.request(
+            arrayOf(
+                Manifest.permission.READ_SMS,
+                Manifest.permission.RECEIVE_SMS
+            )
+        )
+    ) {
         // 读取短信
         val smsFlow: SharedFlow<SmsController.Data> = SmsController.receiveFlow
         // 监听短信

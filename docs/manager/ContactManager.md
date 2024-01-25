@@ -2,6 +2,23 @@
 
 联系人管理器
 
+---
+
+**参数说明**
+
+`ContactManager.Data`
+
+> 联系人数据
+
+```kotlin
+// 联系人姓名
+val name: String
+// 联系人电话号码
+val number: String
+```
+
+---
+
 ## ① 选择联系人
 
 ```kotlin

@@ -52,6 +52,7 @@ dependencies {
 ### 状态
 
 - `BatteryStatusManager` [电池状态管理器](docs/status/BatteryStatusManager.md)
+- `LocationStatusManager` [定位状态管理器](docs/status/LocationStatusManager.md)
 
 ### 工具
 

@@ -59,6 +59,8 @@ dependencies {
 
 ### 工具
 
+- `NavigationUtils` [常用页面导航工具](docs/util/NavigationUtils.md)
+
 ### 资源
 
 ### 服务

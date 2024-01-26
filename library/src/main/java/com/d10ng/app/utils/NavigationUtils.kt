@@ -8,7 +8,7 @@ import com.d10ng.app.managers.ActivityManager
 import com.d10ng.app.startup.ctx
 
 /**
- * 回到手机首页
+ * 回到系统桌面
  */
 fun goToSystemHome() {
     val intent = Intent(Intent.ACTION_MAIN)
@@ -90,7 +90,7 @@ fun goToAppNotificationSetting() {
 
 /**
  * 打开App通知渠道设置页面
- * @param channelId String
+ * @param channelId String 通知渠道ID
  */
 fun goToAppNotificationChannelSetting(channelId: String) {
     val intent = Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS).apply {
@@ -103,7 +103,7 @@ fun goToAppNotificationChannelSetting(channelId: String) {
 /**
  * 获取跳转页面Intent
  * @receiver Activity
- * @param clz Class<*>
+ * @param clz Class<*> 跳转页面
  * @return Intent
  */
 fun Activity.getClearTopIntent(clz: Class<*>): Intent {
@@ -115,7 +115,7 @@ fun Activity.getClearTopIntent(clz: Class<*>): Intent {
 /**
  * 跳转下一个页面，如果栈中有相同的ACT会只保留最新一个到前台
  * @receiver Activity
- * @param clz Class<*>
+ * @param clz Class<*> 跳转页面
  */
 fun Activity.goTo(clz: Class<*>) {
     val intent = getClearTopIntent(clz)
@@ -125,7 +125,7 @@ fun Activity.goTo(clz: Class<*>) {
 /**
  * 清空整个Task并跳转页面
  * @receiver Activity
- * @param clz Class<*>
+ * @param clz Class<*> 跳转页面
  */
 fun Activity.clearTaskGoTo(clz: Class<*>) {
     val intent = Intent(this, clz)
@@ -136,7 +136,7 @@ fun Activity.clearTaskGoTo(clz: Class<*>) {
 /**
  * 关闭当前页面并跳转下一个页面
  * @receiver Activity
- * @param clz Class<*>
+ * @param clz Class<*> 跳转页面
  */
 fun Activity.finishGoTo(clz: Class<*>) {
     goTo(clz)
@@ -145,8 +145,9 @@ fun Activity.finishGoTo(clz: Class<*>) {
 
 /**
  * 跳转下一个页面，并带返回结果
- * @param clz 跳转页面
- * @param requestCode 请求码
+ * @receiver Activity
+ * @param clz Class<*> 跳转页面
+ * @param requestCode Int 请求码
  */
 fun Activity.goToForResult(clz: Class<*>, requestCode: Int) {
     val intent = getClearTopIntent(clz)
@@ -156,10 +157,10 @@ fun Activity.goToForResult(clz: Class<*>, requestCode: Int) {
 /**
  * 启动百度地图，显示地标位置
  * http://api.map.baidu.com/marker?location=40.047669,116.313082&title=我的位置&content=百度奎科大厦&output=html&src=webapp.baidu.openAPIdemo
- * @param lat Double
- * @param lng Double
- * @param title String
- * @param content String
+ * @param lat Double 纬度
+ * @param lng Double 经度
+ * @param title String 标题
+ * @param content String 内容
  * @param coordinate String bd09ll（百度经纬度坐标）bd09mc（百度墨卡托坐标）gcj02（经国测局加密的坐标)wgs84（gps获取的原始坐标）
  */
 fun startBaiDuMapMaker(
@@ -182,13 +183,12 @@ fun startBaiDuMapMaker(
 /**
  * 启动百度地图，规划驾车路径
  * http://api.map.baidu.com/direction?origin=latlng:34.264642646862,108.95108518068|name:起点&destination=latlng:23.157471,113.042738|name:终点&mode=driving&region=1&output=html&src=webapp.baidu.openAPIdemo
- * @receiver Activity
- * @param startLat Double
- * @param startLng Double
- * @param startName String
- * @param endLat Double
- * @param endLng Double
- * @param endName String
+ * @param startLat Double 起点纬度
+ * @param startLng Double 起点经度
+ * @param startName String 起点名称
+ * @param endLat Double 终点纬度
+ * @param endLng Double 终点经度
+ * @param endName String 终点名称
  * @param coordinate String bd09ll（百度经纬度坐标）bd09mc（百度墨卡托坐标）gcj02（经国测局加密的坐标)wgs84（gps获取的原始坐标）
  */
 fun startBaiduMapNavigation(
@@ -212,10 +212,9 @@ fun startBaiduMapNavigation(
 /**
  * 启动高德地图，显示地标位置
  * https://uri.amap.com/marker?position=121.287689,31.234527&name=park&src=mypage&coordinate=gaode&callnative=0
- * @receiver Activity
- * @param lat Double
- * @param lng Double
- * @param name String
+ * @param lat Double 纬度
+ * @param lng Double 经度
+ * @param name String 名称
  * @param coordinate String 坐标系参数coordinate=gaode,表示高德坐标（gcj02坐标），coordinate=wgs84,表示wgs84坐标（GPS原始坐标）
  */
 fun startGaoDeMapMaker(
@@ -237,13 +236,12 @@ fun startGaoDeMapMaker(
 /**
  * 启动高德地图，规划驾车路径
  * https://uri.amap.com/navigation?from=116.478346,39.997361,startpoint&to=116.3246,39.966577,endpoint&via=116.402796,39.936915,midwaypoint&mode=car&policy=1&src=mypage&coordinate=gaode&callnative=0
- * @receiver Activity
- * @param startLat Double
- * @param startLng Double
- * @param startName String
- * @param endLat Double
- * @param endLng Double
- * @param endName String
+ * @param startLat Double 起点纬度
+ * @param startLng Double 起点经度
+ * @param startName String 起点名称
+ * @param endLat Double 终点纬度
+ * @param endLng Double 终点经度
+ * @param endName String 终点名称
  * @param coordinate String 坐标系参数coordinate=gaode,表示高德坐标（gcj02坐标），coordinate=wgs84,表示wgs84坐标（GPS原始坐标）
  */
 fun startGaoDeMapNavigation(

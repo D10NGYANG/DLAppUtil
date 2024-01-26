@@ -65,6 +65,8 @@ dependencies {
 
 ### 资源
 
+- `AssetsUtils` [Assets资源读取工具](docs/resource/AssetsUtils.md)
+
 ### 服务
 
 - `PhysicalButtonAccessibilityService` [手持机机身按键监听服务](docs/service/PhysicalButtonAccessibilityService.md)

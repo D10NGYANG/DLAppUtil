@@ -35,8 +35,8 @@ fun readAssetsFile(fileName: String): String {
 
 /**
  * 将 Assets 中的json文件 读取成 JSONObject
- * @param fileName [String] 文件名 "xxx.json"
- * @return [String]
+ * @param fileName String 文件名 "xxx.json"
+ * @return JSONObject
  */
 fun getAssetsJSONObject(fileName: String): JSONObject {
     val str = readAssetsFile(fileName)
@@ -49,8 +49,8 @@ fun getAssetsJSONObject(fileName: String): JSONObject {
 
 /**
  * 将 Assets 中的json文件 读取成 JSONArray
- * @param fileName [String] 文件名 "xxx.json"
- * @return [String]
+ * @param fileName String 文件名 "xxx.json"
+ * @return JSONArray
  */
 fun getAssetsJSONArray(fileName: String): JSONArray {
     val str = readAssetsFile(fileName)
@@ -63,8 +63,8 @@ fun getAssetsJSONArray(fileName: String): JSONArray {
 
 /**
  * 将 Assets 中的图片文件 读取成 Bitmap
- * @param fileName [String] 文件名 "xxx.png"
- * @return [Bitmap]?
+ * @param fileName String 文件名 "xxx.png"
+ * @return Bitmap?
  */
 fun getAssetsBitmap(fileName: String): Bitmap? {
     val ins = ctx.assets.open(fileName)

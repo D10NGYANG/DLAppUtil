@@ -60,6 +60,7 @@ dependencies {
 ### 工具
 
 - `NavigationUtils` [常用页面导航工具](docs/util/NavigationUtils.md)
+- `DisplayUtils` [显示工具](docs/util/DisplayUtils.md)
 
 ### 资源
 

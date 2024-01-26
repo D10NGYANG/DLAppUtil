@@ -45,9 +45,11 @@ class PhysicalButtonAccessibilityService : AccessibilityService() {
 
         // 单击按键事件
         private val clickEvent = MutableSharedFlow<Int>()
+        val clickEventFlow = clickEvent.asSharedFlow()
 
         // 长按按键事件
         private val longPressEvent = MutableSharedFlow<Int>()
+        val longPressEventFlow = longPressEvent.asSharedFlow()
 
         // 按键开始按的时间
         private val downTimeMap = mutableMapOf<Int, Long>()
@@ -71,9 +73,6 @@ class PhysicalButtonAccessibilityService : AccessibilityService() {
                 runBlocking { clickEvent.emit(keyCode) }
             }
         }
-
-        fun getClickEvent() = clickEvent.asSharedFlow()
-        fun getLongPressEvent() = longPressEvent.asSharedFlow()
     }
 
     override fun onKeyEvent(event: KeyEvent?): Boolean {

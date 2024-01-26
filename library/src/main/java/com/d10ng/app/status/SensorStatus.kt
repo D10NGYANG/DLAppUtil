@@ -19,10 +19,15 @@ class SensorStatus(
 ) {
 
     class Event(
+        // 精度
         val accuracy: Int,
+        // 是否是不连续事件的第一个事件
         val firstEventAfterDiscontinuity: Boolean,
+        // 传感器
         val sensor: Sensor,
+        // 时间戳
         val timestamp: Long,
+        // 传感器数据
         val values: FloatArray
     )
 

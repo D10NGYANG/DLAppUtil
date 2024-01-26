@@ -55,6 +55,7 @@ dependencies {
 - `LocationStatusManager` [定位状态管理器](docs/status/LocationStatusManager.md)
 - `GnssStatusManager` [卫星状态管理器](docs/status/GnssStatusManager.md)
 - `NetworkStatusManager` [网络状态管理器](docs/status/NetworkStatusManager.md)
+- `SensorStatus` [传感器状态](docs/status/SensorStatus.md)
 
 ### 工具
 

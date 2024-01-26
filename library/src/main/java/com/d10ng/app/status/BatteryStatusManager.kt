@@ -6,9 +6,13 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.BatteryManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 
 /**
  * 电池状态管理器
@@ -68,6 +72,8 @@ object BatteryStatusManager {
         }
     }
 
+    private val scope = CoroutineScope(Dispatchers.IO)
+
     // 电量状态
     private val _batteryFlow = MutableStateFlow<Float?>(null)
     val batteryFlow = _batteryFlow.asStateFlow()
@@ -78,6 +84,7 @@ object BatteryStatusManager {
 
     // 是否正在充电
     val isChargingFlow = chargeTypeFlow.map { it != null }
+        .stateIn(scope, SharingStarted.Eagerly, false)
 
     // 健康度
     private val _healthFlow = MutableStateFlow(HealthType.UNKNOWN)

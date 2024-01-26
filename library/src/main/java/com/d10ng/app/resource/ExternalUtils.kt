@@ -75,6 +75,7 @@ fun copyFolder(sourcePath: String, destinationPath: String) {
 
 /**
  * 写入文件
+ * > 如果文件不存在则创建，如果存在则追加
  * @param path String 文件路径
  * @param content String 写入内容
  */

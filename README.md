@@ -66,6 +66,7 @@ dependencies {
 ### 资源
 
 - `AssetsUtils` [Assets资源读取工具](docs/resource/AssetsUtils.md)
+- `ExternalUtils` [外置存储器工具](docs/resource/ExternalUtils.md)
 
 ### 服务
 

@@ -5,6 +5,7 @@ import android.app.Application
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.os.Bundle
 import androidx.core.location.LocationManagerCompat
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,8 +26,16 @@ object LocationStatusManager {
         manager = app.getSystemService(LocationManager::class.java)
     }
 
-    private val locationListener = LocationListener { location ->
-        _statusFlow.value = location
+    private val locationListener = object : LocationListener {
+        override fun onLocationChanged(p0: Location) {
+            _statusFlow.value = p0
+        }
+
+        // 修复在Android8中开启定位监听导致崩溃的问题
+        @Suppress("DEPRECATED")
+        override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
+            println("LocationListener onStatusChanged")
+        }
     }
 
     /**

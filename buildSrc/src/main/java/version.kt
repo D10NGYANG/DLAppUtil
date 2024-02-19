@@ -10,15 +10,15 @@ const val kotlin_ver = "1.9.22"
 const val ksp_ver = "1.9.22-1.0.17"
 
 // kotlin ex
-const val kotlin_coroutines_ver = "1.7.3"
+const val kotlin_coroutines_ver = "1.8.0"
 
 // compose
-const val compose_compiler_ver = "1.5.8"
+const val compose_compiler_ver = "1.5.9"
 
 // compose ex
-const val compose_destinations_ver = "1.9.62"
+const val compose_destinations_ver = "1.10.1"
 
 // d10ng
-const val dl_compose_ver = "2.0.14"
+const val dl_compose_ver = "2.0.15"
 const val dl_date_ver = "1.9.1"
-const val dl_common_ver = "0.0.8"
+const val dl_common_ver = "0.0.9"

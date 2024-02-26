@@ -13,12 +13,12 @@ const val ksp_ver = "1.9.22-1.0.17"
 const val kotlin_coroutines_ver = "1.8.0"
 
 // compose
-const val compose_compiler_ver = "1.5.9"
+const val compose_compiler_ver = "1.5.10"
 
 // compose ex
 const val compose_destinations_ver = "1.10.1"
 
 // d10ng
-const val dl_compose_ver = "2.0.15"
+const val dl_compose_ver = "2.0.16"
 const val dl_date_ver = "1.9.1"
 const val dl_common_ver = "0.0.9"

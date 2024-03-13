@@ -11,6 +11,7 @@ import android.content.IntentFilter
 import android.database.Cursor
 import android.net.Uri
 import android.os.Build
+import android.os.PowerManager
 import android.provider.Telephony
 import android.telephony.SmsManager
 import android.telephony.SubscriptionManager
@@ -74,13 +75,20 @@ object SmsController {
 
     /**
      * 短信监听器
-     * > 需要权限：android.permission.RECEIVE_SMS
+     * > 需要权限：android.permission.RECEIVE_SMS、android.permission.WAKE_LOCK
      */
     class Receiver : BroadcastReceiver() {
         val scope = CoroutineScope(Dispatchers.IO)
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent?.action != Telephony.Sms.Intents.SMS_RECEIVED_ACTION) return
             val messages = Telephony.Sms.Intents.getMessagesFromIntent(intent) ?: return
+            // 创建唤醒锁
+            val powerManager = ctx.getSystemService(Context.POWER_SERVICE) as PowerManager
+            val wakeLock = powerManager.newWakeLock(
+                PowerManager.PARTIAL_WAKE_LOCK,
+                "${ctx.packageName}:wake:sms"
+            )
+            wakeLock?.acquire(10 * 60 * 1000L /*10 minutes*/)
             scope.launch {
                 val phoneSubId = intent.extras?.getInt("phone", -1) ?: -1
                 val fullMsg = messages.joinToString("") { it.messageBody ?: "" }
@@ -107,6 +115,7 @@ object SmsController {
                     delay(100)
                 }
                 _receiveFlow.emit(data)
+                wakeLock.release()
             }
         }
     }

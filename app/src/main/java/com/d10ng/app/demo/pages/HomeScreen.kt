@@ -17,6 +17,7 @@ import com.d10ng.app.demo.pages.destinations.GnssStatusManagerScreenDestination
 import com.d10ng.app.demo.pages.destinations.LocationStatusManagerScreenDestination
 import com.d10ng.app.demo.pages.destinations.NavigationUtilScreenDestination
 import com.d10ng.app.demo.pages.destinations.NetworkStatusManagerScreenDestination
+import com.d10ng.app.demo.pages.destinations.NmeaStatusManagerScreenDestination
 import com.d10ng.app.demo.pages.destinations.NotificationControllerScreenDestination
 import com.d10ng.app.demo.pages.destinations.PermissionManagerScreenDestination
 import com.d10ng.app.demo.pages.destinations.PhotoManagerScreenDestination
@@ -97,6 +98,9 @@ private fun HomeScreenView(
                 })
                 Cell(title = "GNSS状态", link = true, onClick = {
                     go(GnssStatusManagerScreenDestination.route)
+                })
+                Cell(title = "NMEA状态", link = true, onClick = {
+                    go(NmeaStatusManagerScreenDestination.route)
                 })
                 Cell(title = "网络状态", link = true, onClick = {
                     go(NetworkStatusManagerScreenDestination.route)

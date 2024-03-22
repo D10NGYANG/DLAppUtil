@@ -12,6 +12,7 @@ import com.d10ng.app.status.BatteryStatusManager
 import com.d10ng.app.status.GnssStatusManager
 import com.d10ng.app.status.LocationStatusManager
 import com.d10ng.app.status.NetworkStatusManager
+import com.d10ng.app.status.NmeaStatusManager
 
 /**
  * 启动初始化
@@ -35,6 +36,7 @@ internal class StartupInitializer : Initializer<Unit> {
         ContactManager.init(context)
         PhotoManager.init(context)
         BatteryStatusManager.init(context)
+        NmeaStatusManager.init(context)
     }
 
     override fun dependencies(): MutableList<Class<out Initializer<*>>> {

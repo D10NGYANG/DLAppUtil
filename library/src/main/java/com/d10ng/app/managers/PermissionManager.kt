@@ -2,11 +2,17 @@ package com.d10ng.app.managers
 
 import android.app.Activity
 import android.app.Application
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.d10ng.app.startup.ctx
 import kotlinx.coroutines.CoroutineScope
@@ -91,6 +97,26 @@ object PermissionManager {
         launcher.launch(permissions)
         resultFlow.filter { it.keys.containsAll(permissions.toList()) }.first().values.all { it }
     }
+
+    /**
+     * 请求管理外部存储空间权限
+     * @return Boolean
+     */
+    @RequiresApi(Build.VERSION_CODES.R)
+    suspend fun requestManageExternalStorage(): Boolean = withContext(Dispatchers.IO) {
+        val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION).apply {
+            data = Uri.parse("package:${ctx.packageName}")
+        }
+        ActivityManager.startActivityForResult(intent)
+        Environment.isExternalStorageManager()
+    }
+
+    /**
+     * 判断是否有外置存储器管理权限
+     * @return Boolean
+     */
+    @RequiresApi(Build.VERSION_CODES.R)
+    fun hasManageExternalStorage(): Boolean = Environment.isExternalStorageManager()
 
     /**
      * 检查权限

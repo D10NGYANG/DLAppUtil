@@ -85,3 +85,27 @@ CoroutineScope(Dispatchers.IO).launch {
     }
 }
 ```
+
+## ⑤ 获取外置存储器管理权限
+
+> 需要添加 `Manifest.permission.MANAGE_EXTERNAL_STORAGE` 权限
+
+```kotlin
+/**
+ * 请求管理外部存储空间权限
+ * @return Boolean
+ */
+@RequiresApi(Build.VERSION_CODES.R)
+suspend fun requestManageExternalStorage(): Boolean
+```
+
+## ⑥ 判断是否有外置存储器管理权限
+
+```kotlin
+/**
+ * 判断是否有管理外部存储空间权限
+ * @return Boolean
+ */
+@RequiresApi(Build.VERSION_CODES.R)
+fun hasManageExternalStorage(): Boolean
+```

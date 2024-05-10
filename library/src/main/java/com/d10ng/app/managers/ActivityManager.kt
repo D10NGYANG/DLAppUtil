@@ -3,9 +3,19 @@ package com.d10ng.app.managers
 import android.app.Activity
 import android.app.Application
 import android.app.Application.ActivityLifecycleCallbacks
+import android.content.Intent
 import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 /**
  * Activity管理器
@@ -15,6 +25,7 @@ import kotlinx.coroutines.flow.asStateFlow
 object ActivityManager {
 
     private lateinit var application: Application
+    private val scope = CoroutineScope(Dispatchers.IO)
 
     /** 页面列表 */
     private val activityListFlow: MutableStateFlow<List<Activity>> = MutableStateFlow(listOf())
@@ -24,6 +35,11 @@ object ActivityManager {
     private val topActivityFlow: MutableStateFlow<Activity?> = MutableStateFlow(null)
     val topFlow = topActivityFlow.asStateFlow()
 
+    /** 页面跳转获取结果执行器 */
+    private val launcherMap =
+        mutableMapOf<ComponentActivity, ActivityResultLauncher<Intent>>()
+    private val resultFlow = MutableSharedFlow<ActivityResult>()
+
     internal fun init(app: Application) {
         application = app.apply {
             registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
@@ -32,6 +48,13 @@ object ActivityManager {
                     if (list.contains(p0).not()) list += p0
                     activityListFlow.value = list
                     topActivityFlow.value = p0
+                    // 注册执行器
+                    if (p0 is ComponentActivity) {
+                        launcherMap[p0] =
+                            p0.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                                scope.launch { resultFlow.emit(result) }
+                            }
+                    }
                 }
 
                 override fun onActivityStarted(p0: Activity) {}
@@ -75,5 +98,15 @@ object ActivityManager {
      */
     fun finishTop() {
         top()?.finish()
+    }
+
+    /**
+     * 启动另一个Activity并等待回调结果
+     * @param intent Intent
+     * @return ActivityResult
+     */
+    suspend fun startActivityForResult(intent: Intent): ActivityResult {
+        launcherMap[top()!!]?.launch(intent)
+        return resultFlow.first()
     }
 }

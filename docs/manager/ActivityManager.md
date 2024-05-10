@@ -31,3 +31,9 @@ ActivityManager.finishTop()
 ```kotlin
 val mainAct: MainActivity? = ActivityManager.get<MainActivity>()
 ```
+
+## ⑥ 启动另一个Activity并等待回调结果
+
+```kotlin
+val result: ActivityResult = ActivityManager.startActivityForResult(intent)
+```

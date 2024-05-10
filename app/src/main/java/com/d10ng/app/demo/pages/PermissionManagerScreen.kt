@@ -1,6 +1,7 @@
 package com.d10ng.app.demo.pages
 
 import android.Manifest
+import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -68,6 +69,17 @@ private fun PermissionManagerScreenView() {
                         UiViewModelManager.showNotify(NotifyType.Primary, "定位权限申请结果：$res")
                     }
                 })
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    Cell(title = "申请存储管理权限（需要跳转）", link = true, onClick = {
+                        scope.launch {
+                            val res = PermissionManager.requestManageExternalStorage()
+                            UiViewModelManager.showNotify(
+                                NotifyType.Primary,
+                                "存储权限申请结果：$res"
+                            )
+                        }
+                    })
+                }
             }
         }
     }

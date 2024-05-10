@@ -72,5 +72,5 @@ dependencies {
     implementation(project(":library"))
 
     // 内存泄漏检查
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.13")
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.14")
 }

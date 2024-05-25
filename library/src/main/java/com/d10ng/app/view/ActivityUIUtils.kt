@@ -2,6 +2,7 @@ package com.d10ng.app.view
 
 import android.app.Activity
 import android.content.pm.ActivityInfo
+import android.view.WindowManager
 import androidx.core.view.WindowCompat
 
 /**
@@ -42,4 +43,12 @@ fun Activity.setStatusBar(fullScreen: Boolean = true, color: Int = 0, darkText: 
     // 设置状态栏字体颜色
     WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars =
         darkText
+}
+
+/**
+ * 保持屏幕常亮
+ * @receiver Activity
+ */
+fun Activity.keepScreenOn() {
+    window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 }

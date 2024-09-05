@@ -34,7 +34,7 @@ object LocationStatusManager {
         // 修复在Android8中开启定位监听导致崩溃的问题
         @Suppress("DEPRECATED")
         override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
-            println("LocationListener onStatusChanged")
+            println("LocationListener onStatusChanged $provider $status $extras")
         }
     }
 

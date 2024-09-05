@@ -16,6 +16,6 @@ const val kotlin_coroutines_ver = "1.9.0-RC.2"
 const val compose_destinations_ver = "1.10.2"
 
 // d10ng
-const val dl_compose_ver = "2.0.28"
+const val dl_compose_ver = "2.0.29"
 const val dl_date_ver = "2.0.0"
-const val dl_common_ver = "0.5.0"
+const val dl_common_ver = "0.5.1"

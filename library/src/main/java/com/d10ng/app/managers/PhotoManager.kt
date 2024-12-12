@@ -7,6 +7,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.MediaScannerConnection
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
@@ -14,6 +15,7 @@ import android.provider.MediaStore
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import com.d10ng.app.startup.ctx
 import kotlinx.coroutines.CoroutineScope
@@ -41,6 +43,8 @@ object PhotoManager {
     // 图片获取执行器
     private val launcherMap =
         mutableMapOf<ComponentActivity, ActivityResultLauncher<Intent>>()
+    private val launcherMediaMap =
+        mutableMapOf<ComponentActivity, ActivityResultLauncher<PickVisualMediaRequest>>()
 
     // 结果Flow
     private val resultFlow = MutableSharedFlow<String?>()
@@ -50,10 +54,18 @@ object PhotoManager {
             registerActivityLifecycleCallbacks(object : Application.ActivityLifecycleCallbacks {
                 override fun onActivityCreated(p0: Activity, p1: Bundle?) {
                     if (p0 !is ComponentActivity) return
-                    launcherMap[p0] =
-                        p0.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                            handlePickPhotoResult(result)
-                        }
+                    if (ActivityResultContracts.PickVisualMedia.isPhotoPickerAvailable(p0)) {
+                        launcherMediaMap[p0] =
+                            p0.registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+                                uri?.let { handlePickPhotoResult(it) }
+                            }
+                    } else {
+                        launcherMap[p0] =
+                            p0.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                                handlePickPhotoResult(result)
+                            }
+                    }
+
                     topActivity = p0
                 }
 
@@ -88,26 +100,30 @@ object PhotoManager {
             val data = result.data!!
             // 选择到图片的uri
             val uri = data.data!!
-            // 选择到图片的文件名
-            var fileName: String? = null
-            ctx.contentResolver.query(
-                uri, null, null, null, null
-            )?.use {
-                if (it.moveToFirst()) {
-                    fileName =
-                        it.getString(it.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME))
-                }
-            }
-            val file = File(ctx.cacheDir, fileName?.split("/")?.last() ?: "select.jpg")
-            ctx.contentResolver.openInputStream(uri)?.use { inputStream ->
-                FileOutputStream(file).use { outputStream ->
-                    inputStream.copyTo(outputStream)
-                }
-            }
-            scope.launch { resultFlow.emit(file.path) }
+            handlePickPhotoResult(uri)
         } else {
             scope.launch { resultFlow.emit(null) }
         }
+    }
+
+    private fun handlePickPhotoResult(uri: Uri) {
+        // 选择到图片的文件名
+        var fileName: String? = null
+        ctx.contentResolver.query(
+            uri, null, null, null, null
+        )?.use {
+            if (it.moveToFirst()) {
+                fileName =
+                    it.getString(it.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME))
+            }
+        }
+        val file = File(ctx.cacheDir, fileName?.split("/")?.last() ?: "select.jpg")
+        ctx.contentResolver.openInputStream(uri)?.use { inputStream ->
+            FileOutputStream(file).use { outputStream ->
+                inputStream.copyTo(outputStream)
+            }
+        }
+        scope.launch { resultFlow.emit(file.path) }
     }
 
     /**
@@ -115,11 +131,22 @@ object PhotoManager {
      * @return String? 图片路径
      */
     suspend fun pick(): String? = withContext(Dispatchers.IO) {
-        val launcher = launcherMap[topActivity] ?: return@withContext null
-        launcher.launch(Intent().apply {
-            action = Intent.ACTION_PICK
-            type = "image/jpeg"
-        })
+        if (ActivityResultContracts.PickVisualMedia.isPhotoPickerAvailable(ctx)) {
+            val launcher = launcherMediaMap[topActivity] ?: return@withContext null
+            launcher.launch(
+                PickVisualMediaRequest(
+                    ActivityResultContracts.PickVisualMedia.SingleMimeType(
+                        "image/jpeg"
+                    )
+                )
+            )
+        } else {
+            val launcher = launcherMap[topActivity] ?: return@withContext null
+            launcher.launch(Intent().apply {
+                action = Intent.ACTION_PICK
+                type = "image/jpeg"
+            })
+        }
         resultFlow.first()
     }
 

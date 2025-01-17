@@ -82,6 +82,7 @@ object NetworkStatusManager {
     private lateinit var telephonyManager: TelephonyManager
     private lateinit var wifiManager: WifiManager
     private val scope = CoroutineScope(Dispatchers.IO)
+    private var isStarted = false
 
     // 网络
     private val _networkFlow = MutableStateFlow<Network?>(null)
@@ -181,6 +182,8 @@ object NetworkStatusManager {
      * 启动网络监听
      */
     fun start() {
+        if (isStarted) return
+        isStarted = true
         updateNetwork()
 
         val request = NetworkRequest.Builder().build()

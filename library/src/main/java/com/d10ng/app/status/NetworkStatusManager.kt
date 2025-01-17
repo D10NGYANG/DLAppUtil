@@ -175,7 +175,12 @@ object NetworkStatusManager {
         manager = app.getSystemService(ConnectivityManager::class.java)
         telephonyManager = app.getSystemService(TelephonyManager::class.java)
         wifiManager = app.getSystemService(WifiManager::class.java)
+    }
 
+    /**
+     * 启动网络监听
+     */
+    fun start() {
         updateNetwork()
 
         val request = NetworkRequest.Builder().build()
@@ -209,7 +214,7 @@ object NetworkStatusManager {
         })
     }
 
-    private fun updateNetwork() {
+    fun updateNetwork() {
         _networkFlow.value = manager.activeNetwork
         _linkPropertiesFlow.value = manager.getLinkProperties(manager.activeNetwork)
         _networkCapabilitiesFlow.value = manager.getNetworkCapabilities(manager.activeNetwork)

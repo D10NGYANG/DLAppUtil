@@ -64,6 +64,7 @@ private fun NetworkStatusManagerScreenView() {
             val networkType by NetworkStatusManager.networkTypeFlow.collectAsState()
             val ipv4 by NetworkStatusManager.ipv4Flow.collectAsState()
             val ipv6 by NetworkStatusManager.ipv6Flow.collectAsState()
+
             CellGroup(title = "基础信息", inset = true) {
                 Cell(title = "网络是否可用", value = if (isAvailable) "可用" else "不可用")
                 // IP地址

@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import com.d10ng.app.demo.pages.NavGraphs
 import com.d10ng.app.demo.ui.DLTheme
 import com.d10ng.app.demo.utils.NavControllerUtils
+import com.d10ng.app.status.NetworkStatusManager
 import com.d10ng.app.view.lockScreenOrientation
 import com.d10ng.app.view.setStatusBar
 import com.d10ng.compose.model.UiViewModelManager
@@ -28,6 +29,8 @@ class MainActivity : ComponentActivity() {
         lockScreenOrientation()
         // 设置状态栏颜色
         setStatusBar()
+        // 启动网络监听
+        NetworkStatusManager.start()
 
         setContent {
             DLTheme {

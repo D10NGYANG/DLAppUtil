@@ -28,7 +28,15 @@
 
 ---
 
-## ① 获取网络是否可用
+## ① 启动网络监听
+
+> 在版本`2.5.8`版本后加入。
+
+```kotlin
+NetworkStatusManager.start()
+```
+
+## ② 获取网络是否可用
 
 ```kotlin
 // 获取Flow
@@ -39,21 +47,21 @@ val isAvailable: Boolean = NetworkStatusManager.isAvailable()
 val isAvailable2: Boolean = isNetworkAvailable()
 ```
 
-## ② 获取网络Flow
+## ③ 获取网络Flow
 
 ```kotlin
 // 获取Flow
 val networkFlow: StateFlow<Network?> = NetworkStatusManager.networkFlow
 ```
 
-## ③ 获取网络属性Flow
+## ④ 获取网络属性Flow
 
 ```kotlin
 // 获取Flow
 val linkPropertiesFlow: StateFlow<LinkProperties?> = NetworkStatusManager.linkPropertiesFlow
 ```
 
-## ④ 获取网络能力Flow
+## ⑤ 获取网络能力Flow
 
 ```kotlin
 // 获取Flow
@@ -61,7 +69,7 @@ val networkCapabilitiesFlow: StateFlow<NetworkCapabilities?> =
     NetworkStatusManager.networkCapabilitiesFlow
 ```
 
-## ⑤ 获取网络类型Flow
+## ⑥ 获取网络类型Flow
 
 在AndroidManifest.xml中添加权限
 
@@ -89,14 +97,14 @@ CoroutineScope(Dispatchers.IO).launch {
 }
 ```
 
-## ⑥ 获取IPV4地址Flow
+## ⑦ 获取IPV4地址Flow
 
 ```kotlin
 // 获取Flow
 val ipv4Flow: StateFlow<String> = NetworkStatusManager.ipv4Flow
 ```
 
-## ⑦ 获取IPV6地址Flow
+## ⑧ 获取IPV6地址Flow
 
 ```kotlin
 // 获取Flow

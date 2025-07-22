@@ -3,36 +3,44 @@ agp = "8.6.0"
 android-compileSdk = "34"
 android-minSdk = "26"
 android-targetSdk = "30"
-androidx-activityCompose = "1.10.1"
+androidx-appcompat = "1.7.0"
 androidx-core = "1.13.1"
-androidx-espresso = "3.6.1"
-androidx-junit = "1.2.1"
-androidx-lifecycle = "2.8.4"
-kotlinx-coroutines = "1.9.0-RC.2"
-compose-plugin = "1.7.3"
+androidx-legacy-support-v4 = "1.0.0"
+androidx-startup-runtime = "1.1.1"
+androidx-test-espresso = "3.6.1"
+androidx-test-junit = "1.2.1"
+junit = "4.13.2"
 kotlin = "2.0.20"
 ksp = "2.0.20-1.0.24"
-junit = "4.13.2"
-startupRuntime = "1.2.0"
-dlcommonutil = "0.5.4"
+kotlinx-coroutines = "1.9.0-RC.2"
+leakcanary = "2.14"
+material = "1.12.0"
+raamcosta-compose-destinations = "1.10.2"
+dlcompose = "2.0.29"
+dlcommon = "0.5.4"
+dldate = "2.0.0"
 
 [libraries]
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
-androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "androidx-espresso" }
-androidx-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-junit" }
-androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
-androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activityCompose" }
-androidx-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
-androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
-androidx-startup-runtime = { module = "androidx.startup:startup-runtime", version.ref = "startupRuntime" }
+androidx-legacy-support-v4 = { module = "androidx.legacy:legacy-support-v4", version.ref = "androidx-legacy-support-v4" }
+androidx-startup-runtime = { module = "androidx.startup:startup-runtime", version.ref = "androidx-startup-runtime" }
+androidx-test-espresso = { module = "androidx.test.espresso:espresso-core", version.ref = "androidx-test-espresso" }
+androidx-test-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-test-junit" }
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
 junit = { module = "junit:junit", version.ref = "junit" }
-dl-common = { module = "com.github.D10NGYANG:DLCommonUtil", version.ref = "dlcommonutil" }
+leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanary" }
+material = { module = "com.google.android.material:material", version.ref = "material" }
+raamcosta-compose-destinations-core = { module = "io.github.raamcosta.compose-destinations:animations-core", version.ref = "raamcosta-compose-destinations" }
+raamcosta-compose-destinations-ksp = { module = "io.github.raamcosta.compose-destinations:ksp", version.ref = "raamcosta-compose-destinations" }
+dl-compose = { module = "com.github.D10NGYANG:DLJetpackComposeUtil", version.ref = "dlcompose" }
+dl-common = { module = "com.github.D10NGYANG:DLCommonUtil", version.ref = "dlcommon" }
+dl-date = { module = "com.github.D10NGYANG:DLDateUtil", version.ref = "dldate" }
 
 [plugins]
-androidApplication = { id = "com.android.application", version.ref = "agp" }
-androidLibrary = { id = "com.android.library", version.ref = "agp" }
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

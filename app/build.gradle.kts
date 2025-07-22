@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
@@ -44,31 +44,31 @@ dependencies {
 
     // 单元测试（可选）
     testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.test.junit)
+    androidTestImplementation(libs.androidx.test.espresso)
 
     // Android
-    implementation("androidx.core:core-ktx:1.13.1")
+    implementation(libs.androidx.core.ktx)
 
     // Coroutines
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
 
     // 导航路由
-    implementation("io.github.raamcosta.compose-destinations:animations-core:1.10.2")
-    ksp("io.github.raamcosta.compose-destinations:ksp:1.10.2")
+    implementation(libs.raamcosta.compose.destinations.core)
+    ksp(libs.raamcosta.compose.destinations.ksp)
 
     // jetpack compose 框架
-    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:2.0.29")
+    implementation(libs.dl.compose)
 
     // 日期时间
-    implementation("com.github.D10NGYANG:DLDateUtil:2.0.0")
+    implementation(libs.dl.date)
     // 通用计算工具
-    implementation("com.github.D10NGYANG:DLCommonUtil:0.5.2")
+    implementation(libs.dl.common)
 
     // 工具
     implementation(project(":library"))
 
     // 内存泄漏检查
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.14")
+    debugImplementation(libs.leakcanary.android)
 }

@@ -22,16 +22,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.d10ng.app.demo.ui.PageTransitions
 import com.d10ng.app.demo.utils.back
 import com.d10ng.app.managers.PhotoManager
 import com.d10ng.compose.ui.AppColor
 import com.d10ng.compose.ui.AppShape
-import com.d10ng.compose.ui.PageTransitions
 import com.d10ng.compose.ui.base.Cell
 import com.d10ng.compose.ui.base.CellGroup
 import com.d10ng.compose.ui.navigation.NavBar
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootNavGraph
+import com.ramcosta.composedestinations.annotation.RootGraph
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -40,8 +40,7 @@ import java.io.File
  * @Author d10ng
  * @Date 2024/1/19 11:46
  */
-@RootNavGraph
-@Destination(style = PageTransitions::class)
+@Destination<RootGraph>(style = PageTransitions::class)
 @Composable
 fun PhotoManagerScreen() {
     PhotoManagerScreenView()

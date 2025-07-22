@@ -12,17 +12,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.d10ng.app.demo.ui.PageTransitions
 import com.d10ng.app.demo.utils.back
 import com.d10ng.app.managers.PermissionManager
 import com.d10ng.compose.model.UiViewModelManager
 import com.d10ng.compose.ui.AppColor
-import com.d10ng.compose.ui.PageTransitions
 import com.d10ng.compose.ui.base.Cell
 import com.d10ng.compose.ui.base.CellGroup
 import com.d10ng.compose.ui.feedback.NotifyType
 import com.d10ng.compose.ui.navigation.NavBar
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootNavGraph
+import com.ramcosta.composedestinations.annotation.RootGraph
 import kotlinx.coroutines.launch
 
 /**
@@ -30,8 +30,7 @@ import kotlinx.coroutines.launch
  * @Author d10ng
  * @Date 2024/1/11 15:53
  */
-@RootNavGraph
-@Destination(style = PageTransitions::class)
+@Destination<RootGraph>(style = PageTransitions::class)
 @Composable
 fun PermissionManagerScreen() {
     PermissionManagerScreenView()

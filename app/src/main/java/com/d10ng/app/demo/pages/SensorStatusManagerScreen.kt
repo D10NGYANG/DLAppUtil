@@ -16,15 +16,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.d10ng.app.demo.app
+import com.d10ng.app.demo.ui.PageTransitions
 import com.d10ng.app.demo.utils.back
 import com.d10ng.app.status.SensorStatus
 import com.d10ng.compose.ui.AppColor
-import com.d10ng.compose.ui.PageTransitions
 import com.d10ng.compose.ui.base.Cell
 import com.d10ng.compose.ui.base.CellGroup
 import com.d10ng.compose.ui.navigation.NavBar
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootNavGraph
+import com.ramcosta.composedestinations.annotation.RootGraph
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
@@ -35,8 +35,7 @@ import kotlinx.coroutines.flow.sample
  * @Author d10ng
  * @Date 2024/1/9 14:38
  */
-@RootNavGraph
-@Destination(style = PageTransitions::class)
+@Destination<RootGraph>(style = PageTransitions::class)
 @Composable
 fun SensorStatusManagerScreen() {
     SensorStatusManagerScreenView()

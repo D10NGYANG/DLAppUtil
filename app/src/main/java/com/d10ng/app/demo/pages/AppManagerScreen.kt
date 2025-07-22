@@ -9,6 +9,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.d10ng.app.demo.ui.PageTransitions
 import com.d10ng.app.demo.utils.back
 import com.d10ng.app.managers.appVersion
 import com.d10ng.app.managers.appVersionCode
@@ -16,13 +17,12 @@ import com.d10ng.app.managers.existApp
 import com.d10ng.app.managers.restartApp
 import com.d10ng.compose.model.UiViewModelManager
 import com.d10ng.compose.ui.AppColor
-import com.d10ng.compose.ui.PageTransitions
 import com.d10ng.compose.ui.base.Cell
 import com.d10ng.compose.ui.base.CellGroup
 import com.d10ng.compose.ui.dialog.builder.InputDialogBuilder
 import com.d10ng.compose.ui.navigation.NavBar
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootNavGraph
+import com.ramcosta.composedestinations.annotation.RootGraph
 import kotlinx.coroutines.launch
 
 /**
@@ -30,8 +30,7 @@ import kotlinx.coroutines.launch
  * @Author d10ng
  * @Date 2024/1/8 11:08
  */
-@RootNavGraph
-@Destination(style = PageTransitions::class)
+@Destination<RootGraph>(style = PageTransitions::class)
 @Composable
 fun AppManagerScreen() {
     AppManagerScreenView()

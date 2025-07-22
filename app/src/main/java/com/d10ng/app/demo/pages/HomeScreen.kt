@@ -10,37 +10,36 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.d10ng.app.demo.pages.destinations.AppManagerScreenDestination
-import com.d10ng.app.demo.pages.destinations.BatteryStatusManagerScreenDestination
-import com.d10ng.app.demo.pages.destinations.ContactManagerScreenDestination
-import com.d10ng.app.demo.pages.destinations.GnssStatusManagerScreenDestination
-import com.d10ng.app.demo.pages.destinations.LocationStatusManagerScreenDestination
-import com.d10ng.app.demo.pages.destinations.NavigationUtilScreenDestination
-import com.d10ng.app.demo.pages.destinations.NetworkStatusManagerScreenDestination
-import com.d10ng.app.demo.pages.destinations.NmeaStatusManagerScreenDestination
-import com.d10ng.app.demo.pages.destinations.NotificationControllerScreenDestination
-import com.d10ng.app.demo.pages.destinations.PermissionManagerScreenDestination
-import com.d10ng.app.demo.pages.destinations.PhotoManagerScreenDestination
-import com.d10ng.app.demo.pages.destinations.SensorStatusManagerScreenDestination
-import com.d10ng.app.demo.pages.destinations.SmsControllerScreenDestination
-import com.d10ng.app.demo.pages.destinations.SystemManagerScreenDestination
+import com.d10ng.app.demo.destinations.AppManagerScreenDestination
+import com.d10ng.app.demo.destinations.BatteryStatusManagerScreenDestination
+import com.d10ng.app.demo.destinations.ContactManagerScreenDestination
+import com.d10ng.app.demo.destinations.GnssStatusManagerScreenDestination
+import com.d10ng.app.demo.destinations.LocationStatusManagerScreenDestination
+import com.d10ng.app.demo.destinations.NavigationUtilScreenDestination
+import com.d10ng.app.demo.destinations.NetworkStatusManagerScreenDestination
+import com.d10ng.app.demo.destinations.NmeaStatusManagerScreenDestination
+import com.d10ng.app.demo.destinations.NotificationControllerScreenDestination
+import com.d10ng.app.demo.destinations.PermissionManagerScreenDestination
+import com.d10ng.app.demo.destinations.PhotoManagerScreenDestination
+import com.d10ng.app.demo.destinations.SensorStatusManagerScreenDestination
+import com.d10ng.app.demo.destinations.SmsControllerScreenDestination
+import com.d10ng.app.demo.destinations.SystemManagerScreenDestination
+import com.d10ng.app.demo.ui.PageTransitions
 import com.d10ng.app.demo.utils.go
 import com.d10ng.app.utils.goToSystemHome
 import com.d10ng.compose.ui.AppColor
-import com.d10ng.compose.ui.PageTransitions
 import com.d10ng.compose.ui.base.Cell
 import com.d10ng.compose.ui.base.CellGroup
 import com.d10ng.compose.ui.navigation.NavBar
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootNavGraph
+import com.ramcosta.composedestinations.annotation.RootGraph
 
 /**
  * 首页
  * @Author d10ng
  * @Date 2024/1/8 09:51
  */
-@RootNavGraph(start = true)
-@Destination(style = PageTransitions::class)
+@Destination<RootGraph>(start = true, style = PageTransitions::class)
 @Composable
 fun HomeScreen() {
     HomeScreenView()

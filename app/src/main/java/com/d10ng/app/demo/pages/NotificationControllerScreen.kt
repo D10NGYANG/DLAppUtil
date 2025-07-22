@@ -25,6 +25,7 @@ import androidx.core.app.Person
 import com.d10ng.app.demo.MainActivity
 import com.d10ng.app.demo.R
 import com.d10ng.app.demo.app
+import com.d10ng.app.demo.ui.PageTransitions
 import com.d10ng.app.demo.utils.back
 import com.d10ng.app.managers.NotificationController
 import com.d10ng.app.managers.PermissionManager
@@ -33,14 +34,14 @@ import com.d10ng.app.utils.goToAppNotificationSetting
 import com.d10ng.common.calculate.isOnlyNumber
 import com.d10ng.compose.model.UiViewModelManager
 import com.d10ng.compose.ui.AppColor
-import com.d10ng.compose.ui.PageTransitions
 import com.d10ng.compose.ui.base.Cell
 import com.d10ng.compose.ui.base.CellGroup
 import com.d10ng.compose.ui.dialog.builder.InputDialogBuilder
 import com.d10ng.compose.ui.navigation.NavBar
-import com.d10ng.datelib.curTime
+import com.d10ng.datelib.nowTimeSeconds
+import com.d10ng.datelib.nowTimestamp
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootNavGraph
+import com.ramcosta.composedestinations.annotation.RootGraph
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -49,8 +50,7 @@ import kotlinx.coroutines.launch
  * @Author d10ng
  * @Date 2024/1/11 17:20
  */
-@RootNavGraph
-@Destination(style = PageTransitions::class)
+@Destination<RootGraph>(style = PageTransitions::class)
 @Composable
 fun NotificationControllerScreen() {
     LaunchedEffect(Unit) {
@@ -143,7 +143,7 @@ private fun NotificationControllerScreenView() {
                 Cell(title = "创建标准通知", link = true, onClick = {
                     NotificationController.createStandard(
                         channelId = "standard_text",
-                        notifyId = (curTime / 1000).toInt(),
+                        notifyId = nowTimeSeconds(),
                         title = "通知标题，一般为应用名称",
                         content = "通知内容，一般为任务信息，或者简要任务的介绍",
                         smallIcon = R.drawable.ic_launcher_foreground,
@@ -153,7 +153,7 @@ private fun NotificationControllerScreenView() {
                 Cell(title = "创建大文本通知", link = true, onClick = {
                     NotificationController.createStandard(
                         channelId = "standard_text",
-                        notifyId = (curTime / 1000).toInt(),
+                        notifyId = nowTimeSeconds(),
                         title = "通知标题，一般为应用名称",
                         content = "大文本通知效果不佳，在MIUI上甚至只有长按才能显示",
                         bigText = "大文本通知内容，一般为任务信息，或者简要任务的介绍，如果内容过长，可以使用大文本通知，这样可以显示更多的内容；",
@@ -227,7 +227,7 @@ private fun NotificationControllerScreenView() {
                     val person = Person.Builder().setName("张三").build()
                     NotificationController.createMessaging(
                         channelId = "dialog",
-                        notifyId = (curTime / 1000).toInt(),
+                        notifyId = nowTimeSeconds(),
                         title = "两条新消息",
                         content = "--",
                         smallIcon = R.drawable.ic_launcher_foreground,
@@ -236,12 +236,12 @@ private fun NotificationControllerScreenView() {
                         bindMessages = {
                             it.addMessage(
                                 "你好，我是张三",
-                                curTime - 2000,
+                                nowTimestamp() - 2000,
                                 person
                             )
                             it.addMessage(
                                 "周四晚上你有空参加校园活动吗？",
-                                curTime,
+                                nowTimestamp(),
                                 person
                             )
                         }
@@ -252,7 +252,7 @@ private fun NotificationControllerScreenView() {
                     val person2 = Person.Builder().setName("李四").build()
                     NotificationController.createMessaging(
                         channelId = "dialog",
-                        notifyId = (curTime / 1000).toInt(),
+                        notifyId = nowTimeSeconds(),
                         title = "两条新消息",
                         content = "--",
                         smallIcon = R.drawable.ic_launcher_foreground,
@@ -262,22 +262,22 @@ private fun NotificationControllerScreenView() {
                             it.conversationTitle = "群聊名称"
                             it.addMessage(
                                 "你好，我是张三",
-                                curTime - 2000,
+                                nowTimestamp() - 2000,
                                 person
                             )
                             it.addMessage(
                                 "周四晚上你有空参加校园活动吗？",
-                                curTime - 1000,
+                                nowTimestamp() - 1000,
                                 person
                             )
                             it.addMessage(
                                 "你好，我是李四",
-                                curTime - 500,
+                                nowTimestamp() - 500,
                                 person2
                             )
                             it.addMessage(
                                 "我有空，你呢？",
-                                curTime,
+                                nowTimestamp(),
                                 person2
                             )
                         }

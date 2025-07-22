@@ -29,7 +29,7 @@ private val packInfo by lazy {
 /**
  * APP版本号
  */
-val appVersion: String by lazy { packInfo.versionName }
+val appVersion: String by lazy { packInfo.versionName ?: "" }
 
 /**
  * APP版本码

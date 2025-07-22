@@ -60,6 +60,15 @@ dependencies {
 
     // jetpack compose 框架
     implementation(libs.dl.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
 
     // 日期时间
     implementation(libs.dl.date)
@@ -71,4 +80,8 @@ dependencies {
 
     // 内存泄漏检查
     debugImplementation(libs.leakcanary.android)
+}
+
+ksp {
+    arg("compose-destinations.codeGenPackageName", "com.d10ng.app.demo") // replace package name!
 }

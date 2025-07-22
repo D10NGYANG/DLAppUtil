@@ -23,6 +23,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.d10ng.app.demo.ui.PageTransitions
 import com.d10ng.app.demo.utils.back
 import com.d10ng.app.managers.PermissionManager
 import com.d10ng.app.managers.SmsController
@@ -30,7 +31,6 @@ import com.d10ng.common.calculate.isOnlyNumber
 import com.d10ng.compose.model.UiViewModelManager
 import com.d10ng.compose.ui.AppColor
 import com.d10ng.compose.ui.AppText
-import com.d10ng.compose.ui.PageTransitions
 import com.d10ng.compose.ui.base.Cell
 import com.d10ng.compose.ui.base.CellGroup
 import com.d10ng.compose.ui.base.CellRow
@@ -38,10 +38,10 @@ import com.d10ng.compose.ui.dialog.builder.InputDialogBuilder
 import com.d10ng.compose.ui.navigation.NavBar
 import com.d10ng.compose.ui.sheet.SheetColumn
 import com.d10ng.compose.ui.sheet.builder.SheetBuilder
-import com.d10ng.datelib.curTime
+import com.d10ng.datelib.nowTimestamp
 import com.d10ng.datelib.toDateStr
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootNavGraph
+import com.ramcosta.composedestinations.annotation.RootGraph
 import kotlinx.coroutines.launch
 
 /**
@@ -49,8 +49,7 @@ import kotlinx.coroutines.launch
  * @Author d10ng
  * @Date 2024/1/17 10:15
  */
-@RootNavGraph
-@Destination(style = PageTransitions::class)
+@Destination<RootGraph>(style = PageTransitions::class)
 @Composable
 fun SmsControllerScreen() {
     LaunchedEffect(Unit) {
@@ -113,7 +112,7 @@ private fun SmsControllerScreenView() {
                     onClick = {
                         if (PermissionManager.has(Manifest.permission.READ_SMS)) {
                             scope.launch {
-                                showSmsList(SmsController.readAfter(curTime - 7 * 24 * 60 * 60 * 1000))
+                                showSmsList(SmsController.readAfter(nowTimestamp() - 7 * 24 * 60 * 60 * 1000))
                             }
                         } else {
                             UiViewModelManager.showFailToast("权限不足")

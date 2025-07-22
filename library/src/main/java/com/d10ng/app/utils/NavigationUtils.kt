@@ -4,8 +4,12 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
+import androidx.core.net.toUri
 import com.d10ng.app.managers.ActivityManager
 import com.d10ng.app.startup.ctx
+import com.d10ng.common.coordinate.Coordinate
+import com.d10ng.common.coordinate.CoordinateSystemType
+import com.d10ng.common.coordinate.convert
 
 /**
  * 回到系统桌面
@@ -39,7 +43,7 @@ fun goToSystemLocationSetting() {
  * @param url 网站地址
  */
 fun goToBrowser(url: String) {
-    val uri = Uri.parse(url)
+    val uri = url.toUri()
     val intent = Intent(Intent.ACTION_VIEW, uri)
     ActivityManager.top()?.startActivity(intent)
 }
@@ -50,7 +54,7 @@ fun goToBrowser(url: String) {
  */
 fun goToSystemCall(phone: String) {
     val intent = Intent(Intent.ACTION_DIAL)
-    val data = Uri.parse("tel:$phone")
+    val data = "tel:$phone".toUri()
     intent.data = data
     ActivityManager.top()?.startActivity(intent)
 }
@@ -62,7 +66,7 @@ fun goToSystemCall(phone: String) {
  */
 fun goToSystemSms(phone: String, content: String) {
     val intent = Intent(Intent.ACTION_SENDTO)
-    val data = Uri.parse("smsto:$phone")
+    val data = "smsto:$phone".toUri()
     intent.data = data
     intent.putExtra("sms_body", content)
     ActivityManager.top()?.startActivity(intent)
@@ -265,4 +269,54 @@ fun startGaoDeMapNavigation(
         append("&callnative=1")
     }
     goToBrowser(builder.toString())
+}
+
+/**
+ * 跳转到高德地图
+ * @param longitude 经度
+ * @param latitude 纬度
+ * @param name 名称
+ * @param src String 来源APP包名
+ */
+fun goToGaodeMap(
+    longitude: Double,
+    latitude: Double,
+    name: String = "位置",
+    src: String = ctx.packageName
+) {
+    val install =
+        runCatching { ctx.packageManager.getPackageInfo("com.autonavi.minimap", 0) }.isSuccess
+    if (install.not()) throw Exception("请先安装高德地图")
+    val loc = Coordinate(latitude, longitude).convert(
+        CoordinateSystemType.WGS84,
+        CoordinateSystemType.GCJ02
+    )
+    val uri =
+        "androidamap://viewMap?sourceApplication=${src}&poiname=${name}&lat=${loc.lat}&lon=${loc.lng}&dev=0".toUri()
+    ActivityManager.top()?.startActivity(Intent(Intent.ACTION_VIEW, uri))
+}
+
+/**
+ * 跳转到百度地图
+ * @param longitude 经度
+ * @param latitude 纬度
+ * @param name 名称
+ * @param src String 来源APP包名
+ */
+fun goToBaiduMap(
+    longitude: Double,
+    latitude: Double,
+    name: String = "位置",
+    src: String = ctx.packageName
+) {
+    val install =
+        runCatching { ctx.packageManager.getPackageInfo("com.baidu.BaiduMap", 0) }.isSuccess
+    if (install.not()) throw Exception("请先安装百度地图")
+    val loc = Coordinate(latitude, longitude).convert(
+        CoordinateSystemType.WGS84,
+        CoordinateSystemType.BD09
+    )
+    val uri =
+        "baidumap://map/marker?location=${loc.lat},${loc.lng}&title=${name}&traffic=on&src=${src}".toUri()
+    ActivityManager.top()?.startActivity(Intent(Intent.ACTION_VIEW, uri))
 }

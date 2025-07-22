@@ -13,7 +13,9 @@ import com.d10ng.app.demo.ui.PageTransitions
 import com.d10ng.app.demo.utils.back
 import com.d10ng.app.utils.goToAppNotificationSetting
 import com.d10ng.app.utils.goToAppSetting
+import com.d10ng.app.utils.goToBaiduMap
 import com.d10ng.app.utils.goToBrowser
+import com.d10ng.app.utils.goToGaodeMap
 import com.d10ng.app.utils.goToSystemCall
 import com.d10ng.app.utils.goToSystemHome
 import com.d10ng.app.utils.goToSystemLocationSetting
@@ -23,6 +25,7 @@ import com.d10ng.app.utils.startBaiDuMapMaker
 import com.d10ng.app.utils.startBaiduMapNavigation
 import com.d10ng.app.utils.startGaoDeMapMaker
 import com.d10ng.app.utils.startGaoDeMapNavigation
+import com.d10ng.compose.model.UiViewModelManager
 import com.d10ng.compose.ui.AppColor
 import com.d10ng.compose.ui.base.Cell
 import com.d10ng.compose.ui.base.CellGroup
@@ -88,11 +91,12 @@ private fun NavigationUtilScreenView() {
             }
             CellGroup(title = "地图", inset = true) {
                 Cell(
-                    title = "启动百度地图，显示地标位置",
+                    title = "浏览器打开百度地图，显示地标位置",
                     link = true,
-                    onClick = { startBaiDuMapMaker(40.047669, 116.313082) })
+                    onClick = { startBaiDuMapMaker(40.047669, 116.313082) }
+                )
                 Cell(
-                    title = "启动百度地图，规划驾车路径",
+                    title = "浏览器打开百度地图，规划驾车路径",
                     link = true,
                     onClick = {
                         startBaiduMapNavigation(
@@ -101,13 +105,27 @@ private fun NavigationUtilScreenView() {
                             endLat = 23.157471,
                             endLng = 113.042738
                         )
-                    })
+                    }
+                )
                 Cell(
-                    title = "启动高德地图，显示地标位置",
+                    title = "打开百度地图App，显示地标位置",
                     link = true,
-                    onClick = { startGaoDeMapMaker(40.047669, 116.313082) })
+                    onClick = {
+                        runCatching { goToBaiduMap(40.047669, 116.313082) }
+                            .onFailure { e ->
+                                UiViewModelManager.showToast(
+                                    e.message ?: "未知错误"
+                                )
+                            }
+                    }
+                )
                 Cell(
-                    title = "启动高德地图，规划驾车路径",
+                    title = "浏览器打开高德地图，显示地标位置",
+                    link = true,
+                    onClick = { startGaoDeMapMaker(40.047669, 116.313082) }
+                )
+                Cell(
+                    title = "浏览器打开高德地图，规划驾车路径",
                     link = true,
                     onClick = {
                         startGaoDeMapNavigation(
@@ -116,7 +134,20 @@ private fun NavigationUtilScreenView() {
                             endLat = 23.157471,
                             endLng = 113.042738
                         )
-                    })
+                    }
+                )
+                Cell(
+                    title = "打开高德地图App，显示地标位置",
+                    link = true,
+                    onClick = {
+                        runCatching { goToGaodeMap(40.047669, 116.313082) }
+                            .onFailure { e ->
+                                UiViewModelManager.showToast(
+                                    e.message ?: "未知错误"
+                                )
+                            }
+                    }
+                )
             }
         }
     }

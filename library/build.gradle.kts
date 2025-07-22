@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.github.D10NGYANG"
-version = "2.5.9"
+version = "2.6.0"
 
 android {
     namespace = "com.d10ng.app"
@@ -59,6 +59,9 @@ dependencies {
 
     // startup
     implementation(libs.androidx.startup.runtime)
+
+    // 通用计算库
+    implementation(libs.dl.common)
 }
 
 val bds100MavenUsername: String by project

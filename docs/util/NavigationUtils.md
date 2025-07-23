@@ -131,8 +131,6 @@ fun startBaiDuMapMaker(
     content: String = "",
     coordinate: String = "gcj02"
 )
-```
-
 ```kotlin
 startBaiDuMapMaker(
     lat = 40.047669,
@@ -244,3 +242,36 @@ startGaoDeMapNavigation(
     coordinate = "gcj02"
 )
 ```
+
+## ⑲ 跳转到高德地图（需要安装高德地图APP）
+
+> - @param longitude Double 经度
+> - @param latitude Double 纬度
+> - @param name String 名称
+> - @param src String 来源APP包名
+
+```kotlin
+goToGaodeMap(
+    longitude = 116.313082,
+    latitude = 40.047669,
+    name = "我的位置",
+    src = "com.example.app"
+)
+```
+
+## ⑳ 跳转到百度地图（需要安装百度地图APP）
+
+> - @param longitude Double 经度
+> - @param latitude Double 纬度
+> - @param name String 名称
+> - @param src String 来源APP包名
+
+```kotlin
+goToBaiduMap(
+    longitude = 116.313082,
+    latitude = 40.047669,
+    name = "我的位置",
+    src = "com.example.app"
+)
+```
+

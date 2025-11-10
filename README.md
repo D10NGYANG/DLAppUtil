@@ -2,7 +2,7 @@
 
 Android APP 通用工具
 
-> 最新版本 `ver=2.6.0`
+> 最新版本 `ver=2.7.0`
 
 建议先把demo运行起来看看效果
 
@@ -50,6 +50,7 @@ dependencies {
 - `ContactManager` [联系人管理器](docs/manager/ContactManager.md)
 - `SmsController` [短信管理器](docs/manager/SmsController.md)
 - `PhotoManager` [图片管理器](docs/manager/PhotoManager.md)
+- `FilePickManager` [文件选择管理器](docs/manager/FilePickManager.md)
 
 ### 状态
 

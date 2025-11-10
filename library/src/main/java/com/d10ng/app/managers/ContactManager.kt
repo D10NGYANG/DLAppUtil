@@ -1,12 +1,10 @@
 package com.d10ng.app.managers
 
 import android.app.Activity
-import android.app.Application
 import android.content.ContentProviderOperation
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Bundle
 import android.provider.ContactsContract
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
@@ -36,12 +34,8 @@ object ContactManager {
 
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
-    // 最顶部展示的Activity
-    private var topActivity: ComponentActivity? = null
-
     // 权限申请执行器
-    private val launcherMap =
-        mutableMapOf<ComponentActivity, ActivityResultLauncher<Void?>>()
+    private val launcherMap = HashMap<Int, ActivityResultLauncher<Void?>>()
 
     // 权限申请结果Flow
     private val resultFlow = MutableSharedFlow<Uri?>()
@@ -56,38 +50,18 @@ object ContactManager {
         }
     }
 
-    internal fun init(app: Application) {
-        app.apply {
-            registerActivityLifecycleCallbacks(object : Application.ActivityLifecycleCallbacks {
-                override fun onActivityCreated(p0: Activity, p1: Bundle?) {
-                    if (p0 !is ComponentActivity) return
-                    launcherMap[p0] =
-                        p0.registerForActivityResult(PickPhoneContact()) { data ->
-                            scope.launch { resultFlow.emit(data) }
-                        }
-                    topActivity = p0
-                }
-
-                override fun onActivityStarted(p0: Activity) {}
-
-                override fun onActivityResumed(p0: Activity) {
-                    if (p0 !is ComponentActivity) return
-                    topActivity = p0
-                }
-
-                override fun onActivityPaused(p0: Activity) {}
-
-                override fun onActivityStopped(p0: Activity) {}
-
-                override fun onActivitySaveInstanceState(p0: Activity, p1: Bundle) {}
-
-                override fun onActivityDestroyed(p0: Activity) {
-                    if (p0 !is ComponentActivity) return
-                    launcherMap.remove(p0)
-                    if (topActivity == p0) topActivity = null
-                }
-            })
+    internal fun onComponentActivityCreated(act: ComponentActivity) {
+        val id = System.identityHashCode(act)
+        if (!launcherMap.containsKey(id)) {
+            launcherMap[id] = act.registerForActivityResult(PickPhoneContact()) { data ->
+                scope.launch { resultFlow.emit(data) }
+            }
         }
+    }
+
+    internal fun onComponentActivityDestroyed(act: ComponentActivity) {
+        val id = System.identityHashCode(act)
+        launcherMap.remove(id)
     }
 
     /**
@@ -95,7 +69,9 @@ object ContactManager {
      * @return Data?
      */
     suspend fun pick(): Data? = withContext(Dispatchers.IO) {
-        val launcher = launcherMap[topActivity] ?: return@withContext null
+        val act =
+            ActivityManager.top()?.let { System.identityHashCode(it) } ?: return@withContext null
+        val launcher = launcherMap[act] ?: return@withContext null
         launcher.launch(null)
         val uri = resultFlow.first() ?: return@withContext null
         val projection: Array<String> = arrayOf(

@@ -25,7 +25,6 @@ import kotlinx.coroutines.launch
  */
 object ActivityManager {
 
-    private lateinit var application: Application
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     /** 页面列表 */
@@ -42,7 +41,7 @@ object ActivityManager {
     private val resultFlow = MutableSharedFlow<ActivityResult>()
 
     internal fun init(app: Application) {
-        application = app.apply {
+        app.apply {
             registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
                 override fun onActivityCreated(p0: Activity, p1: Bundle?) {
                     val list = activityListFlow.value.toMutableList()
@@ -55,6 +54,7 @@ object ActivityManager {
                             p0.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                                 scope.launch { resultFlow.emit(result) }
                             }
+                        ContactManager.onComponentActivityCreated(p0)
                     }
                 }
 
@@ -75,6 +75,7 @@ object ActivityManager {
                     if (list.contains(p0)) list -= p0
                     activityListFlow.value = list
                     if (topActivityFlow.value == p0) topActivityFlow.value = null
+                    if (p0 is ComponentActivity) ContactManager.onComponentActivityDestroyed(p0)
                 }
             })
         }

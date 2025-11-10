@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Context
 import androidx.startup.Initializer
 import com.d10ng.app.managers.ActivityManager
-import com.d10ng.app.managers.ContactManager
 import com.d10ng.app.managers.NotificationController
 import com.d10ng.app.managers.PermissionManager
 import com.d10ng.app.managers.PhotoManager
@@ -33,7 +32,6 @@ internal class StartupInitializer : Initializer<Unit> {
         GnssStatusManager.init(context)
         NetworkStatusManager.init(context)
         NotificationController.init(context)
-        ContactManager.init(context)
         PhotoManager.init(context)
         BatteryStatusManager.init(context)
         NmeaStatusManager.init(context)

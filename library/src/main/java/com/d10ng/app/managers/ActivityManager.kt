@@ -56,6 +56,7 @@ object ActivityManager {
                             }
                         ContactManager.onComponentActivityCreated(p0)
                         PermissionManager.onComponentActivityCreated(p0)
+                        PhotoManager.onComponentActivityCreated(p0)
                     }
                 }
 
@@ -79,6 +80,7 @@ object ActivityManager {
                     if (p0 is ComponentActivity) {
                         ContactManager.onComponentActivityDestroyed(p0)
                         PermissionManager.onComponentActivityDestroyed(p0)
+                        PhotoManager.onComponentActivityDestroyed(p0)
                     }
                 }
             })
@@ -98,6 +100,12 @@ object ActivityManager {
      * @return Activity?
      */
     fun top() = topFlow.value
+
+    /**
+     * 获取当前Activity实例的id
+     * @return Int?
+     */
+    fun topId() = top()?.let { System.identityHashCode(it) }
 
     /**
      * 注销最顶部的Activity

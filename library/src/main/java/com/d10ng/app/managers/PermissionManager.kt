@@ -38,14 +38,12 @@ object PermissionManager {
 
     internal fun onComponentActivityCreated(act: ComponentActivity) {
         val id = System.identityHashCode(act)
-        if (!launcherMap.containsKey(id)) {
-            launcherMap[id] =
-                act.registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissionResult ->
-                    scope.launch {
-                        resultFlow.emit(permissionResult)
-                    }
+        if (!launcherMap.containsKey(id)) launcherMap[id] = act
+            .registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissionResult ->
+                scope.launch {
+                    resultFlow.emit(permissionResult)
                 }
-        }
+            }
     }
 
     internal fun onComponentActivityDestroyed(act: ComponentActivity) {
@@ -68,9 +66,8 @@ object PermissionManager {
      * @return Boolean
      */
     suspend fun request(permissions: Array<String>): Boolean = withContext(Dispatchers.IO) {
-        val act = ActivityManager.top()
-            ?.let { System.identityHashCode(it) } ?: return@withContext false
-        val launcher = launcherMap[act] ?: return@withContext false
+        val launcher = ActivityManager.topId()
+            ?.let { launcherMap[it] } ?: return@withContext false
         launcher.launch(permissions)
         resultFlow.filter { it.keys.containsAll(permissions.toList()) }.first().values.all { it }
     }

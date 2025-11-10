@@ -19,6 +19,7 @@ import androidx.core.net.toUri
 import com.d10ng.app.startup.ctx
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.coroutineScope
@@ -78,7 +79,7 @@ object SmsController {
      * > 需要权限：android.permission.RECEIVE_SMS、android.permission.WAKE_LOCK
      */
     class Receiver : BroadcastReceiver() {
-        val scope = CoroutineScope(Dispatchers.IO)
+        val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent?.action != Telephony.Sms.Intents.SMS_RECEIVED_ACTION) return
             val messages = Telephony.Sms.Intents.getMessagesFromIntent(intent) ?: return

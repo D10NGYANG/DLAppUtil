@@ -57,6 +57,7 @@ object ActivityManager {
                         ContactManager.onComponentActivityCreated(p0)
                         PermissionManager.onComponentActivityCreated(p0)
                         PhotoManager.onComponentActivityCreated(p0)
+                        FilePickManager.onComponentActivityCreated(p0)
                     }
                 }
 
@@ -81,6 +82,7 @@ object ActivityManager {
                         ContactManager.onComponentActivityDestroyed(p0)
                         PermissionManager.onComponentActivityDestroyed(p0)
                         PhotoManager.onComponentActivityDestroyed(p0)
+                        FilePickManager.onComponentActivityDestroyed(p0)
                     }
                 }
             })

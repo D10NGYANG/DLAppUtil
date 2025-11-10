@@ -13,6 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.d10ng.app.demo.destinations.AppManagerScreenDestination
 import com.d10ng.app.demo.destinations.BatteryStatusManagerScreenDestination
 import com.d10ng.app.demo.destinations.ContactManagerScreenDestination
+import com.d10ng.app.demo.destinations.FilePickManagerScreenDestination
 import com.d10ng.app.demo.destinations.GnssStatusManagerScreenDestination
 import com.d10ng.app.demo.destinations.LocationStatusManagerScreenDestination
 import com.d10ng.app.demo.destinations.NavigationUtilScreenDestination
@@ -86,6 +87,9 @@ private fun HomeScreenView(
                 })
                 Cell(title = "图片媒体管理器", link = true, onClick = {
                     go(PhotoManagerScreenDestination.route)
+                })
+                Cell(title = "文件选择管理器", link = true, onClick = {
+                    go(FilePickManagerScreenDestination.route)
                 })
             }
             CellGroup(title = "状态", inset = true) {

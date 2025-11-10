@@ -1,11 +1,8 @@
 package com.d10ng.app.managers
 
-import android.app.Activity
-import android.app.Application
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
-import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
 import androidx.activity.ComponentActivity
@@ -33,50 +30,27 @@ object PermissionManager {
 
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
-    // 最顶部展示的Activity
-    private var topActivity: ComponentActivity? = null
-
     // 权限申请执行器
-    private val launcherMap =
-        mutableMapOf<ComponentActivity, ActivityResultLauncher<Array<String>>>()
+    private val launcherMap = HashMap<Int, ActivityResultLauncher<Array<String>>>()
 
     // 权限申请结果Flow
     private val resultFlow = MutableSharedFlow<Map<String, Boolean>>()
 
-    internal fun init(app: Application) {
-        app.apply {
-            registerActivityLifecycleCallbacks(object : Application.ActivityLifecycleCallbacks {
-                override fun onActivityCreated(p0: Activity, p1: Bundle?) {
-                    if (p0 !is ComponentActivity) return
-                    launcherMap[p0] =
-                        p0.registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissionResult ->
-                            scope.launch {
-                                resultFlow.emit(permissionResult)
-                            }
-                        }
-                    topActivity = p0
+    internal fun onComponentActivityCreated(act: ComponentActivity) {
+        val id = System.identityHashCode(act)
+        if (!launcherMap.containsKey(id)) {
+            launcherMap[id] =
+                act.registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissionResult ->
+                    scope.launch {
+                        resultFlow.emit(permissionResult)
+                    }
                 }
-
-                override fun onActivityStarted(p0: Activity) {}
-
-                override fun onActivityResumed(p0: Activity) {
-                    if (p0 !is ComponentActivity) return
-                    topActivity = p0
-                }
-
-                override fun onActivityPaused(p0: Activity) {}
-
-                override fun onActivityStopped(p0: Activity) {}
-
-                override fun onActivitySaveInstanceState(p0: Activity, p1: Bundle) {}
-
-                override fun onActivityDestroyed(p0: Activity) {
-                    if (p0 !is ComponentActivity) return
-                    launcherMap.remove(p0)
-                    if (topActivity == p0) topActivity = null
-                }
-            })
         }
+    }
+
+    internal fun onComponentActivityDestroyed(act: ComponentActivity) {
+        val id = System.identityHashCode(act)
+        launcherMap.remove(id)
     }
 
     /**
@@ -94,7 +68,9 @@ object PermissionManager {
      * @return Boolean
      */
     suspend fun request(permissions: Array<String>): Boolean = withContext(Dispatchers.IO) {
-        val launcher = launcherMap[topActivity] ?: return@withContext false
+        val act = ActivityManager.top()
+            ?.let { System.identityHashCode(it) } ?: return@withContext false
+        val launcher = launcherMap[act] ?: return@withContext false
         launcher.launch(permissions)
         resultFlow.filter { it.keys.containsAll(permissions.toList()) }.first().values.all { it }
     }

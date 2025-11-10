@@ -69,8 +69,8 @@ object ContactManager {
      * @return Data?
      */
     suspend fun pick(): Data? = withContext(Dispatchers.IO) {
-        val act =
-            ActivityManager.top()?.let { System.identityHashCode(it) } ?: return@withContext null
+        val act = ActivityManager.top()
+            ?.let { System.identityHashCode(it) } ?: return@withContext null
         val launcher = launcherMap[act] ?: return@withContext null
         launcher.launch(null)
         val uri = resultFlow.first() ?: return@withContext null

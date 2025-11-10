@@ -55,6 +55,7 @@ object ActivityManager {
                                 scope.launch { resultFlow.emit(result) }
                             }
                         ContactManager.onComponentActivityCreated(p0)
+                        PermissionManager.onComponentActivityCreated(p0)
                     }
                 }
 
@@ -75,7 +76,10 @@ object ActivityManager {
                     if (list.contains(p0)) list -= p0
                     activityListFlow.value = list
                     if (topActivityFlow.value == p0) topActivityFlow.value = null
-                    if (p0 is ComponentActivity) ContactManager.onComponentActivityDestroyed(p0)
+                    if (p0 is ComponentActivity) {
+                        ContactManager.onComponentActivityDestroyed(p0)
+                        PermissionManager.onComponentActivityDestroyed(p0)
+                    }
                 }
             })
         }

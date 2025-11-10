@@ -7,6 +7,7 @@ import android.location.OnNmeaMessageListener
 import android.os.Build
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -26,7 +27,7 @@ object NmeaStatusManager {
     )
 
     private lateinit var manager: LocationManager
-    private val scope = CoroutineScope(Dispatchers.IO)
+    private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     // 状态
     private val _statusFlow: MutableSharedFlow<Status> = MutableSharedFlow()

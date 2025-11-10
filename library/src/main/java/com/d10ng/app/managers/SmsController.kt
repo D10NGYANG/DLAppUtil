@@ -9,13 +9,13 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.database.Cursor
-import android.net.Uri
 import android.os.Build
 import android.os.PowerManager
 import android.provider.Telephony
 import android.telephony.SmsManager
 import android.telephony.SubscriptionManager
 import androidx.core.database.getLongOrNull
+import androidx.core.net.toUri
 import com.d10ng.app.startup.ctx
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -67,7 +67,7 @@ object SmsController {
     )
 
     private val projection = arrayOf("_id", "sub_id", "address", "body", "date")
-    private val inboxUri = Uri.parse("content://sms/inbox")
+    private val inboxUri = "content://sms/inbox".toUri()
 
     // 最新短信接收事件Flow
     private val _receiveFlow = MutableSharedFlow<Data>()

@@ -8,6 +8,7 @@ import android.content.IntentFilter
 import android.os.BatteryManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -72,7 +73,7 @@ object BatteryStatusManager {
         }
     }
 
-    private val scope = CoroutineScope(Dispatchers.IO)
+    private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     // 电量状态
     private val _batteryFlow = MutableStateFlow<Float?>(null)

@@ -16,6 +16,7 @@ import com.d10ng.app.managers.PermissionManager
 import com.d10ng.app.managers.phoneManufacturer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -81,7 +82,7 @@ object NetworkStatusManager {
     private lateinit var manager: ConnectivityManager
     private lateinit var telephonyManager: TelephonyManager
     private lateinit var wifiManager: WifiManager
-    private val scope = CoroutineScope(Dispatchers.IO)
+    private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private var isStarted = false
 
     // 网络

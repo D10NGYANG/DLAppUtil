@@ -20,6 +20,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import com.d10ng.app.startup.ctx
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -35,7 +36,7 @@ import java.io.FileOutputStream
  */
 object PhotoManager {
 
-    private val scope = CoroutineScope(Dispatchers.IO)
+    private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     // 最顶部展示的Activity
     private var topActivity: ComponentActivity? = null

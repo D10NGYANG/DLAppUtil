@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.Application
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
@@ -14,9 +13,11 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import com.d10ng.app.startup.ctx
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
@@ -30,7 +31,7 @@ import kotlinx.coroutines.withContext
  */
 object PermissionManager {
 
-    private val scope = CoroutineScope(Dispatchers.IO)
+    private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     // 最顶部展示的Activity
     private var topActivity: ComponentActivity? = null
@@ -105,7 +106,7 @@ object PermissionManager {
     @RequiresApi(Build.VERSION_CODES.R)
     suspend fun requestManageExternalStorage(): Boolean = withContext(Dispatchers.IO) {
         val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION).apply {
-            data = Uri.parse("package:${ctx.packageName}")
+            data = "package:${ctx.packageName}".toUri()
         }
         ActivityManager.startActivityForResult(intent)
         Environment.isExternalStorageManager()

@@ -79,6 +79,7 @@ object ActivityManager {
                     activityListFlow.value = list
                     if (topActivityFlow.value == p0) topActivityFlow.value = null
                     if (p0 is ComponentActivity) {
+                        launcherMap.remove(p0)
                         ContactManager.onComponentActivityDestroyed(p0)
                         PermissionManager.onComponentActivityDestroyed(p0)
                         PhotoManager.onComponentActivityDestroyed(p0)
